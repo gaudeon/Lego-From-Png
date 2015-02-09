@@ -1,15 +1,46 @@
-pod2text Lego::From::PNG.pm > README
+  sample_function
+     Usage     : How to use this function/method
+     Purpose   : What it does
+     Returns   : What it returns
+     Argument  : What it wants to know
+     Throws    : Exceptions and other anomolies
+     Comment   : This is a sample subroutine header.
+               : It is polite to include more pod and fewer comments.
 
-If this is still here it means the programmer was too lazy to create the readme file.
+    See Also :
 
-You can create it now by using the command shown above from this directory.
+NAME
+    Lego::From::PNG - Convert PNGs into plans to build a two dimensional
+    lego replica.
 
-At the very least you should be able to use this set of instructions
-to install the module...
+SYNOPSIS
+      use Lego::From::PNG;
+      blah blah blah
 
-perl Makefile.PL
-make
-make test
-make install
+DESCRIPTION
+    Stub documentation for this module was created by ExtUtils::ModuleMaker.
+    It looks like the author of the extension was negligent enough to leave
+    the stub unedited.
 
-If you are on a windows box you should use 'nmake' rather than 'make'.
+    Blah blah blah.
+
+USAGE
+BUGS
+SUPPORT
+AUTHOR
+        Travis Chase
+        CPAN ID: GAUDEON
+        gaudeon@cpan.org
+        https://github.com/gaudeon/Lego-From-Png
+
+COPYRIGHT
+    This program is free software licensed under the...
+
+            The MIT License
+
+    The full text of the license can be found in the LICENSE file included
+    with this module.
+
+SEE ALSO
+    perl(1).
+
