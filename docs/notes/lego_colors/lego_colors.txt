@@ -1,0 +1,217 @@
+<table class="wikitable sortable jquery-tablesorter">
+<thead><tr>
+<th class="headerSort" title="Sort ascending">Colour ID
+<div><span class="chevron"></span><span class="chevron"></span></div></th><th class="headerSort" title="Sort ascending">Official LEGO Name
+<div><span class="chevron"></span><span class="chevron"></span></div></th><th class="headerSort" title="Sort ascending">Common Name
+<div><span class="chevron"></span><span class="chevron"></span></div></th><th class="headerSort" title="Sort ascending">Sample
+<div><span class="chevron"></span><span class="chevron"></span></div></th></tr></thead><tbody>
+<tr>
+<td>1
+</td><td><a href="/wiki/White" title="White">White</a>
+</td><td>White
+</td><td style="background:#fff">
+</td></tr>
+<tr>
+<td>5
+</td><td><a href="/wiki/Brick-Yellow" title="Brick-Yellow" class="mw-redirect">Brick-Yellow</a>
+</td><td>Tan
+</td><td style="background:#D9BB7B">
+</td></tr>
+<tr>
+<td>18
+</td><td><a href="/wiki/Nougat" title="Nougat">Nougat</a>
+</td><td>Flesh
+</td><td style="background:#D67240">
+</td></tr>
+<tr>
+<td>21
+</td><td><a href="/wiki/Bright_Red" title="Bright Red">Bright Red</a>
+</td><td>Red
+</td><td style="background:#DE000D">
+</td></tr>
+<tr>
+<td>23
+</td><td><a href="/wiki/Bright_Blue" title="Bright Blue">Bright Blue</a>
+</td><td>Blue
+</td><td style="background:#0057A8">
+</td></tr>
+<tr>
+<td>24
+</td><td><a href="/wiki/Bright_Yellow" title="Bright Yellow">Bright Yellow</a>
+</td><td>Yellow
+</td><td style="background:#FEC400">
+</td></tr>
+<tr>
+<td>26
+</td><td><a href="/wiki/Black" title="Black">Black</a>
+</td><td>Black
+</td><td style="background:#010101">
+</td></tr>
+<tr>
+<td>28
+</td><td><a href="/wiki/Dark_Green" title="Dark Green">Dark Green</a>
+</td><td>Green
+</td><td style="background:#007B28">
+</td></tr>
+<tr>
+<td>37
+</td><td><a href="/wiki/Bright_Green" title="Bright Green">Bright Green</a>
+</td><td>Bright Green
+</td><td style="background:#009624">
+</td></tr>
+<tr>
+<td>38
+</td><td><a href="/wiki/Dark_Orange" title="Dark Orange">Dark Orange</a>
+</td><td>Dark Orange
+</td><td style="background:#A83D15">
+</td></tr>
+<tr>
+<td>102
+</td><td><a href="/wiki/Medium_Blue" title="Medium Blue">Medium Blue</a>
+</td><td>Medium Blue
+</td><td style="background:#478CC6">
+</td></tr>
+<tr>
+<td>106
+</td><td><a href="/wiki/Bright_Orange" title="Bright Orange">Bright Orange</a>
+</td><td>Orange
+</td><td style="background:#E76318">
+</td></tr>
+<tr>
+<td>119
+</td><td><a href="/wiki/Bright_Yellowish-Green" title="Bright Yellowish-Green" class="mw-redirect">Bright Yellowish-Green</a>
+</td><td>Lime
+</td><td style="background:#95B90B">
+</td></tr>
+<tr>
+<td>124
+</td><td><a href="/wiki/Bright_Reddish_Violet" title="Bright Reddish Violet">Bright Reddish Violet</a>
+</td><td>Magenta
+</td><td style="background:#9C006B">
+</td></tr>
+<tr>
+<td>135
+</td><td><a href="/wiki/Sand_Blue" title="Sand Blue">Sand Blue</a>
+</td><td>Sand Blue
+</td><td style="background:#5E748C">
+</td></tr>
+<tr>
+<td>138
+</td><td><a href="/wiki/Sand_Yellow" title="Sand Yellow">Sand Yellow</a>
+</td><td>Dark Tan
+</td><td style="background:#8D7452">
+</td></tr>
+<tr>
+<td>140
+</td><td><a href="/wiki/Earth_Blue" title="Earth Blue">Earth Blue</a>
+</td><td>Dark Blue
+</td><td style="background:#002541">
+</td></tr>
+<tr>
+<td>141
+</td><td><a href="/wiki/Earth_Green" title="Earth Green">Earth Green</a>
+</td><td>Dark Green
+</td><td style="background:#003416">
+</td></tr>
+<tr>
+<td>151
+</td><td><a href="/wiki/Sand_Green" title="Sand Green">Sand Green</a>
+</td><td>Sand Green
+</td><td style="background:#5F8265">
+</td></tr>
+<tr>
+<td>154
+</td><td><a href="/wiki/Dark_Red" title="Dark Red">Dark Red</a>
+</td><td>Dark Red
+</td><td style="background:#80081B">
+</td></tr>
+<tr>
+<td>191
+</td><td><a href="/wiki/Flame_Yellowish_Orange" title="Flame Yellowish Orange">Flame Yellowish Orange</a>
+</td><td>Bright Light Orange
+</td><td style="background:#F49B00">
+</td></tr>
+<tr>
+<td>192
+</td><td><a href="/wiki/Reddish_Brown" title="Reddish Brown">Reddish Brown</a>
+</td><td>Reddish Brown
+</td><td style="background:#5B1C0C">
+</td></tr>
+<tr>
+<td>194
+</td><td><a href="/wiki/Medium_Stone_Grey" title="Medium Stone Grey">Medium Stone Grey</a>
+</td><td>Light Grey
+</td><td style="background:#9C9291">
+</td></tr>
+<tr>
+<td>199
+</td><td><a href="/wiki/Dark_Stone_Grey" title="Dark Stone Grey">Dark Stone Grey</a>
+</td><td>Dark Grey
+</td><td style="background:#4C5156">
+</td></tr>
+<tr>
+<td>208
+</td><td><a href="/wiki/Light_Stone_Grey" title="Light Stone Grey">Light Stone Grey</a>
+</td><td>	Very Light Grey
+</td><td style="background:#E4E4DA">
+</td></tr>
+<tr>
+<td>212
+</td><td><a href="/wiki/Light_Royal_Blue" title="Light Royal Blue">Light Royal Blue</a>
+</td><td>Light Blue
+</td><td style="background:#87C0EA">
+</td></tr>
+<tr>
+<td>221
+</td><td><a href="/wiki/Bright_Purple" title="Bright Purple">Bright Purple</a>
+</td><td>Bright Pink
+</td><td style="background:#DE378B">
+</td></tr>
+<tr>
+<td>222
+</td><td><a href="/wiki/Light_Purple" title="Light Purple">Light Purple</a>
+</td><td>Light Pink
+</td><td style="background:#EE9DC3">
+</td></tr>
+<tr>
+<td>226
+</td><td><a href="/wiki/Cool_Yellow" title="Cool Yellow">Cool Yellow</a>
+</td><td>Blonde
+</td><td style="background:#FFFF99">
+</td></tr>
+<tr>
+<td>268
+</td><td><a href="/wiki/Medium_Lilac" title="Medium Lilac">Medium Lilac</a>
+</td><td>Dark Purple
+</td><td style="background:#2C1577">
+</td></tr>
+<tr>
+<td>283
+</td><td><a href="/wiki/Light_Nougat" title="Light Nougat">Light Nougat</a>
+</td><td>Light Flesh
+</td><td style="background:#F5C189">
+</td></tr>
+<tr>
+<td>308
+</td><td><a href="/wiki/Dark_Brown" title="Dark Brown">Dark Brown</a>
+</td><td>Dark Brown
+</td><td style="background:#300F06">
+</td></tr>
+<tr>
+<td>312
+</td><td><a href="/wiki/Medium_Nougat" title="Medium Nougat">Medium Nougat</a>
+</td><td>Medium Dark Flesh
+</td><td style="background:#AA7D55">
+</td></tr>
+<tr>
+<td>330
+</td><td><a href="/wiki/Olive_Green" title="Olive Green">Olive Green</a>
+</td><td>Olive Green
+</td><td style="background:#556B2F">
+</td></tr>
+<tr>
+<td>331
+</td><td><a href="/wiki/Medium-Yellowish_green" title="Medium-Yellowish green" class="mw-redirect">Medium-Yellowish green</a>
+</td><td>Dark Lime; Medium Lime
+</td><td style="background:#96B93B">
+</td></tr></tbody><tfoot></tfoot></table>
