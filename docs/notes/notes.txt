@@ -9,11 +9,11 @@ Perl
 Test::More
 TDD
 ImageMagick
-
+Image::PNG::Libpng
 
 A command-line way to pixelate an image
 ---
-convert -scale 10% -scale 1000% avatar_cropped.jpg avatar_cropped_pixelated.jpg
+convert -scale 10% avatar_cropped.jpg avatar_cropped_pixelated.jpg
 
 Image::Magick on CPAN
 ---
