@@ -9,6 +9,8 @@ WriteMakefile(
     AUTHOR       => 'Travis Chase (gaudeon@cpan.org)',
     ABSTRACT     => 'Convert PNGs into plans to build a two dimensional lego replica. ',
     PREREQ_PM    => {
-                     'Test::Simple' => 0.44,
+                        'Test::Simple'       => 0.44,
+                        'File::Temp'         => 0.2304,
+                        'Image::PNG::Libpng' => 0.39,
                     },
 );
