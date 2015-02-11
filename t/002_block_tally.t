@@ -14,12 +14,11 @@ is_deeply(\@result, [ ], "No results returned yet");
 
 my $png = Test::PNG->new();
 
-#print $png->{'filename'};
-
 package Test::PNG;
 
 use File::Temp qw(tempfile);
-use Image::PNG::Libpng qw(create_write_struct);
+use Image::PNG::Libpng qw(:all);
+use Image::PNG::Const qw(:all);
 
 sub new {
     my $class = shift;
@@ -51,19 +50,22 @@ sub generate_rnd_png {
                      color_type => PNG_COLOR_TYPE_RGB});
 
     my @rows;
-    # TODO - figure out how to make the image color instead of just being greyscale...
-    for(my $h = 0; $h < $self->{'height'}; $h++) {
+    my $repeat_pixel = 8;
+    for(my $h = 0; $h < $self->{'height'} / $repeat_pixel; $h++) {
         my @row;
-        for(my $w = 0; $w < $self->{'width'}; $w++) {
-            push @row, $rndclr->($h + $w * 3000), $rndclr->($h + $w * 10), $rndclr->($h + $w * 200);
+        for(my $w = 0; $w < $self->{'width'} / $repeat_pixel; $w++) {
+            my @color = ($rndclr->($h + $w * 3000), $rndclr->($h + $w * 10), $rndclr->($h + $w * 200));
+            push @row, @color for 1 .. $repeat_pixel;
         }
         my $len = $self->{'width'} * 3;
-        push @rows, pack("C[$len]", @row);
+        push @rows, pack("C[$len]", @row) for 1 .. $repeat_pixel;
     }
 
     $png->set_rows(\@rows);
 
     $png->write_png();
+
+    close $self->{'fh'};
 }
 
 sub DESTROY {
