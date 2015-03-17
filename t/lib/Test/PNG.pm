@@ -1,19 +1,3 @@
-# -*- perl -*-
-
-# t/002_block_tally.t - Test module's block_tally method
-
-use Test::More tests => 1;
-
-use Lego::From::PNG;
-
-my $object = Lego::From::PNG->new();
-
-my @result = $object->block_tally();
-
-is_deeply(\@result, [ ], "No results returned yet");
-
-my $png = Test::PNG->new();
-
 package Test::PNG;
 
 use File::Temp qw(tempfile);
@@ -29,13 +13,27 @@ sub new {
     ($self->{'fh'}, $self->{'filename'}) = tempfile( 'testpngXXXXXX', SUFFIX => '.png', TMPDIR => 1);
     binmode $self->{'fh'};
 
-    $self->{'width'}  ||= 1024;
-    $self->{'height'} ||= 768;
+    $self->{'width'}      ||= 1024;
+    $self->{'height'}     ||= 768;
+    $self->{'unit_size'} ||= 8;
+
+    die 'Both width and height need to be divisible by unit size'
+        unless ($self->{'width'} % $self->{'unit_size'} == 0) && ($self->{'height'} % $self->{'unit_size'} == 0);
 
     $self->generate_rnd_png;
 
     return $self;
 }
+
+sub fh { shift->{'fh'} }
+
+sub filename { shift->{'filename'} }
+
+sub width { shift->{'width'} }
+
+sub height { shift->{'height'} }
+
+sub unit_size { shift->{'unit_size'} }
 
 sub generate_rnd_png {
     my $self = shift;
@@ -50,15 +48,14 @@ sub generate_rnd_png {
                      color_type => PNG_COLOR_TYPE_RGB});
 
     my @rows;
-    my $repeat_pixel = 8;
-    for(my $h = 0; $h < $self->{'height'} / $repeat_pixel; $h++) {
+    for(my $h = 0; $h < $self->{'height'} / $self->{'unit_size'}; $h++) {
         my @row;
-        for(my $w = 0; $w < $self->{'width'} / $repeat_pixel; $w++) {
+        for(my $w = 0; $w < $self->{'width'} / $self->{'unit_size'}; $w++) {
             my @color = ($rndclr->($h + $w * 3000), $rndclr->($h + $w * 10), $rndclr->($h + $w * 200));
-            push @row, @color for 1 .. $repeat_pixel;
+            push @row, @color for 1 .. $self->{'unit_size'};
         }
         my $len = $self->{'width'} * 3;
-        push @rows, pack("C[$len]", @row) for 1 .. $repeat_pixel;
+        push @rows, pack("C[$len]", @row) for 1 .. $self->{'unit_size'};
     }
 
     $png->set_rows(\@rows);
@@ -72,7 +69,7 @@ sub DESTROY {
     my $self = shift;
 
     # Debug - comment this when you want to see the temp image after the test if over
-    unlink $self->{'filename'};
+    unlink $self->{'filename'} unless $self->{'preserve'};
 }
 
 1;
