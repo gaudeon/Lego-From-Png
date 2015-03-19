@@ -79,7 +79,18 @@ sub block_tally {
 
     return () unless $self->{'filename'}; # No file, no blocks
 
-    my $blocks = [];
+    my @blocks = $self->_png_blocks_of_color;
+
+    return ();
+}
+
+sub _png_blocks_of_color {
+    my $self = shift;
+    my %args = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
+
+    my @blocks;
+
+    return @blocks unless $self->{'filename'}; # No file, no blocks
 
     my $pixel_bytecount = 3;
 
@@ -100,13 +111,15 @@ sub block_tally {
                 $values[ ($self->{'unit_size'} * $pixel_bytecount * $p) + 2 ]
             );
 
-            $blocks->[$y / $self->{'unit_size'}][$p] = {
+            $blocks[$y / $self->{'unit_size'}][$p] = {
                 r => $r,
                 g => $g,
                 b => $b,
             };
         }
     }
+
+    return @blocks;
 }
 
 =pod
@@ -129,20 +142,79 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
 
 =head1 USAGE
 
+=head2 lego_colors
+
+ Usage     : ->lego_colors()
+ Purpose   : Returns lego color constants consolidated as a hash.
+
+ Returns   : Hash ref with color constants keyed by the official color name in key form.
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=cut
+
+
+=head2 png
+
+ Usage     : ->png()
+ Purpose   : Returns Image::PNG::Libpng object.
+
+ Returns   : Returns Image::PNG::Libpng object. See L<Image::PNG::Libpng> for more details.
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=cut
+
+
+=head2 png_info
+
+ Usage     : ->png_info()
+ Purpose   : Returns png IHDR info from the Image::PNG::Libpng object
+
+ Returns   : A hash of values containing information abou the png such as width and height. See get_IHDR in L<Image::PNG::Libpng> for more details.
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=cut
+
+
 =head2 block_tally
 
  Usage     : ->block_tally()
  Purpose   : Convert a provided PNG into a list of lego blocks that will allow building of a two dimensional lego replica.
 
  Returns   : A list of hashes each containing information about a particular lego block such quantity, dimension and color.
- Argument  : Arguments can be passed as a hash or key/value pair list.
-                src_image => The PNG to use
- Throws    : Exceptions are generated if the source image failed to open or could not be processed.
+ Argument  :
+ Throws    :
 
  Comment   :
  See Also  :
 
 =cut
+
+=head2 _png_blocks_of_color
+
+ Usage     : ->_png_blocks_of_color()
+ Purpose   : Convert a provided PNG into a list of rgb values based on [row][color]. Size of blocks are determined by 'unit_size'
+
+ Returns   : A list of array refs (ie a two-dimensional array) of hashs contain r, g and b keys
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=cut
+
 
 
 =head1 BUGS
