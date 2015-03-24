@@ -21,6 +21,8 @@ should_return_correct_width();
 
 should_return_correct_height();
 
+should_return_correct_block_row_width();
+
 done_testing( $tests );
 
 exit;
@@ -50,3 +52,16 @@ sub should_return_correct_height {
 
    $tests++;
 }
+
+sub should_return_correct_block_row_width {
+   my ($width, $height, $unit_size) = ( 1024, 16, 16 );
+
+   my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size });
+
+   my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size });
+
+   cmp_ok($object->block_row_width, '==', $width / $unit_size, 'should return correct block row width');
+
+   $tests++;
+}
+
