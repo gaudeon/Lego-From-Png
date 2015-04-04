@@ -1,6 +1,6 @@
 # -*- perl -*-
 
-# t/when_tallying_blocks.t - Test module's block_tally method
+# t/when_tallying_bricks.t - Test module's brick_tally method
 
 use strict;
 use warnings;
@@ -13,6 +13,10 @@ use Test::PNG;
 
 use Lego::From::PNG;
 
+use Lego::From::PNG::Const qw(:all);
+
+use Data::Debug;
+
 # ----------------------------------------------------------------------
 
 my $tests = 0;
@@ -23,6 +27,8 @@ should_return_the_right_count_of_blocks_of_colors();
 
 should_return_lego_colors_approximated_from_a_list_containing_blocks_of_colors();
 
+should_return_a_list_of_lego_bricks_per_row_of_png();
+
 done_testing( $tests );
 
 exit;
@@ -32,9 +38,9 @@ exit;
 sub should_return_empty_list_with_no_params {
     my $object = Lego::From::PNG->new();
 
-    my @result = $object->block_tally();
+    my $result = $object->brick_tally();
 
-    is_deeply(\@result, [ ], "Empty list returned");
+    is_deeply($result, { bricks => {}, plan => [] }, "Empty list returned");
 
     $tests++;
 }
@@ -91,3 +97,60 @@ sub should_return_lego_colors_approximated_from_a_list_containing_blocks_of_colo
     }
 }
 
+sub should_return_a_list_of_lego_bricks_per_row_of_png {
+    my ($brick_width, $max_brick_width, $unit_size) = (1, 8, 16);
+
+    for( $brick_width .. $max_brick_width) {
+        my ($width, $height) = ($brick_width * $unit_size, $unit_size);
+
+        # Pick a random lego color to test this part
+        my $color = do {
+            my @color_list = LEGO_COLORS;
+            my $num_lego_colors = scalar( @color_list );
+            $color_list[ int(rand() * $num_lego_colors) ];
+        };
+        my $color_rgb = do {
+            my ($r, $g, $b) = ($color . '_RGB_COLOR_RED', $color . '_RGB_COLOR_GREEN', $color . '_RGB_COLOR_BLUE');
+            [ Lego::From::PNG::Const->$r, Lego::From::PNG::Const->$g, Lego::From::PNG::Const->$b ];
+        };
+
+        my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
+
+        my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size });
+
+        my @blocks = $object->_png_blocks_of_color();
+
+        my $num_block_colors = do {
+            my %colors;
+            $colors{ join('_', $_->{'r'}, $_->{'g'}, $_->{'b'}) } = 1 for @blocks;
+            scalar(keys %colors);
+        };
+
+        cmp_ok($num_block_colors, '==', 1, 'Only one color was used to generate blocks');
+        $tests++;
+
+        is_deeply($blocks[0], {
+            r => $object->lego_colors->{ $color }->{'rgb_color'}->[0],
+            g => $object->lego_colors->{ $color }->{'rgb_color'}->[1],
+            b => $object->lego_colors->{ $color }->{'rgb_color'}->[2],
+        }, 'The color we randomly chose is being used');
+        $tests++;
+
+        my @units = $object->_approximate_lego_colors(blocks => \@blocks);
+
+        my @bricks = $object->_generate_brick_list(units => \@units);
+
+        is_deeply($bricks[0], {
+            width  => $brick_width,
+            height => 1,
+            color  => $color,
+            id     => join('*', $color, $brick_width, 1),
+            y      => 0,
+        }, 'Brick returned is the correct dimensions and color');
+        $tests++;
+
+debug($object->brick_tally());
+
+        $brick_width++; # Increase the brick with to test the next brick size
+    }
+}

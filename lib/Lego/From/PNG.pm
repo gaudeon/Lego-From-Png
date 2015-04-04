@@ -32,7 +32,7 @@ sub lego_colors {
         my $hash = {};
 
         for my $color ( LEGO_COLORS ) {
-            my ($cn_key, $hex_key, $r_key, $b_key, $g_key) = (
+            my ($cn_key, $hex_key, $r_key, $g_key, $b_key) = (
                 $color . '_COMMON_NAME',
                 $color . '_HEX_COLOR',
                 $color . '_RGB_COLOR_RED',
@@ -80,15 +80,42 @@ sub block_row_width {
     return $self->{'block_row_width'} ||= $self->png_info->{'width'} / $self->{'unit_size'};
 }
 
-sub block_tally {
+sub brick_tally {
     my $self = shift;
     my %args = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
 
-    return () unless $self->{'filename'}; # No file, no blocks
+    my $tally = {
+        bricks => {},
+        plan   => [],
+    };
+
+    return $tally unless $self->{'filename'}; # No file, no bricks
 
     my @blocks = $self->_png_blocks_of_color;
 
-    return ();
+    my @units = $self->_approximate_lego_colors( blocks => \@blocks );
+
+    my @bricks = $self->_generate_brick_list(units => \@units);
+
+    $tally->{'plan'} = \@bricks;
+
+    my %list;
+    for my $brick(@bricks) {
+        if(! exists $list{ $brick->{'id'} }) {
+            $list{ $brick->{'id'} } = { %$brick };
+
+            delete $list{ $brick->{'id'} }{'y'}; # No need for the y axis field in the brick list
+
+            $list{ $brick->{'id'} }{'quantity'} = 1;
+        }
+        else {
+            $list{ $brick->{'id'} }{'quantity'}++;
+        }
+    }
+
+    $tally->{'bricks'} = \%list;
+
+    return $tally;
 }
 
 sub _png_blocks_of_color {
@@ -146,9 +173,9 @@ sub _approximate_lego_colors {
                 map  {
                     +{
                         cid => $_->{ 'cid' },
-                        score => abs($block->{ 'r' } - $_->{ 'rgb_color' }[0]
-                               + $block->{ 'g' } - $_->{ 'rgb_color' }[1]
-                               + $block->{ 'b' } - $_->{ 'rgb_color' }[2]),
+                        score => abs($block->{ 'r' } - $_->{ 'rgb_color' }[0])
+                               + abs($block->{ 'g' } - $_->{ 'rgb_color' }[1])
+                               + abs($block->{ 'b' } - $_->{ 'rgb_color' }[2]),
                     };
                 }
                 values %{ $self->lego_colors }
@@ -158,6 +185,51 @@ sub _approximate_lego_colors {
     }
 
     return @colors;
+}
+
+sub _generate_brick_list {
+    my $self = shift;
+    my %args = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
+
+    die 'units not valid' unless $args{'units'} && ref($args{'units'}) eq 'ARRAY';
+
+    my @units = @{ $args{'units'} };
+    my $row_width = $self->block_row_width;
+    my $brick_height = 1; # bricks are only one unit high
+    my @brick_list;
+
+    for(my $y = 0; $y < (scalar(@units) / $row_width); $y++) {
+        my @row = splice @units, 0, $row_width;
+
+        my $next_brick_color = '';
+        my $next_brick_width = 0;
+
+        my $push_color = sub {
+           if($next_brick_color) {
+                push @brick_list, {
+                    y      => $y,
+                    width  => $next_brick_width,
+                    height => $brick_height,
+                    color  => $next_brick_color,
+                    id     => join('*', $next_brick_color, $next_brick_width, $brick_height),
+                };
+            }
+        };
+
+        for my $color(@row) {
+            if($color ne $next_brick_color) {
+                $push_color->();
+                $next_brick_color = $color;
+                $next_brick_width = 0;
+            }
+
+            $next_brick_width++;
+        }
+
+        $push_color->(); # Push the last color found
+    }
+
+    return @brick_list;
 }
 
 =pod
@@ -172,13 +244,25 @@ Lego::From::PNG - Convert PNGs into plans to build a two dimensional lego replic
 
   my $object = Lego::From::PNG;
 
-  $object->block_tally();
+  $object->brick_tally();
 
 =head1 DESCRIPTION
 
 Convert a PNG into a block list and plans to build a two dimensional replica of the PNG.
 
 =head1 USAGE
+
+=head2 new
+
+ Usage     : ->new()
+ Purpose   : Returns Lego::From::PNG object
+
+ Returns   : Lego::From::PNG object
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
 
 =head2 lego_colors
 
@@ -210,7 +294,8 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
  Purpose   : Returns png IHDR info from the Image::PNG::Libpng object
 
  Returns   : A hash of values containing information abou the png such as width and height. See get_IHDR in L<Image::PNG::Libpng> for more details.
- Argument  :
+ Argument  : filename  => the PNG to load and part
+             unit_size => the pixel width and height of one unit, blocks are generally identified as Nx1 blocks where N is the number of units of the same color
  Throws    :
 
  Comment   :
@@ -228,12 +313,13 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
  Comment   :
  See Also  :
 
-=head2 block_tally
+=head2 brick_tally
 
- Usage     : ->block_tally()
+ Usage     : ->brick_tally()
  Purpose   : Convert a provided PNG into a list of lego blocks that will allow building of a two dimensional lego replica.
 
- Returns   : A list of hashes each containing information about a particular lego block such quantity, dimension and color.
+ Returns   : Hashref containing information about particular lego bricks found to be needed based on the provided PNG.
+             Also included is the build order for those bricks.
  Argument  :
  Throws    :
 
@@ -263,6 +349,19 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
 
  Comment   :
  See Also  :
+
+=head2 _generate_brick_list
+
+ Usage     : ->_approximate_lego_colors()
+ Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
+
+ Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
 
 
 

@@ -3,6 +3,7 @@ package Test::PNG;
 use File::Temp qw(tempfile);
 use Image::PNG::Libpng qw(:all);
 use Image::PNG::Const qw(:all);
+use Data::Debug;
 
 sub new {
     my $class = shift;
@@ -15,7 +16,8 @@ sub new {
 
     $self->{'width'}      ||= 1024;
     $self->{'height'}     ||= 768;
-    $self->{'unit_size'} ||= 8;
+    $self->{'unit_size'}  ||= 8;
+    $self->{'color'}      ||= [];
 
     die 'Both width and height need to be divisible by unit size'
         unless ($self->{'width'} % $self->{'unit_size'} == 0) && ($self->{'height'} % $self->{'unit_size'} == 0);
@@ -51,7 +53,9 @@ sub generate_rnd_png {
     for(my $h = 0; $h < $self->{'height'} / $self->{'unit_size'}; $h++) {
         my @row;
         for(my $w = 0; $w < $self->{'width'} / $self->{'unit_size'}; $w++) {
-            my @color = ($rndclr->($h + $w * 3000), $rndclr->($h + $w * 10), $rndclr->($h + $w * 200));
+            my @color = (ref $self->{'color'} eq 'ARRAY' && scalar @{$self->{'color'}} == 3)
+                ? @{$self->{'color'}}
+                : ($rndclr->($h + $w * 3000), $rndclr->($h + $w * 10), $rndclr->($h + $w * 200));
             push @row, @color for 1 .. $self->{'unit_size'};
         }
         my $len = $self->{'width'} * 3;
