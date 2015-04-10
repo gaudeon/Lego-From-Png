@@ -11,9 +11,9 @@ use Test::More;
 
 my $tests = 0;
 
-should_use_module();
+should_use_modules();
 
-should_require_module();
+should_require_modules();
 
 should_be_the_module_we_asked_for();
 
@@ -23,16 +23,22 @@ exit;
 
 # ----------------------------------------------------------------------
 
-sub should_use_module {
+sub should_use_modules {
    use_ok( 'Lego::From::PNG' );
+   use_ok( 'Lego::From::PNG::Const' );
+   use_ok( 'Lego::From::PNG::View' );
+   use_ok( 'Lego::From::PNG::View::JSON' );
 
-   $tests++;
+   $tests += 4;
 }
 
-sub should_require_module {
+sub should_require_modules {
    require_ok( 'Lego::From::PNG' );
+   require_ok( 'Lego::From::PNG::Const' );
+   require_ok( 'Lego::From::PNG::View' );
+   require_ok( 'Lego::From::PNG::View::JSON' );
 
-   $tests++;
+   $tests += 4;
 }
 
 sub should_be_the_module_we_asked_for {

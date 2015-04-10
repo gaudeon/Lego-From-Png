@@ -8,6 +8,8 @@ use Image::PNG::Const qw(:all);
 
 use Lego::From::PNG::Const qw(:all);
 
+use Lego::From::PNG::View::JSON;
+
 use Data::Debug;
 
 sub new {
@@ -80,7 +82,7 @@ sub block_row_width {
     return $self->{'block_row_width'} ||= $self->png_info->{'width'} / $self->{'unit_size'};
 }
 
-sub brick_tally {
+sub process {
     my $self = shift;
     my %args = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
 
@@ -89,31 +91,45 @@ sub brick_tally {
         plan   => [],
     };
 
-    return $tally unless $self->{'filename'}; # No file, no bricks
+    if($self->{'filename'}) {
+        my @blocks = $self->_png_blocks_of_color;
 
-    my @blocks = $self->_png_blocks_of_color;
+        my @units = $self->_approximate_lego_colors( blocks => \@blocks );
 
-    my @units = $self->_approximate_lego_colors( blocks => \@blocks );
+        my @bricks = $self->_generate_brick_list(units => \@units);
 
-    my @bricks = $self->_generate_brick_list(units => \@units);
+        $tally->{'plan'} = \@bricks;
 
-    $tally->{'plan'} = \@bricks;
+        my %list;
+        for my $brick(@bricks) {
+            if(! exists $list{ $brick->{'id'} }) {
+                $list{ $brick->{'id'} } = { %$brick };
 
-    my %list;
-    for my $brick(@bricks) {
-        if(! exists $list{ $brick->{'id'} }) {
-            $list{ $brick->{'id'} } = { %$brick };
+                delete $list{ $brick->{'id'} }{'y'}; # No need for the y axis field in the brick list
 
-            delete $list{ $brick->{'id'} }{'y'}; # No need for the y axis field in the brick list
-
-            $list{ $brick->{'id'} }{'quantity'} = 1;
+                $list{ $brick->{'id'} }{'quantity'} = 1;
+            }
+            else {
+                $list{ $brick->{'id'} }{'quantity'}++;
+            }
         }
-        else {
-            $list{ $brick->{'id'} }{'quantity'}++;
-        }
+
+        $tally->{'bricks'} = \%list;
     }
 
-    $tally->{'bricks'} = \%list;
+    if($args{'view'}) {
+        my $view   = $args{'view'};
+        my $module = "Lego::From::PNG::View::$view";
+
+        $tally = eval {
+            (my $file = $module) =~ s|::|/|g;
+            require $file . '.pm';
+
+            $module->new->print($tally);
+        };
+
+        die "Failed to format as a view ($view). $@" if $@;
+    }
 
     return $tally;
 }
@@ -313,14 +329,14 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
  Comment   :
  See Also  :
 
-=head2 brick_tally
+=head2 process
 
- Usage     : ->brick_tally()
+ Usage     : ->process()
  Purpose   : Convert a provided PNG into a list of lego blocks that will allow building of a two dimensional lego replica.
 
  Returns   : Hashref containing information about particular lego bricks found to be needed based on the provided PNG.
              Also included is the build order for those bricks.
- Argument  :
+ Argument  : view => 'a view' - optionally format the return data. options include: JSON and HTML
  Throws    :
 
  Comment   :

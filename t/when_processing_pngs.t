@@ -1,6 +1,6 @@
 # -*- perl -*-
 
-# t/when_tallying_bricks.t - Test module's brick_tally method
+# t/when_processing_pngs.t - Test aspects of module's process method
 
 use strict;
 use warnings;
@@ -38,7 +38,7 @@ exit;
 sub should_return_empty_list_with_no_params {
     my $object = Lego::From::PNG->new();
 
-    my $result = $object->brick_tally();
+    my $result = $object->process();
 
     is_deeply($result, { bricks => {}, plan => [] }, "Empty list returned");
 
@@ -148,8 +148,6 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
             y      => 0,
         }, 'Brick returned is the correct dimensions and color');
         $tests++;
-
-debug($object->brick_tally());
 
         $brick_width++; # Increase the brick with to test the next brick size
     }
