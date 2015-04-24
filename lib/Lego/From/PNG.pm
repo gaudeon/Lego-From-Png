@@ -20,7 +20,9 @@ sub new {
 
     $hash->{'filename'} = $args{'filename'};
 
-    $hash->{'unit_size'} = $args{'unit_size'} || 8;
+    $hash->{'unit_size'} = $args{'unit_size'} || 1;
+
+    $hash->{'max_brick_width'} = $args{'max_brick_width'} || 4;
 
     my $self = bless ($hash, ref ($class) || $class);
 
@@ -233,7 +235,7 @@ sub _generate_brick_list {
         };
 
         for my $color(@row) {
-            if($color ne $next_brick_color) {
+            if($color ne $next_brick_color || $next_brick_width >= $self->{'max_brick_width'} ) {
                 $push_color->();
                 $next_brick_color = $color;
                 $next_brick_width = 0;

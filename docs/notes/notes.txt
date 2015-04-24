@@ -42,3 +42,5 @@ TDD
 4. Run tests
 5. Refactor code and Document
 Repeat
+
+Brick Dimension Mapping - depth x length x height

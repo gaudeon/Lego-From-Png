@@ -116,7 +116,7 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
 
         my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
 
-        my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size });
+        my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, max_brick_width => $brick_width });
 
         my @blocks = $object->_png_blocks_of_color();
 
