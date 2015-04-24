@@ -22,7 +22,7 @@ sub new {
 
     $hash->{'unit_size'} = $args{'unit_size'} || 1;
 
-    $hash->{'max_brick_width'} = $args{'max_brick_width'} || 4;
+    $hash->{'max_brick_length'} = $args{'max_brick_length'} || 4;
 
     my $self = bless ($hash, ref ($class) || $class);
 
@@ -220,28 +220,28 @@ sub _generate_brick_list {
         my @row = splice @units, 0, $row_width;
 
         my $next_brick_color = '';
-        my $next_brick_width = 0;
+        my $next_brick_length = 0;
 
         my $push_color = sub {
            if($next_brick_color) {
                 push @brick_list, {
                     y      => $y,
-                    width  => $next_brick_width,
+                    length => $next_brick_length,
                     height => $brick_height,
                     color  => $next_brick_color,
-                    id     => join('*', $next_brick_color, $next_brick_width, $brick_height),
+                    id     => join('*', $next_brick_color, $next_brick_length, $brick_height),
                 };
             }
         };
 
         for my $color(@row) {
-            if($color ne $next_brick_color || $next_brick_width >= $self->{'max_brick_width'} ) {
+            if($color ne $next_brick_color || $next_brick_length >= $self->{'max_brick_length'} ) {
                 $push_color->();
                 $next_brick_color = $color;
-                $next_brick_width = 0;
+                $next_brick_length = 0;
             }
 
-            $next_brick_width++;
+            $next_brick_length++;
         }
 
         $push_color->(); # Push the last color found

@@ -98,10 +98,10 @@ sub should_return_lego_colors_approximated_from_a_list_containing_blocks_of_colo
 }
 
 sub should_return_a_list_of_lego_bricks_per_row_of_png {
-    my ($brick_width, $max_brick_width, $unit_size) = (1, 8, 16);
+    my ($brick_length, $max_brick_length, $unit_size) = (1, 8, 16);
 
-    for( $brick_width .. $max_brick_width) {
-        my ($width, $height) = ($brick_width * $unit_size, $unit_size);
+    for( $brick_length .. $max_brick_length) {
+        my ($width, $height) = ($brick_length * $unit_size, $unit_size);
 
         # Pick a random lego color to test this part
         my $color = do {
@@ -116,7 +116,7 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
 
         my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
 
-        my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, max_brick_width => $brick_width });
+        my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, max_brick_length => $brick_length });
 
         my @blocks = $object->_png_blocks_of_color();
 
@@ -141,14 +141,14 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
         my @bricks = $object->_generate_brick_list(units => \@units);
 
         is_deeply($bricks[0], {
-            width  => $brick_width,
+            length  => $brick_length,
             height => 1,
             color  => $color,
-            id     => join('*', $color, $brick_width, 1),
+            id     => join('*', $color, $brick_length, 1),
             y      => 0,
         }, 'Brick returned is the correct dimensions and color');
         $tests++;
 
-        $brick_width++; # Increase the brick with to test the next brick size
+        $brick_length++; # Increase the brick with to test the next brick size
     }
 }

@@ -52,7 +52,7 @@ sub should_return_properly_formatted_JSON {
             height => 1,
             id => "${color}*1*1",
             quantity => 1,
-            width => 1
+            length => 1
             }
         },
         plan => [
@@ -60,7 +60,7 @@ sub should_return_properly_formatted_JSON {
                 color => $color,
                 height => 1,
                 id => "${color}*1*1",
-                width => 1,
+                length => 1,
                 y => 0
             }
         ]
