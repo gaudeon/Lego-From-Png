@@ -8,6 +8,8 @@ use Image::PNG::Const qw(:all);
 
 use Lego::From::PNG::Const qw(:all);
 
+use Lego::From::PNG::Brick;
+
 use Lego::From::PNG::View::JSON;
 
 use Data::Debug;
@@ -23,6 +25,11 @@ sub new {
     $hash->{'unit_size'} = $args{'unit_size'} || 1;
 
     $hash->{'max_brick_length'} = $args{'max_brick_length'} || 4;
+
+    # Brick depth and height defaults
+    $hash->{'brick_depth'} = 1;
+
+    $hash->{'brick_height'} = 1;
 
     my $self = bless ($hash, ref ($class) || $class);
 
@@ -56,6 +63,24 @@ sub lego_colors {
                     Lego::From::PNG::Const->$b_key,
                 ],
             };
+        }
+
+        $hash;
+    };
+}
+
+sub lego_bricks {
+    my $self = shift;
+
+    return $self->{'lego_bricks'} ||= do {
+        my $hash = {};
+
+        for my $color ( LEGO_COLORS ) {
+            for my $length ( LEGO_BRICK_LENGTHS ) {
+                my $brick = Lego::From::PNG::Brick->new( color => $color, length => $length );
+
+                $hash->{ $brick->identifier } = $brick;
+            }
         }
 
         $hash;
@@ -293,6 +318,20 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
 
  Comment   :
  See Also  :
+
+=head2 lego_bricks
+
+ Usage     : ->lego_bricks()
+ Purpose   : Returns a list of all possible lego bricks
+
+ Returns   : Hash ref with L<Lego::From::PNG::Brick> objects keyed by their identifier
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+
 
 =head2 png
 

@@ -1,5 +1,7 @@
 467 Total Bricks
 
+NOTE: the way the dimensions are displayed are incorrect in this one - it is represented as length x depth when it should be depth x length x height to follow lego standards
+
 Shopping List
 -------------------------------------------------------------------------
 Dark Brown 1 x 1 - 7 bricks

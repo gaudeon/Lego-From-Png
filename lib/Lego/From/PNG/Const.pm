@@ -4,6 +4,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
     LEGO_COLORS
+    LEGO_BRICK_LENGTHS
     BLACK_COMMON_NAME
     BLACK_HEX_COLOR
     BLACK_RGB_COLOR_RED
@@ -219,6 +220,18 @@ use constant LEGO_COLORS => qw(
     SAND_GREEN
     SAND_YELLOW
     WHITE
+);
+
+use constant LEGO_BRICK_LENGTHS => qw(
+    1
+    2
+    3
+    4
+    6
+    8
+    10
+    12
+    16
 );
 
 use constant {

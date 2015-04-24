@@ -25,20 +25,22 @@ exit;
 
 sub should_use_modules {
    use_ok( 'Lego::From::PNG' );
+   use_ok( 'Lego::From::PNG::Brick' );
    use_ok( 'Lego::From::PNG::Const' );
    use_ok( 'Lego::From::PNG::View' );
    use_ok( 'Lego::From::PNG::View::JSON' );
 
-   $tests += 4;
+   $tests += 5;
 }
 
 sub should_require_modules {
    require_ok( 'Lego::From::PNG' );
+   require_ok( 'Lego::From::PNG::Brick' );
    require_ok( 'Lego::From::PNG::Const' );
    require_ok( 'Lego::From::PNG::View' );
    require_ok( 'Lego::From::PNG::View::JSON' );
 
-   $tests += 4;
+   $tests += 5;
 }
 
 sub should_be_the_module_we_asked_for {

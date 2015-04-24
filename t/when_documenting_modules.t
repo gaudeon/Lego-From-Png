@@ -23,10 +23,11 @@ sub should_have_good_pod_coverage {
     eval "use Test::Pod::Coverage";
 
     SKIP: {
-        $tests += 4;
+        $tests += 5;
 
         skip "Test::Pod::Coverage required for testing pod coverage", 1 if $@;
         pod_coverage_ok( "Lego::From::PNG");
+        pod_coverage_ok( "Lego::From::PNG::Brick");
         pod_coverage_ok( "Lego::From::PNG::Const");
         pod_coverage_ok( "Lego::From::PNG::View");
         pod_coverage_ok( "Lego::From::PNG::View::JSON");
