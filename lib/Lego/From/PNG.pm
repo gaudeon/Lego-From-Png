@@ -24,12 +24,16 @@ sub new {
 
     $hash->{'unit_size'} = $args{'unit_size'} || 1;
 
-    $hash->{'max_brick_length'} = $args{'max_brick_length'} || 4;
-
     # Brick depth and height defaults
     $hash->{'brick_depth'} = 1;
 
     $hash->{'brick_height'} = 1;
+
+    # White list default
+    $hash->{'whitelist'} = ($args{'whitelist'} && ref($args{'whitelist'}) eq 'ARRAY' && scalar(@{$args{'whitelist'}}) > 0) ? $args{'whitelist'} : undef;
+
+    # Black list default
+    $hash->{'blacklist'} = ($args{'blacklist'} && ref($args{'blacklist'}) eq 'ARRAY' && scalar(@{$args{'blacklist'}}) > 0) ? $args{'blacklist'} : undef;
 
     my $self = bless ($hash, ref ($class) || $class);
 
@@ -224,7 +228,17 @@ sub _approximate_lego_colors {
                 values %{ $self->lego_colors }
             ;
 
-        push @colors, $optimal_color[0]; # first color in list should be the optimal color for tested block
+        my ($optimal_color) = grep {
+            my $choose_this_color = 1;
+
+            $choose_this_color = 0 if ! $self->color_is_whitelisted( $_ );
+
+            $choose_this_color = 0 if $self->color_is_blacklisted( $_ );
+
+            $choose_this_color; # return result
+        } @optimal_color;
+
+        push @colors, $optimal_color; # first color in list that passes whitelist and blacklist should be the optimal color for tested block
     }
 
     return @colors;
@@ -244,15 +258,14 @@ sub _generate_brick_list {
     for(my $y = 0; $y < (scalar(@units) / $row_width); $y++) {
         my @row = splice @units, 0, $row_width;
 
-        my $next_brick_color = '';
-        my $next_brick_length = 0;
-
         my $push_color = sub {
-           if($next_brick_color) {
+           my ($color, $length) = @_;
+
+           if($color) {
                 push @brick_list, Lego::From::PNG::Brick->new(
-                    color  => $next_brick_color,
+                    color  => $color,
                     depth  => $self->{'brick_depth'},
-                    length => $next_brick_length,
+                    length => $length,
                     height => $self->{'brick_height'},
                     meta   => {
                         y => $y,
@@ -261,9 +274,42 @@ sub _generate_brick_list {
             }
         };
 
+        my $process_color_sample = sub {
+            my ($color, $length) = @_;
+
+            return if $length <= 0;
+
+            # Now make sure we find bricks we are allowed to use
+            FIND_BRICKS: {
+                for( 1 .. $length) { # Only need to loop at least the number of times equal to the length of color found
+                    my $valid_length = $length;
+                    FIND_VALID_LENGTH: {
+                        for(;$valid_length > 0;$valid_length--) {
+                            my $dim = join('x',$self->{'brick_depth'},$valid_length,$self->{'brick_height'});
+
+                            next FIND_VALID_LENGTH if $self->dimension_is_blacklisted($dim);
+                            last FIND_VALID_LENGTH if $self->dimension_is_whitelisted($dim);
+                        }
+                    }
+
+                    $push_color->($color, $valid_length);
+                    $length -= $valid_length;
+
+                    last FIND_BRICKS if $length <= 0; # No need to push more bricks, we found them all
+                }
+            }
+
+            die "No valid bricks found for remaining units of color" if $length > 0; # Catch if we have gremlins in our whitelist/blacklist
+        };
+
+        # Run through rows and process colors
+        my $next_brick_color = '';
+        my $next_brick_length = 0;
+
         for my $color(@row) {
-            if($color ne $next_brick_color || $next_brick_length >= $self->{'max_brick_length'} ) {
-                $push_color->();
+            if( $color ne $next_brick_color ) {
+                $process_color_sample->($next_brick_color, $next_brick_length);
+
                 $next_brick_color = $color;
                 $next_brick_length = 0;
             }
@@ -271,11 +317,111 @@ sub _generate_brick_list {
             $next_brick_length++;
         }
 
-        $push_color->(); # Push the last color found
+        $process_color_sample->($next_brick_color, $next_brick_length); # Process last color found
     }
 
     return @brick_list;
 }
+
+sub whitelist { shift->{'whitelist'} }
+
+sub has_whitelist_with_colors {
+    my $self = shift;
+
+    return scalar( grep { /^[a-z]/i } @{ $self->whitelist || [] } );
+}
+
+sub has_whitelist_with_dimensions {
+    my $self = shift;
+
+    return scalar( grep { /^\d+x\d+x\d+$/i } @{ $self->whitelist || [] } );
+}
+
+sub color_is_whitelisted {
+    my $self = shift;
+    my $cid  = uc(shift);
+
+    return 1 if ! $self->has_whitelist_with_colors; # return true if there is no whitelist, meaning all colors could be whitelisted
+
+    for my $entry( @{ $self->whitelist || [] } ) {
+        next unless $entry =~ /^[a-z]/i; # If there is at least a letter at the beginning then this entry has a color we can check
+
+        my ($color) = split('_', $entry); # Entries can be either a color, a block identifier or just block dimensions so just get the color
+        $color = uc($color);
+
+        return 1 if $cid eq $color;
+    }
+
+    return 0; # Color is not in whitelist
+}
+
+sub dimension_is_whitelisted {
+    my $self = shift;
+    my $dim  = lc(shift);
+
+    return 1 if ! $self->has_whitelist_with_dimensions; # return true if there is no whitelist, meaning all dimensions could be whitelisted
+
+    for my $entry( @{ $self->whitelist || [] } ) {
+        next unless $entry =~ /^\d+x\d+x\d+$/i; # ignore anthing but dimensions
+
+        $entry = lc($entry);
+
+        return 1 if $dim eq $entry;
+    }
+
+    return 0; # Dimension is not in whitelist
+}
+
+sub blacklist { shift->{'blacklist'} }
+
+sub has_blacklist_with_colors {
+    my $self = shift;
+
+    return scalar( grep { /^[a-z]/i } @{ $self->blacklist || [] } );
+}
+
+sub has_blacklist_with_dimensions {
+    my $self = shift;
+
+    return scalar( grep { /^\d+x\d+x\d+$/i } @{ $self->blacklist || [] } );
+}
+
+sub color_is_blacklisted {
+    my $self = shift;
+    my $cid  = shift;
+
+    return 0 if ! $self->has_blacklist_with_colors; # return false if there is no blacklist, meaning no color is blacklisted
+
+    for my $entry( @{ $self->blacklist || [] } ) {
+        next unless $entry =~ /^[a-z]/i; # If there is at least a letter at the beginning then this entry has a color we can check
+
+        my ($color) = split('_', $entry); # Entries can be either a color, a block identifier or just block dimensions so just get the color
+        $color = uc($color);
+
+        return 1 if $cid eq $color;
+    }
+
+    return 0; # Color is not in blacklist
+}
+
+sub dimension_is_blacklisted {
+    my $self = shift;
+    my $dim  = lc(shift);
+
+    return 0 if ! $self->has_blacklist_with_dimensions; # return true if there is no blacklist, meaning all dimensions could be blacklisted
+
+    for my $entry( @{ $self->blacklist || [] } ) {
+        next unless $entry =~ /^\d+x\d+x\d+$/i; # ignore anthing but dimensions
+
+        $entry = lc($entry);
+
+        return 1 if $dim eq $entry;
+    }
+
+    return 0; # Dimension is not in blacklist
+}
+
+
 
 =pod
 
@@ -332,8 +478,6 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
 
  Comment   :
  See Also  :
-
-
 
 =head2 png
 
@@ -421,8 +565,125 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
  Comment   :
  See Also  :
 
+=head2 whitelist
 
+ Usage     : ->whitelist()
+ Purpose   : return any whitelist settings stored in this object
 
+ Returns   : an arrayref of whitelisted colors and/or blocks, or undef
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 has_whitelist_with_colors
+
+ Usage     : ->has_whitelist_with_colors()
+ Purpose   : return a true value if there is a whitelist with at least one color in it, otherwise a false value is returned
+
+ Returns   : 1 or 0
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 has_whitelist_with_dimensions
+
+ Usage     : ->has_whitelist_with_dimensions()
+ Purpose   : return a true value if there is a whitelist with at least one dimension measurement in it, otherwise a false value is returned
+
+ Returns   : 1 or 0
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 color_is_whitelisted
+
+ Usage     : ->color_is_whitelisted($color_id)
+ Purpose   : return a true value if the color is whitelisted, otherwise a false value is returned
+
+ Returns   : 1 or 0
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 dimension_is_whitelisted
+
+ Usage     : ->dimension_is_whitelisted($dimension)
+ Purpose   : return a true value if the dimension is whitelisted, otherwise a false value is returned
+
+ Returns   : 1 or 0
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 blacklist
+
+ Usage     : ->blacklist
+ Purpose   : return any blacklist settings stored in this object
+
+ Returns   : an arrayref of blacklisted colors and/or blocks, or undef
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 has_blacklist_with_colors
+
+ Usage     : ->has_blacklist_with_colors()
+ Purpose   : return a true value if there is a blacklist, otherwise a false value is returned
+
+ Returns   : 1 or 0
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 has_blacklist_with_dimensions
+
+ Usage     : ->has_blacklist_with_dimensions()
+ Purpose   : return a true value if there is a blacklist with at least one dimension measurement in it, otherwise a false value is returned
+
+ Returns   : 1 or 0
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 color_is_blacklisted
+
+ Usage     : ->color_is_blacklisted($color_id)
+ Purpose   : return a true value if the color is blacklisted, otherwise a false value is returned
+
+ Returns   : 1 or 0
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 dimension_is_blacklisted
+
+ Usage     : ->dimension_is_blacklisted($dimension)
+ Purpose   : return a true value if the dimension is blacklisted, otherwise a false value is returned
+
+ Returns   : 1 or 0
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
 
 =head1 BUGS
 

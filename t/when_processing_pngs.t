@@ -29,6 +29,10 @@ should_return_lego_colors_approximated_from_a_list_containing_blocks_of_colors()
 
 should_return_a_list_of_lego_bricks_per_row_of_png();
 
+should_only_return_bricks_in_the_list_that_are_whitelisted_by_color();
+
+should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimension();
+
 done_testing( $tests );
 
 exit;
@@ -116,7 +120,7 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
 
         my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
 
-        my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, max_brick_length => $brick_length });
+        my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size });
 
         my @blocks = $object->_png_blocks_of_color();
 
@@ -154,4 +158,94 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
         }, "Brick returned is the correct dimensions and color for brick of length $brick_length");
         $tests++;
     }
+}
+
+
+sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color {
+    my $unit_size = 16;
+
+    my $brick_length = 4;
+
+    my ($width, $height) = ($brick_length * $unit_size, $unit_size);
+
+    # Pick a random lego color to test this part
+    my $starting_color    = 'WHITE';
+    my $whitelisted_color = 'BLACK';
+    my $color_rgb = do {
+        my ($r, $g, $b) = ($starting_color . '_RGB_COLOR_RED', $starting_color . '_RGB_COLOR_GREEN', $starting_color . '_RGB_COLOR_BLUE');
+        [ Lego::From::PNG::Const->$r, Lego::From::PNG::Const->$g, Lego::From::PNG::Const->$b ];
+    };
+
+    my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
+
+    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, whitelist => [ $whitelisted_color ] });
+
+    my $result = $object->process();
+
+    my $expected = {
+        color => $whitelisted_color,
+        depth => 1,
+        height => 1,
+        id => "${whitelisted_color}_1x${brick_length}x1",
+        length => $brick_length,
+        meta => {
+            y => 0
+        },
+    };
+
+    is_deeply($result->{'plan'}[0], $expected, "Brick generated is of the whitelisted color we chose");
+
+    $tests++;
+}
+
+sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimension {
+    my $unit_size = 16;
+
+    my $brick_length = 4;
+
+    my ($width, $height) = ($brick_length * $unit_size, $unit_size);
+
+    # Pick a random lego color to test this part
+    my $color = do {
+        my @color_list = LEGO_COLORS;
+        my $num_lego_colors = scalar( @color_list );
+        $color_list[ int(rand() * $num_lego_colors) ];
+    };
+    my $color_rgb = do {
+        my ($r, $g, $b) = ($color . '_RGB_COLOR_RED', $color . '_RGB_COLOR_GREEN', $color . '_RGB_COLOR_BLUE');
+        [ Lego::From::PNG::Const->$r, Lego::From::PNG::Const->$g, Lego::From::PNG::Const->$b ];
+    };
+
+    my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
+
+    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, whitelist => [ '1x3x1', '1x2x1', '1x1x1' ] });
+
+    my $result = $object->process();
+
+    my $expected = [
+        {
+            color => $color,
+            depth => 1,
+            height => 1,
+            id => "${color}_1x3x1",
+            length => 3,
+            meta => {
+                y => 0
+            },
+        },
+        {
+            color => $color,
+            depth => 1,
+            height => 1,
+            id => "${color}_1x1x1",
+            length => 1,
+            meta => {
+                y => 0
+            },
+        },
+    ];
+
+    is_deeply($result->{'plan'}, $expected, "Bricks generated are of the whitelisted bricks we chose");
+
+    $tests++;
 }
