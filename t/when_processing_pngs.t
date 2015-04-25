@@ -140,12 +140,14 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
 
         my @bricks = $object->_generate_brick_list(units => \@units);
 
-        is_deeply($bricks[0], {
-            length  => $brick_length,
+        is_deeply($bricks[0]->flatten, {
+            length => $brick_length,
             height => 1,
+            depth  => 1,
             color  => $color,
-            id     => join('*', $color, $brick_length, 1),
-            y      => 0,
+            meta   => {
+                y => 0,
+            },
         }, 'Brick returned is the correct dimensions and color');
         $tests++;
 

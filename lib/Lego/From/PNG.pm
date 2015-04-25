@@ -249,13 +249,15 @@ sub _generate_brick_list {
 
         my $push_color = sub {
            if($next_brick_color) {
-                push @brick_list, {
-                    y      => $y,
-                    length => $next_brick_length,
-                    height => $brick_height,
+                push @brick_list, Lego::From::PNG::Brick->new(
                     color  => $next_brick_color,
-                    id     => join('*', $next_brick_color, $next_brick_length, $brick_height),
-                };
+                    depth  => $self->{'brick_depth'},
+                    length => $next_brick_length,
+                    height => $self->{'brick_height'},
+                    meta   => {
+                        y => $y,
+                    },
+                );
             }
         };
 

@@ -109,6 +109,17 @@ sub color_info {
     };
 }
 
+sub flatten {
+    my $self = shift;
+
+    my %hash;
+    my @keys = qw(color depth length height meta);
+
+    @hash{ @keys } = @{ $self }{ @keys };
+
+    return \%hash;
+}
+
 =pod
 
 =head1 NAME
@@ -234,6 +245,18 @@ Representation of a Lego Brick plus additional meta data about that brick
  Purpose   : Returns hash of color info related to bricks current color
 
  Returns   : hash of color info
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 flatten
+
+ Usage     : ->flatten()
+ Purpose   : Returns an unblessed version of the data
+
+ Returns   : hashref of brick data
  Argument  :
  Throws    :
 
