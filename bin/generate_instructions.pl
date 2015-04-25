@@ -18,14 +18,14 @@ my $result = $png->process;
 #debug $png->lego_colors;
 
 my @list = sort map {
- $png->lego_colors->{ $_->{'color'} }{'common_name'} . ' ' . $_->{'width'} . ' x ' . $_->{'height'} . ' - ' . $_->{'quantity'} . ' bricks'
+ $png->lego_colors->{ $_->{'color'} }{'common_name'} . ' ' . $_->{'depth'} . ' x ' . $_->{'length'} . ' x ' . $_->{'height'} . ' - ' . $_->{'quantity'} . ' ' . ($_->{'quantity'} > 1 ? 'bricks' : 'brick')
 } values %{ $result->{'bricks'} };
 
 my $row = 0;
 my @plan = map {
  my $txt = '';
- $txt = "\n\n".$_->{'y'}.': ' and $row = $_->{'y'} if $row != $_->{'y'};
- $txt .= $png->lego_colors->{ $_->{'color'} }{'common_name'} . '(' . $_->{'width'} . ' x ' . $_->{'height'} . ')  ';
+ $txt = "\n\n".$_->{'meta'}{'y'}.': ' and $row = $_->{'meta'}{'y'} if $row != $_->{'meta'}{'y'};
+ $txt .= '[ ' . $png->lego_colors->{ $_->{'color'} }{'common_name'} . ' ' . $_->{'depth'} . ' x ' . $_->{'length'} . ' x ' . $_->{'height'} . ' ] ';
  $txt;
 } @{ $result->{'plan'} };
 
