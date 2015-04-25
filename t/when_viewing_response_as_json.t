@@ -45,23 +45,29 @@ sub should_return_properly_formatted_JSON {
         [ Lego::From::PNG::Const->$r, Lego::From::PNG::Const->$g, Lego::From::PNG::Const->$b ];
     };
 
+    my $id = "${color}_1x1x1";
+
     my $expected = {
         bricks => {
-            "${color}*1*1" => {
-            color => $color,
-            height => 1,
-            id => "${color}*1*1",
+            $id   => {
+            color    => $color,
+            height   => 1,
+            depth    => 1,
+            id       => $id,
             quantity => 1,
-            length => 1
+            length   => 1,
             }
         },
         plan => [
             {
-                color => $color,
+                color  => $color,
                 height => 1,
-                id => "${color}*1*1",
+                depth  => 1,
+                id     => $id,
                 length => 1,
-                y => 0
+                meta   => {
+                    y => 0,
+                },
             }
         ]
     };

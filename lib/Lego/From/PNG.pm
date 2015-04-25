@@ -125,19 +125,19 @@ sub process {
 
         my @bricks = $self->_generate_brick_list(units => \@units);
 
-        $tally->{'plan'} = \@bricks;
+        $tally->{'plan'} = [ map { $_->flatten } @bricks ];
 
         my %list;
         for my $brick(@bricks) {
-            if(! exists $list{ $brick->{'id'} }) {
-                $list{ $brick->{'id'} } = { %$brick };
+            if(! exists $list{ $brick->identifier }) {
+                $list{ $brick->identifier } = $brick->flatten;
 
-                delete $list{ $brick->{'id'} }{'y'}; # No need for the y axis field in the brick list
+                delete $list{ $brick->identifier }{'meta'}; # No need for meta in brick list
 
-                $list{ $brick->{'id'} }{'quantity'} = 1;
+                $list{ $brick->identifier }{'quantity'} = 1;
             }
             else {
-                $list{ $brick->{'id'} }{'quantity'}++;
+                $list{ $brick->identifier }{'quantity'}++;
             }
         }
 

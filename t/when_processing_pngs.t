@@ -98,9 +98,9 @@ sub should_return_lego_colors_approximated_from_a_list_containing_blocks_of_colo
 }
 
 sub should_return_a_list_of_lego_bricks_per_row_of_png {
-    my ($brick_length, $max_brick_length, $unit_size) = (1, 8, 16);
+    my $unit_size = 16;
 
-    for( $brick_length .. $max_brick_length) {
+    for my $brick_length ( LEGO_BRICK_LENGTHS ) {
         my ($width, $height) = ($brick_length * $unit_size, $unit_size);
 
         # Pick a random lego color to test this part
@@ -126,31 +126,32 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
             scalar(keys %colors);
         };
 
-        cmp_ok($num_block_colors, '==', 1, 'Only one color was used to generate blocks');
+        cmp_ok($num_block_colors, '==', 1, "Only one color was used to generate blocks of length $brick_length");
         $tests++;
 
         is_deeply($blocks[0], {
             r => $object->lego_colors->{ $color }->{'rgb_color'}->[0],
             g => $object->lego_colors->{ $color }->{'rgb_color'}->[1],
             b => $object->lego_colors->{ $color }->{'rgb_color'}->[2],
-        }, 'The color we randomly chose is being used');
+        }, "The color we randomly chose is being used for brick of length $brick_length");
         $tests++;
 
         my @units = $object->_approximate_lego_colors(blocks => \@blocks);
 
         my @bricks = $object->_generate_brick_list(units => \@units);
 
+        my $id = $color.'_1x'.$brick_length.'x1';
+
         is_deeply($bricks[0]->flatten, {
             length => $brick_length,
             height => 1,
             depth  => 1,
             color  => $color,
+            id     => $id,
             meta   => {
                 y => 0,
             },
-        }, 'Brick returned is the correct dimensions and color');
+        }, "Brick returned is the correct dimensions and color for brick of length $brick_length");
         $tests++;
-
-        $brick_length++; # Increase the brick with to test the next brick size
     }
 }

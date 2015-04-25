@@ -30,10 +30,11 @@ sub new {
     return $self;
 }
 
+sub id { &identifier }
 sub identifier {
     my $self = shift;
 
-    return $self->color.'_'.join('x',$self->depth,$self->length,$self->height);
+    return $self->{'id'} ||= $self->color.'_'.join('x',$self->depth,$self->length,$self->height);
 }
 
 sub color  {
@@ -45,6 +46,7 @@ sub color  {
 
         $self->{'color'} = $val;
 
+        delete $self->{'id'};         # Clear out id
         delete $self->{'color_info'}; # Clear out color info on color change
     }
 
@@ -55,7 +57,11 @@ sub depth {
     my $self = shift;
     my $val  = shift;
 
-    $self->{'depth'} = $val * 1 if defined $val;
+    if(defined $val) {
+        $self->{'depth'} = $val * 1;
+
+        delete $self->{'id'}; # Clear out id
+    }
 
     return $self->{'depth'};
 }
@@ -64,7 +70,11 @@ sub length {
     my $self = shift;
     my $val  = shift;
 
-    $self->{'length'} = $val * 1 if defined $val;
+    if(defined $val) {
+        $self->{'length'} = $val * 1;
+
+        delete $self->{'id'}; # Clear out id
+    }
 
     return $self->{'length'};
 }
@@ -73,7 +83,11 @@ sub height {
     my $self = shift;
     my $val  = shift;
 
-    $self->{'height'} = $val * 1 if defined $val;
+    if(defined $val) {
+        $self->{'height'} = $val * 1;
+
+        delete $self->{'id'}; # Clear out id
+    }
 
     return $self->{'height'};
 }
@@ -112,8 +126,10 @@ sub color_info {
 sub flatten {
     my $self = shift;
 
+    $self->identifier; # Make sure it's generated
+
     my %hash;
-    my @keys = qw(color depth length height meta);
+    my @keys = qw(id color depth length height meta);
 
     @hash{ @keys } = @{ $self }{ @keys };
 
@@ -165,6 +181,10 @@ Representation of a Lego Brick plus additional meta data about that brick
 
  Comment   : Clobbers meta if it's not a valid hashref
  See Also  :
+
+=head2 id
+
+See identifier
 
 =head2 identifier
 
