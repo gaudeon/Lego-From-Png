@@ -33,6 +33,8 @@ should_only_return_bricks_in_the_list_that_are_whitelisted_by_color();
 
 should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimension();
 
+should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_brick_dimension();
+
 done_testing( $tests );
 
 exit;
@@ -245,7 +247,61 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimensio
         },
     ];
 
-    is_deeply($result->{'plan'}, $expected, "Bricks generated are of the whitelisted bricks we chose");
+    is_deeply($result->{'plan'}, $expected, "Bricks generated are of the whitelisted dimensions we chose");
+
+    $tests++;
+}
+
+sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_brick_dimension {
+    my $unit_size = 16;
+
+    my $brick_length = 4;
+
+    my ($width, $height) = ($brick_length * $unit_size, $unit_size);
+
+    # Pick a random lego color to test this part
+    my $starting_color    = 'WHITE';
+    my $whitelisted_color = 'BLACK';
+    my $color_rgb = do {
+        my ($r, $g, $b) = ($starting_color . '_RGB_COLOR_RED', $starting_color . '_RGB_COLOR_GREEN', $starting_color . '_RGB_COLOR_BLUE');
+        [ Lego::From::PNG::Const->$r, Lego::From::PNG::Const->$g, Lego::From::PNG::Const->$b ];
+    };
+
+    my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
+
+    my @whitelisted_bricks;
+    for('1x3x1','1x2x1','1x1x1') {
+        push @whitelisted_bricks, join('_', $whitelisted_color, $_);
+    }
+
+    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, whitelist => \@whitelisted_bricks });
+
+    my $result = $object->process();
+
+    my $expected = [
+        {
+            color => $whitelisted_color,
+            depth => 1,
+            height => 1,
+            id => "${whitelisted_color}_1x3x1",
+            length => 3,
+            meta => {
+                y => 0
+            },
+        },
+        {
+            color => $whitelisted_color,
+            depth => 1,
+            height => 1,
+            id => "${whitelisted_color}_1x1x1",
+            length => 1,
+            meta => {
+                y => 0
+            },
+        },
+    ];
+
+    is_deeply($result->{'plan'}, $expected, "Bricks generated are of the whitelisted color and dimenstions we chose");
 
     $tests++;
 }

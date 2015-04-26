@@ -177,7 +177,7 @@ sub _png_blocks_of_color {
 
     my $y = -1;
 
-    for my $pixel_row(@{$self->png->get_rows}) {
+    for my $pixel_row( @{$self->png->get_rows} ) {
         $y++;
         next unless ($y % $self->{'unit_size'}) == 0;
 
@@ -185,11 +185,11 @@ sub _png_blocks_of_color {
 
         my @values = unpack 'C*', $pixel_row;
 
-        my $row_width = (scalar(@values) / $pixel_bytecount) / $self->{'unit_size'};
+        my $row_width = ( scalar(@values) / $pixel_bytecount ) / $self->{'unit_size'};
 
         for(my $col = 0; $col < $row_width; $col++) {
-            my ( $r, $g, $b ) = (
-                $values[ ($self->{'unit_size'} * $pixel_bytecount * $col) ],
+            my ($r, $g, $b) = (
+                $values[ ($self->{'unit_size'} * $pixel_bytecount * $col)     ],
                 $values[ ($self->{'unit_size'} * $pixel_bytecount * $col) + 1 ],
                 $values[ ($self->{'unit_size'} * $pixel_bytecount * $col) + 2 ]
             );
@@ -205,40 +205,46 @@ sub _png_blocks_of_color {
     return @blocks;
 }
 
+sub _find_lego_color {
+    my $self  = shift;
+    my $block = shift;
+
+    my @optimal_color =
+            map  { $_->{'cid'} }
+            sort { $a->{'score'} <=> $b->{'score'} }
+            map  {
+                +{
+                    cid => $_->{'cid'},
+                    score => abs( $block->{'r'} - $_->{'rgb_color'}[0] )
+                           + abs( $block->{'g'} - $_->{'rgb_color'}[1] )
+                           + abs( $block->{'b'} - $_->{'rgb_color'}[2] ),
+                };
+            }
+            values %{ $self->lego_colors };
+
+    my ($optimal_color) = grep {
+         my $choose_this_color = 1;
+
+         $choose_this_color = 0 if ! $self->is_whitelisted( $_, 'color' );
+
+         $choose_this_color = 0 if $self->is_blacklisted( $_, 'color' );
+
+         $choose_this_color; # return result
+    } @optimal_color; # first color in list that passes whitelist and blacklist should be the optimal color for tested block
+
+    return $optimal_color;
+}
+
 sub _approximate_lego_colors {
     my $self = shift;
-    my %args = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
+    my %args = ref $_[0] eq 'HASH' ? %{ $_[0] } : @_;
 
-    die 'blocks not valid' unless $args{'blocks'} && ref($args{'blocks'}) eq 'ARRAY';
+    die 'blocks not valid' unless $args{'blocks'} && ref( $args{'blocks'} ) eq 'ARRAY';
 
     my @colors;
 
-    for my $block( @{ $args{'blocks'} } ) {
-        my @optimal_color =
-                map  { $_->{ 'cid' } }
-                sort { $a->{ 'score' } <=> $b->{ 'score' } }
-                map  {
-                    +{
-                        cid => $_->{ 'cid' },
-                        score => abs($block->{ 'r' } - $_->{ 'rgb_color' }[0])
-                               + abs($block->{ 'g' } - $_->{ 'rgb_color' }[1])
-                               + abs($block->{ 'b' } - $_->{ 'rgb_color' }[2]),
-                    };
-                }
-                values %{ $self->lego_colors }
-            ;
-
-        my ($optimal_color) = grep {
-            my $choose_this_color = 1;
-
-            $choose_this_color = 0 if ! $self->color_is_whitelisted( $_ );
-
-            $choose_this_color = 0 if $self->color_is_blacklisted( $_ );
-
-            $choose_this_color; # return result
-        } @optimal_color;
-
-        push @colors, $optimal_color; # first color in list that passes whitelist and blacklist should be the optimal color for tested block
+    for my $block(@{ $args{'blocks'} }) {
+        push @colors, $self->_find_lego_color( $block );
     }
 
     return @colors;
@@ -246,9 +252,9 @@ sub _approximate_lego_colors {
 
 sub _generate_brick_list {
     my $self = shift;
-    my %args = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
+    my %args = ref $_[0] eq 'HASH' ? %{ $_[0] } : @_;
 
-    die 'units not valid' unless $args{'units'} && ref($args{'units'}) eq 'ARRAY';
+    die 'units not valid' unless $args{'units'} && ref( $args{'units'} ) eq 'ARRAY';
 
     my @units = @{ $args{'units'} };
     my $row_width = $self->block_row_width;
@@ -286,9 +292,11 @@ sub _generate_brick_list {
                     FIND_VALID_LENGTH: {
                         for(;$valid_length > 0;$valid_length--) {
                             my $dim = join('x',$self->{'brick_depth'},$valid_length,$self->{'brick_height'});
+                            my $brk = join('_', $color, $dim); 
 
-                            next FIND_VALID_LENGTH if $self->dimension_is_blacklisted($dim);
-                            last FIND_VALID_LENGTH if $self->dimension_is_whitelisted($dim);
+                            next FIND_VALID_LENGTH if $self->is_blacklisted( $dim, 'dimension' ) || $self->is_blacklisted( $brk, 'brick' );
+
+                            last FIND_VALID_LENGTH if $self->is_whitelisted( $dim, 'dimension' ) && $self->is_whitelisted( $brk, 'brick' );
                         }
                     }
 
@@ -323,105 +331,91 @@ sub _generate_brick_list {
     return @brick_list;
 }
 
+sub _list_filters {
+    my $self    = shift;
+    my $allowed = $_[0] && ref($_[0]) eq 'ARRAY' ? $_[0]
+                    : ($_[0]) ? [ shift ]
+                    : []; # optional filter restriction
+
+    my $filters = {
+        color     => qr{^([A-Z]+)(?:_\d+x\d+x\d+)?$}i,
+        dimension => qr{^(\d+x\d+x\d+)$}i,
+        brick     => qr{^([A-Z]+_\d+x\d+x\d+)$}i,
+    };
+
+    $filters = +{ map { $_ => $filters->{$_} } @$allowed } if scalar @$allowed;
+
+    return $filters;
+}
+
 sub whitelist { shift->{'whitelist'} }
 
-sub has_whitelist_with_colors {
-    my $self = shift;
+sub has_whitelist {
+    my $self    = shift;
+    my $allowed = shift; # arrayref listing filters we can use
 
-    return scalar( grep { /^[a-z]/i } @{ $self->whitelist || [] } );
-}
-
-sub has_whitelist_with_dimensions {
-    my $self = shift;
-
-    return scalar( grep { /^\d+x\d+x\d+$/i } @{ $self->whitelist || [] } );
-}
-
-sub color_is_whitelisted {
-    my $self = shift;
-    my $cid  = uc(shift);
-
-    return 1 if ! $self->has_whitelist_with_colors; # return true if there is no whitelist, meaning all colors could be whitelisted
-
-    for my $entry( @{ $self->whitelist || [] } ) {
-        next unless $entry =~ /^[a-z]/i; # If there is at least a letter at the beginning then this entry has a color we can check
-
-        my ($color) = split('_', $entry); # Entries can be either a color, a block identifier or just block dimensions so just get the color
-        $color = uc($color);
-
-        return 1 if $cid eq $color;
+    my $found = 0;
+    for my $filter(values $self->_list_filters($allowed)) {
+        $found += scalar( grep { /$filter/ } @{ $self->whitelist || [] } );
     }
 
-    return 0; # Color is not in whitelist
+    return $found;
 }
 
-sub dimension_is_whitelisted {
-    my $self = shift;
-    my $dim  = lc(shift);
+sub is_whitelisted {
+    my $self    = shift;
+    my $val     = shift;
+    my $allowed = shift; # arrayref listing filters we can use
 
-    return 1 if ! $self->has_whitelist_with_dimensions; # return true if there is no whitelist, meaning all dimensions could be whitelisted
+    return 1 if ! $self->has_whitelist($allowed); # return true if there is no whitelist
 
     for my $entry( @{ $self->whitelist || [] } ) {
-        next unless $entry =~ /^\d+x\d+x\d+$/i; # ignore anthing but dimensions
+        for my $filter( values %{ $self->_list_filters($allowed) } ) {
+            next unless $entry =~ /$filter/; # if there is at least a letter at the beginning then this entry has a color we can check
 
-        $entry = lc($entry);
+            my $capture = $1 || $entry;
 
-        return 1 if $dim eq $entry;
+            return 1 if $val eq $capture;
+        }
     }
 
-    return 0; # Dimension is not in whitelist
+    return 0; # value is not in whitelist
 }
 
 sub blacklist { shift->{'blacklist'} }
 
-sub has_blacklist_with_colors {
-    my $self = shift;
+sub has_blacklist {
+    my $self    = shift;
+    my $allowed = shift; # optional filter restriction
 
-    return scalar( grep { /^[a-z]/i } @{ $self->blacklist || [] } );
-}
+    my $found = 0;
 
-sub has_blacklist_with_dimensions {
-    my $self = shift;
-
-    return scalar( grep { /^\d+x\d+x\d+$/i } @{ $self->blacklist || [] } );
-}
-
-sub color_is_blacklisted {
-    my $self = shift;
-    my $cid  = shift;
-
-    return 0 if ! $self->has_blacklist_with_colors; # return false if there is no blacklist, meaning no color is blacklisted
-
-    for my $entry( @{ $self->blacklist || [] } ) {
-        next unless $entry =~ /^[a-z]/i; # If there is at least a letter at the beginning then this entry has a color we can check
-
-        my ($color) = split('_', $entry); # Entries can be either a color, a block identifier or just block dimensions so just get the color
-        $color = uc($color);
-
-        return 1 if $cid eq $color;
+    for my $filter(values $self->_list_filters($allowed)) {
+        $found += scalar( grep { /$filter/ } @{ $self->blacklist || [] } );
     }
 
-    return 0; # Color is not in blacklist
+    return $found;
 }
 
-sub dimension_is_blacklisted {
-    my $self = shift;
-    my $dim  = lc(shift);
+sub is_blacklisted {
+    my $self    = shift;
+    my $val     = shift;
+    my $allowed = shift; # optional filter restriction
 
-    return 0 if ! $self->has_blacklist_with_dimensions; # return true if there is no blacklist, meaning all dimensions could be blacklisted
+    return 0 if ! $self->has_blacklist($allowed); # return false if there is no blacklist
 
     for my $entry( @{ $self->blacklist || [] } ) {
-        next unless $entry =~ /^\d+x\d+x\d+$/i; # ignore anthing but dimensions
+        for my $filter( values %{ $self->_list_filters($allowed) } ) {
+            next unless $entry =~ /$filter/; # if there is at least a letter at the beginning then this entry has a color we can check
 
-        $entry = lc($entry);
+            my $capture = $1 || $entry;
 
-        return 1 if $dim eq $entry;
+            return 1 if $val eq $capture;
+        }
     }
 
-    return 0; # Dimension is not in blacklist
+    return 0; # value is not in blacklist
 }
-
-
 
 =pod
 
@@ -541,6 +535,18 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
  Comment   :
  See Also  :
 
+=head2 _find_lego_color
+
+ Usage     : ->_find_lego_color
+ Purpose   : given an rgb hash, finds the optimal lego color
+
+ Returns   : A lego color common name key that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
 =head2 _approximate_lego_colors
 
  Usage     : ->_approximate_lego_colors()
@@ -565,6 +571,18 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
  Comment   :
  See Also  :
 
+=head2 _list_filters
+
+ Usage     : ->_list_filters()
+ Purpose   : return whitelist/blacklist filters
+
+ Returns   : an hashref of filters
+ Argument  : an optional filter restriction to limit set of filters returned to just one
+ Throws    :
+
+ Comment   :
+ See Also  :
+
 =head2 whitelist
 
  Usage     : ->whitelist()
@@ -577,49 +595,25 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
  Comment   :
  See Also  :
 
-=head2 has_whitelist_with_colors
+=head2 has_whitelist
 
- Usage     : ->has_whitelist_with_colors()
- Purpose   : return a true value if there is a whitelist with at least one color in it, otherwise a false value is returned
+ Usage     : ->has_whitelist(), ->has_whitelist($filter)
+ Purpose   : return a true value if there is a whitelist with at least one entry in it based on the allowed filters, otherwise a false value is returned
 
  Returns   : 1 or 0
- Argument  :
+ Argument  : $filter - optional scalar containing the filter to restrict test to
  Throws    :
 
  Comment   :
  See Also  :
 
-=head2 has_whitelist_with_dimensions
+=head2 is_whitelisted
 
- Usage     : ->has_whitelist_with_dimensions()
- Purpose   : return a true value if there is a whitelist with at least one dimension measurement in it, otherwise a false value is returned
-
- Returns   : 1 or 0
- Argument  :
- Throws    :
-
- Comment   :
- See Also  :
-
-=head2 color_is_whitelisted
-
- Usage     : ->color_is_whitelisted($color_id)
- Purpose   : return a true value if the color is whitelisted, otherwise a false value is returned
+ Usage     : ->is_whitelisted($value), ->is_whitelisted($value, $filter)
+ Purpose   : return a true if the value is whitelisted, otherwise false is returned
 
  Returns   : 1 or 0
- Argument  :
- Throws    :
-
- Comment   :
- See Also  :
-
-=head2 dimension_is_whitelisted
-
- Usage     : ->dimension_is_whitelisted($dimension)
- Purpose   : return a true value if the dimension is whitelisted, otherwise a false value is returned
-
- Returns   : 1 or 0
- Argument  :
+ Argument  : $value - the value to test, $filter - optional scalar containing the filter to restrict test to
  Throws    :
 
  Comment   :
@@ -637,49 +631,25 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
  Comment   :
  See Also  :
 
-=head2 has_blacklist_with_colors
+=head2 has_blacklist
 
- Usage     : ->has_blacklist_with_colors()
- Purpose   : return a true value if there is a blacklist, otherwise a false value is returned
+ Usage     : ->has_blacklist(), ->has_whitelist($filter)
+ Purpose   : return a true value if there is a blacklist with at least one entry in it based on the allowed filters, otherwise a false value is returned
 
  Returns   : 1 or 0
- Argument  :
+ Argument  : $filter - optional scalar containing the filter to restrict test to
  Throws    :
 
  Comment   :
  See Also  :
 
-=head2 has_blacklist_with_dimensions
+=head2 is_blacklisted
 
- Usage     : ->has_blacklist_with_dimensions()
- Purpose   : return a true value if there is a blacklist with at least one dimension measurement in it, otherwise a false value is returned
-
- Returns   : 1 or 0
- Argument  :
- Throws    :
-
- Comment   :
- See Also  :
-
-=head2 color_is_blacklisted
-
- Usage     : ->color_is_blacklisted($color_id)
- Purpose   : return a true value if the color is blacklisted, otherwise a false value is returned
+ Usage     : ->is_blacklisted($value), ->is_whitelisted($value, $filter)
+ Purpose   : return a true if the value is blacklisted, otherwise false is returned
 
  Returns   : 1 or 0
- Argument  :
- Throws    :
-
- Comment   :
- See Also  :
-
-=head2 dimension_is_blacklisted
-
- Usage     : ->dimension_is_blacklisted($dimension)
- Purpose   : return a true value if the dimension is blacklisted, otherwise a false value is returned
-
- Returns   : 1 or 0
- Argument  :
+ Argument  : $value - the value to test, $filter - optional scalar containing the filter to restrict test to
  Throws    :
 
  Comment   :
