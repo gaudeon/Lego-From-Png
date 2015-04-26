@@ -100,7 +100,8 @@ sub color_info {
     return $self->{'color_info'} ||= do {
         my $color = $self->color;
 
-        my ($cn_key, $hex_key, $r_key, $g_key, $b_key) = (
+        my ($on_key, $cn_key, $hex_key, $r_key, $g_key, $b_key) = (
+            $color . '_OFFICIAL_NAME',
             $color . '_COMMON_NAME',
             $color . '_HEX_COLOR',
             $color . '_RGB_COLOR_RED',
@@ -111,10 +112,11 @@ sub color_info {
         no strict 'refs';
 
         +{
-            'cid'          => $color,
-            'common_name' => Lego::From::PNG::Const->$cn_key,
-            'hex_color'   => Lego::From::PNG::Const->$hex_key,
-            'rgb_color'   => [
+            'cid'           => $color,
+            'official_name' => Lego::From::PNG::Const->$on_key,
+            'common_name'   => Lego::From::PNG::Const->$cn_key,
+            'hex_color'     => Lego::From::PNG::Const->$hex_key,
+            'rgb_color'     => [
                 Lego::From::PNG::Const->$r_key,
                 Lego::From::PNG::Const->$g_key,
                 Lego::From::PNG::Const->$b_key,
