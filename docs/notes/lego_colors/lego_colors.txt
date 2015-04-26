@@ -13,7 +13,7 @@
 </td></tr>
 <tr>
 <td>5
-</td><td><a href="/wiki/Brick-Yellow" title="Brick-Yellow" class="mw-redirect">Brick-Yellow</a>
+</td><td><a href="/wiki/Brick_Yellow" title="Brick Yellow">Brick Yellow</a>
 </td><td>Tan
 </td><td style="background:#D9BB7B">
 </td></tr>
@@ -152,7 +152,7 @@
 <tr>
 <td>208
 </td><td><a href="/wiki/Light_Stone_Grey" title="Light Stone Grey">Light Stone Grey</a>
-</td><td>	Very Light Grey
+</td><td>   Very Light Grey
 </td><td style="background:#E4E4DA">
 </td></tr>
 <tr>
@@ -204,10 +204,52 @@
 </td><td style="background:#AA7D55">
 </td></tr>
 <tr>
+<td>321
+</td><td><a href="/wiki/Dark_Azur" title="Dark Azur">Dark Azur</a>
+</td><td>
+</td><td style="background:#469bc3">
+</td></tr>
+<tr>
+<td>322
+</td><td><a href="/wiki/Medium_Azur" title="Medium Azur">Medium Azur</a>
+</td><td>Azure
+</td><td style="background:#68c3e2">
+</td></tr>
+<tr>
+<td>323
+</td><td><a href="/wiki/Aqua" title="Aqua">Aqua</a>
+</td><td>Unikitty Blue
+</td><td style="background:#d3f2ea">
+</td></tr>
+<tr>
+<td>324
+</td><td><a href="/wiki/Medium_Lavender" title="Medium Lavender">Medium Lavender</a>
+</td><td>
+</td><td style="background:#a06eb9">
+</td></tr>
+<tr>
+<td>325
+</td><td><a href="/wiki/Lavender" title="Lavender">Lavender</a>
+</td><td>Lavender
+</td><td style="background:#cda4de">
+</td></tr>
+<tr>
+<td>329
+</td><td><a href="/wiki/White_Glow" title="White Glow">White Glow</a>
+</td><td>Glow-in-the-dark
+</td><td style="background:#f5f3d7">
+</td></tr>
+<tr>
+<td>326
+</td><td><a href="/wiki/Spring_Yellowish_Green" title="Spring Yellowish Green">Spring Yellowish Green</a>
+</td><td>Unikitty Green
+</td><td style="background:#e2f99a">
+</td></tr>
+<tr>
 <td>330
 </td><td><a href="/wiki/Olive_Green" title="Olive Green">Olive Green</a>
 </td><td>Olive Green
-</td><td style="background:#556B2F">
+</td><td style="background:#77774E">
 </td></tr>
 <tr>
 <td>331

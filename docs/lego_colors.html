@@ -2,6 +2,7 @@
 <html>
     <head>
         <style type="text/css">
+.aqua { background: #D3F2EA; width: 4em; height: 4em; }
 .black { background: #010101; width: 4em; height: 4em; }
 .brick_yellow { background: #D9BB7B; width: 4em; height: 4em; }
 .bright_blue { background: #0057A8; width: 4em; height: 4em; }
@@ -13,6 +14,7 @@
 .bright_yellow { background: #FEC400; width: 4em; height: 4em; }
 .bright_yellowish_green { background: #95B90B; width: 4em; height: 4em; }
 .cool_yellow { background: #FFFF99; width: 4em; height: 4em; }
+.dark_azur { background: #469BC3; width: 4em; height: 4em; }
 .dark_brown { background: #300F06; width: 4em; height: 4em; }
 .dark_green { background: #007B28; width: 4em; height: 4em; }
 .dark_orange { background: #A83D15; width: 4em; height: 4em; }
@@ -21,28 +23,34 @@
 .earth_blue { background: #002541; width: 4em; height: 4em; }
 .earth_green { background: #003416; width: 4em; height: 4em; }
 .flame_yellowish_orange { background: #F49B00; width: 4em; height: 4em; }
+.lavender { background: #CDA4DE; width: 4em; height: 4em; }
 .light_nougat { background: #F5C189; width: 4em; height: 4em; }
 .light_purple { background: #EE9DC3; width: 4em; height: 4em; }
 .light_royal_blue { background: #87C0EA; width: 4em; height: 4em; }
 .light_stone_grey { background: #E4E4DA; width: 4em; height: 4em; }
+.medium_azur { background: #68C3E2; width: 4em; height: 4em; }
 .medium_blue { background: #478CC6; width: 4em; height: 4em; }
+.medium_lavender { background: #A06EB9; width: 4em; height: 4em; }
 .medium_lilac { background: #2C1577; width: 4em; height: 4em; }
 .medium_nougat { background: #AA7D55; width: 4em; height: 4em; }
 .medium_stone_grey { background: #9C9291; width: 4em; height: 4em; }
 .medium_yellowish_green { background: #96B93B; width: 4em; height: 4em; }
 .nougat { background: #D67240; width: 4em; height: 4em; }
-.olive_green { background: #556B2F; width: 4em; height: 4em; }
+.olive_green { background: #77774E; width: 4em; height: 4em; }
 .reddish_brown { background: #5B1C0C; width: 4em; height: 4em; }
 .sand_blue { background: #5E748C; width: 4em; height: 4em; }
 .sand_green { background: #5F8265; width: 4em; height: 4em; }
 .sand_yellow { background: #8D7452; width: 4em; height: 4em; }
-.white { background: #FFFFFF; width: 4em; height: 4em; }        </style>
+.spring_yellowish_green { background: #E2F99A; width: 4em; height: 4em; }
+.white { background: #FFFFFF; width: 4em; height: 4em; }
+.white_glow { background: #F5F3D7; width: 4em; height: 4em; }        </style>
     </head>
     <body>
         <table border="1">
             <thead>
                 <tr>
                     <td>COLOR</td>
+                    <td>ID</td>
                     <td>Official Name</td>
                     <td>Common Name</td>
                     <td>Hex Color</td>
@@ -51,7 +59,16 @@
             </thead>
             <tbody>
 <tr>
+    <td class="aqua"></td>
+    <td>AQUA</td>
+    <td>Aqua</td>
+    <td>Unikitty Blue</td>
+    <td>D3F2EA</td>
+    <td>211, 242, 234</td>
+</tr>
+<tr>
     <td class="black"></td>
+    <td>BLACK</td>
     <td>Black</td>
     <td>Black</td>
     <td>010101</td>
@@ -59,13 +76,15 @@
 </tr>
 <tr>
     <td class="brick_yellow"></td>
-    <td>Brick-Yellow</td>
+    <td>BRICK_YELLOW</td>
+    <td>Brick Yellow</td>
     <td>Tan</td>
     <td>D9BB7B</td>
     <td>217, 187, 123</td>
 </tr>
 <tr>
     <td class="bright_blue"></td>
+    <td>BRIGHT_BLUE</td>
     <td>Bright Blue</td>
     <td>Blue</td>
     <td>0057A8</td>
@@ -73,6 +92,7 @@
 </tr>
 <tr>
     <td class="bright_green"></td>
+    <td>BRIGHT_GREEN</td>
     <td>Bright Green</td>
     <td>Bright Green</td>
     <td>009624</td>
@@ -80,6 +100,7 @@
 </tr>
 <tr>
     <td class="bright_orange"></td>
+    <td>BRIGHT_ORANGE</td>
     <td>Bright Orange</td>
     <td>Orange</td>
     <td>E76318</td>
@@ -87,6 +108,7 @@
 </tr>
 <tr>
     <td class="bright_purple"></td>
+    <td>BRIGHT_PURPLE</td>
     <td>Bright Purple</td>
     <td>Bright Pink</td>
     <td>DE378B</td>
@@ -94,6 +116,7 @@
 </tr>
 <tr>
     <td class="bright_red"></td>
+    <td>BRIGHT_RED</td>
     <td>Bright Red</td>
     <td>Red</td>
     <td>DE000D</td>
@@ -101,6 +124,7 @@
 </tr>
 <tr>
     <td class="bright_reddish_violet"></td>
+    <td>BRIGHT_REDDISH_VIOLET</td>
     <td>Bright Reddish Violet</td>
     <td>Magenta</td>
     <td>9C006B</td>
@@ -108,6 +132,7 @@
 </tr>
 <tr>
     <td class="bright_yellow"></td>
+    <td>BRIGHT_YELLOW</td>
     <td>Bright Yellow</td>
     <td>Yellow</td>
     <td>FEC400</td>
@@ -115,6 +140,7 @@
 </tr>
 <tr>
     <td class="bright_yellowish_green"></td>
+    <td>BRIGHT_YELLOWISH_GREEN</td>
     <td>Bright Yellowish-Green</td>
     <td>Lime</td>
     <td>95B90B</td>
@@ -122,13 +148,23 @@
 </tr>
 <tr>
     <td class="cool_yellow"></td>
+    <td>COOL_YELLOW</td>
     <td>Cool Yellow</td>
     <td>Blonde</td>
     <td>FFFF99</td>
     <td>255, 255, 153</td>
 </tr>
 <tr>
+    <td class="dark_azur"></td>
+    <td>DARK_AZUR</td>
+    <td>Dark Azur</td>
+    <td></td>
+    <td>469BC3</td>
+    <td>70, 155, 195</td>
+</tr>
+<tr>
     <td class="dark_brown"></td>
+    <td>DARK_BROWN</td>
     <td>Dark Brown</td>
     <td>Dark Brown</td>
     <td>300F06</td>
@@ -136,6 +172,7 @@
 </tr>
 <tr>
     <td class="dark_green"></td>
+    <td>DARK_GREEN</td>
     <td>Dark Green</td>
     <td>Green</td>
     <td>007B28</td>
@@ -143,6 +180,7 @@
 </tr>
 <tr>
     <td class="dark_orange"></td>
+    <td>DARK_ORANGE</td>
     <td>Dark Orange</td>
     <td>Dark Orange</td>
     <td>A83D15</td>
@@ -150,6 +188,7 @@
 </tr>
 <tr>
     <td class="dark_red"></td>
+    <td>DARK_RED</td>
     <td>Dark Red</td>
     <td>Dark Red</td>
     <td>80081B</td>
@@ -157,6 +196,7 @@
 </tr>
 <tr>
     <td class="dark_stone_grey"></td>
+    <td>DARK_STONE_GREY</td>
     <td>Dark Stone Grey</td>
     <td>Dark Grey</td>
     <td>4C5156</td>
@@ -164,6 +204,7 @@
 </tr>
 <tr>
     <td class="earth_blue"></td>
+    <td>EARTH_BLUE</td>
     <td>Earth Blue</td>
     <td>Dark Blue</td>
     <td>002541</td>
@@ -171,6 +212,7 @@
 </tr>
 <tr>
     <td class="earth_green"></td>
+    <td>EARTH_GREEN</td>
     <td>Earth Green</td>
     <td>Dark Green</td>
     <td>003416</td>
@@ -178,13 +220,23 @@
 </tr>
 <tr>
     <td class="flame_yellowish_orange"></td>
+    <td>FLAME_YELLOWISH_ORANGE</td>
     <td>Flame Yellowish Orange</td>
     <td>Bright Light Orange</td>
     <td>F49B00</td>
     <td>244, 155, 0</td>
 </tr>
 <tr>
+    <td class="lavender"></td>
+    <td>LAVENDER</td>
+    <td>Lavender</td>
+    <td>Lavender</td>
+    <td>CDA4DE</td>
+    <td>205, 164, 222</td>
+</tr>
+<tr>
     <td class="light_nougat"></td>
+    <td>LIGHT_NOUGAT</td>
     <td>Light Nougat</td>
     <td>Light Flesh</td>
     <td>F5C189</td>
@@ -192,6 +244,7 @@
 </tr>
 <tr>
     <td class="light_purple"></td>
+    <td>LIGHT_PURPLE</td>
     <td>Light Purple</td>
     <td>Light Pink</td>
     <td>EE9DC3</td>
@@ -199,6 +252,7 @@
 </tr>
 <tr>
     <td class="light_royal_blue"></td>
+    <td>LIGHT_ROYAL_BLUE</td>
     <td>Light Royal Blue</td>
     <td>Light Blue</td>
     <td>87C0EA</td>
@@ -206,20 +260,39 @@
 </tr>
 <tr>
     <td class="light_stone_grey"></td>
+    <td>LIGHT_STONE_GREY</td>
     <td>Light Stone Grey</td>
     <td>Very Light Grey</td>
     <td>E4E4DA</td>
     <td>228, 228, 218</td>
 </tr>
 <tr>
+    <td class="medium_azur"></td>
+    <td>MEDIUM_AZUR</td>
+    <td>Medium Azur</td>
+    <td>Azure</td>
+    <td>68C3E2</td>
+    <td>104, 195, 226</td>
+</tr>
+<tr>
     <td class="medium_blue"></td>
+    <td>MEDIUM_BLUE</td>
     <td>Medium Blue</td>
     <td>Medium Blue</td>
     <td>478CC6</td>
     <td>71, 140, 198</td>
 </tr>
 <tr>
+    <td class="medium_lavender"></td>
+    <td>MEDIUM_LAVENDER</td>
+    <td>Medium Lavender</td>
+    <td></td>
+    <td>A06EB9</td>
+    <td>160, 110, 185</td>
+</tr>
+<tr>
     <td class="medium_lilac"></td>
+    <td>MEDIUM_LILAC</td>
     <td>Medium Lilac</td>
     <td>Dark Purple</td>
     <td>2C1577</td>
@@ -227,6 +300,7 @@
 </tr>
 <tr>
     <td class="medium_nougat"></td>
+    <td>MEDIUM_NOUGAT</td>
     <td>Medium Nougat</td>
     <td>Medium Dark Flesh</td>
     <td>AA7D55</td>
@@ -234,6 +308,7 @@
 </tr>
 <tr>
     <td class="medium_stone_grey"></td>
+    <td>MEDIUM_STONE_GREY</td>
     <td>Medium Stone Grey</td>
     <td>Light Grey</td>
     <td>9C9291</td>
@@ -241,6 +316,7 @@
 </tr>
 <tr>
     <td class="medium_yellowish_green"></td>
+    <td>MEDIUM_YELLOWISH_GREEN</td>
     <td>Medium-Yellowish green</td>
     <td>Dark Lime; Medium Lime</td>
     <td>96B93B</td>
@@ -248,6 +324,7 @@
 </tr>
 <tr>
     <td class="nougat"></td>
+    <td>NOUGAT</td>
     <td>Nougat</td>
     <td>Flesh</td>
     <td>D67240</td>
@@ -255,13 +332,15 @@
 </tr>
 <tr>
     <td class="olive_green"></td>
+    <td>OLIVE_GREEN</td>
     <td>Olive Green</td>
     <td>Olive Green</td>
-    <td>556B2F</td>
-    <td>85, 107, 47</td>
+    <td>77774E</td>
+    <td>119, 119, 78</td>
 </tr>
 <tr>
     <td class="reddish_brown"></td>
+    <td>REDDISH_BROWN</td>
     <td>Reddish Brown</td>
     <td>Reddish Brown</td>
     <td>5B1C0C</td>
@@ -269,6 +348,7 @@
 </tr>
 <tr>
     <td class="sand_blue"></td>
+    <td>SAND_BLUE</td>
     <td>Sand Blue</td>
     <td>Sand Blue</td>
     <td>5E748C</td>
@@ -276,6 +356,7 @@
 </tr>
 <tr>
     <td class="sand_green"></td>
+    <td>SAND_GREEN</td>
     <td>Sand Green</td>
     <td>Sand Green</td>
     <td>5F8265</td>
@@ -283,17 +364,35 @@
 </tr>
 <tr>
     <td class="sand_yellow"></td>
+    <td>SAND_YELLOW</td>
     <td>Sand Yellow</td>
     <td>Dark Tan</td>
     <td>8D7452</td>
     <td>141, 116, 82</td>
 </tr>
 <tr>
+    <td class="spring_yellowish_green"></td>
+    <td>SPRING_YELLOWISH_GREEN</td>
+    <td>Spring Yellowish Green</td>
+    <td>Unikitty Green</td>
+    <td>E2F99A</td>
+    <td>226, 249, 154</td>
+</tr>
+<tr>
     <td class="white"></td>
+    <td>WHITE</td>
     <td>White</td>
     <td>White</td>
     <td>FFFFFF</td>
     <td>255, 255, 255</td>
+</tr>
+<tr>
+    <td class="white_glow"></td>
+    <td>WHITE_GLOW</td>
+    <td>White Glow</td>
+    <td>Glow-in-the-dark</td>
+    <td>F5F3D7</td>
+    <td>245, 243, 215</td>
 </tr>
             </tbody>
         </table>

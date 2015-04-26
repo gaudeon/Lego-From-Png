@@ -24,6 +24,7 @@ for my $color ( sort { $a->{'official_name'} cmp $b->{'official_name'} } values 
     push @color_rows, <<"HTML";
 <tr>
     <td class="$class"></td>
+    <td>$color->{'cid'}</td>
     <td>$color->{'official_name'}</td>
     <td>$color->{'common_name'}</td>
     <td>$color->{'hex_color'}</td>
@@ -49,6 +50,7 @@ print <<"HTML";
             <thead>
                 <tr>
                     <td>COLOR</td>
+                    <td>ID</td>
                     <td>Official Name</td>
                     <td>Common Name</td>
                     <td>Hex Color</td>
