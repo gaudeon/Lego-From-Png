@@ -7,12 +7,17 @@ use Data::Debug;
 
 sub new {
     my $class = shift;
-    my $hash = {};
+    my $png   = shift;
+    die 'Lego::From::PNG object was not supplied' unless $png && ref($png) eq 'Lego::From::PNG';
+
+    my $hash = { png => $png };
 
     my $self = bless ($hash, ref ($class) || $class);
 
     return $self;
 }
+
+sub png { shift->{'png'} }
 
 sub print {
     my $self = shift;
@@ -42,14 +47,26 @@ Base class for formatting data returned from processing a PNG
 
 =head2 new
 
- Usage     : ->new()
+ Usage     : ->new($png)
  Purpose   : Returns Lego::From::PNG::View object
 
  Returns   : Lego::From::PNG::View object
- Argument  :
+ Argument  : L<Lego::From::PNG> object is required as input
  Throws    :
 
  Comment   : This is just a base class so this shouldn't be directly used to format data
+ See Also  :
+
+=head2 png
+
+ Usage     : ->png()
+ Purpose   : Returns the L<Lego::From::PNG> object passed into the constructor
+
+ Returns   : L<Lego::From::PNG> object
+ Argument  :
+ Throws    :
+
+ Comment   :
  See Also  :
 
 =head2 print
@@ -61,7 +78,7 @@ Base class for formatting data returned from processing a PNG
  Argument  :
  Throws    :
 
- Comment   : 
+ Comment   :
  See Also  :
 
 

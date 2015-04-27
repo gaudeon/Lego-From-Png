@@ -29,8 +29,9 @@ sub should_use_modules {
    use_ok( 'Lego::From::PNG::Const' );
    use_ok( 'Lego::From::PNG::View' );
    use_ok( 'Lego::From::PNG::View::JSON' );
+   use_ok( 'Lego::From::PNG::View::HTML' );
 
-   $tests += 5;
+   $tests += 6;
 }
 
 sub should_require_modules {
@@ -39,8 +40,9 @@ sub should_require_modules {
    require_ok( 'Lego::From::PNG::Const' );
    require_ok( 'Lego::From::PNG::View' );
    require_ok( 'Lego::From::PNG::View::JSON' );
+   require_ok( 'Lego::From::PNG::View::HTML' );
 
-   $tests += 5;
+   $tests += 6;
 }
 
 sub should_be_the_module_we_asked_for {

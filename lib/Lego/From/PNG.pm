@@ -10,8 +10,6 @@ use Lego::From::PNG::Const qw(:all);
 
 use Lego::From::PNG::Brick;
 
-use Lego::From::PNG::View::JSON;
-
 use Data::Debug;
 
 sub new {
@@ -158,7 +156,7 @@ sub process {
             (my $file = $module) =~ s|::|/|g;
             require $file . '.pm';
 
-            $module->new->print($tally);
+            $module->new($self)->print($tally);
         };
 
         die "Failed to format as a view ($view). $@" if $@;
@@ -181,6 +179,7 @@ sub _png_blocks_of_color {
 
     for my $pixel_row( @{$self->png->get_rows} ) {
         $y++;
+
         next unless ($y % $self->{'unit_size'}) == 0;
 
         my $row = $y / $self->{'unit_size'}; # get actual row of blocks we are current on
@@ -258,12 +257,13 @@ sub _generate_brick_list {
 
     die 'units not valid' unless $args{'units'} && ref( $args{'units'} ) eq 'ARRAY';
 
-    my @units = @{ $args{'units'} };
-    my $row_width = $self->block_row_width;
+    my $unit_count   = scalar(@{ $args{'units'} });
+    my @units        = @{ $args{'units'} };
+    my $row_width    = $self->block_row_width;
     my $brick_height = 1; # bricks are only one unit high
     my @brick_list;
 
-    for(my $y = 0; $y < (scalar(@units) / $row_width); $y++) {
+    for(my $y = 0; $y < ($unit_count / $row_width); $y++) {
         my @row = splice @units, 0, $row_width;
 
         my $push_color = sub {
@@ -294,7 +294,7 @@ sub _generate_brick_list {
                     FIND_VALID_LENGTH: {
                         for(;$valid_length > 0;$valid_length--) {
                             my $dim = join('x',$self->{'brick_depth'},$valid_length,$self->{'brick_height'});
-                            my $brk = join('_', $color, $dim); 
+                            my $brk = join('_', $color, $dim);
 
                             next FIND_VALID_LENGTH if $self->is_blacklisted( $dim, 'dimension' ) || $self->is_blacklisted( $brk, 'brick' );
 
@@ -340,9 +340,9 @@ sub _list_filters {
                     : []; # optional filter restriction
 
     my $filters = {
-        color     => qr{^([A-Z]+)(?:_\d+x\d+x\d+)?$}i,
+        color     => qr{^([A-Z_]+)(?:_\d+x\d+x\d+)?$}i,
         dimension => qr{^(\d+x\d+x\d+)$}i,
-        brick     => qr{^([A-Z]+_\d+x\d+x\d+)$}i,
+        brick     => qr{^([A-Z_]+_\d+x\d+x\d+)$}i,
     };
 
     $filters = +{ map { $_ => $filters->{$_} } @$allowed } if scalar @$allowed;
@@ -375,7 +375,8 @@ sub is_whitelisted {
         for my $filter( values %{ $self->_list_filters($allowed) } ) {
             next unless $entry =~ /$filter/; # if there is at least a letter at the beginning then this entry has a color we can check
 
-            my $capture = $1 || $entry;
+            my $capture = $entry;
+            $capture =~ s/$filter/$1/;
 
             return 1 if $val eq $capture;
         }
