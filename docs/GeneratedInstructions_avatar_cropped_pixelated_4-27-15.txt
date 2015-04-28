@@ -1,0 +1,134 @@
+699 Total Bricks
+
+Shopping List
+-------------------------------------------------------------------------
+Black 1 x 1 x 1 - 2 bricks
+Black 1 x 2 x 1 - 1 brick
+Brick Yellow 1 x 1 x 1 - 42 bricks
+Brick Yellow 1 x 2 x 1 - 14 bricks
+Brick Yellow 1 x 3 x 1 - 9 bricks
+Brick Yellow 1 x 4 x 1 - 13 bricks
+Brick Yellow 1 x 6 x 1 - 2 bricks
+Brick Yellow 1 x 8 x 1 - 1 brick
+Bright Orange 1 x 1 x 1 - 25 bricks
+Bright Orange 1 x 2 x 1 - 2 bricks
+Bright Red 1 x 1 x 1 - 2 bricks
+Bright Reddish Violet 1 x 1 x 1 - 5 bricks
+Dark Green 1 x 1 x 1 - 4 bricks
+Dark Green 1 x 2 x 1 - 2 bricks
+Dark Green 1 x 4 x 1 - 1 brick
+Dark Green 1 x 6 x 1 - 2 bricks
+Dark Stone Grey 1 x 1 x 1 - 112 bricks
+Dark Stone Grey 1 x 2 x 1 - 26 bricks
+Dark Stone Grey 1 x 3 x 1 - 14 bricks
+Dark Stone Grey 1 x 4 x 1 - 5 bricks
+Dark Stone Grey 1 x 6 x 1 - 2 bricks
+Light Purple 1 x 1 x 1 - 24 bricks
+Light Purple 1 x 2 x 1 - 5 bricks
+Medium Azur 1 x 1 x 1 - 49 bricks
+Medium Azur 1 x 2 x 1 - 35 bricks
+Medium Azur 1 x 4 x 1 - 46 bricks
+Medium Azur 1 x 6 x 1 - 63 bricks
+Medium Blue 1 x 1 x 1 - 12 bricks
+Medium Blue 1 x 2 x 1 - 2 bricks
+Medium Blue 1 x 4 x 1 - 1 brick
+Medium Lavender 1 x 1 x 1 - 2 bricks
+Medium Stone Grey 1 x 1 x 1 - 43 bricks
+Medium Stone Grey 1 x 2 x 1 - 10 bricks
+Reddish Brown 1 x 1 x 1 - 40 bricks
+Reddish Brown 1 x 2 x 1 - 24 bricks
+Reddish Brown 1 x 3 x 1 - 15 bricks
+Reddish Brown 1 x 4 x 1 - 12 bricks
+Reddish Brown 1 x 6 x 1 - 1 brick
+Reddish Brown 1 x 8 x 1 - 2 bricks
+White 1 x 1 x 1 - 24 bricks
+White 1 x 2 x 1 - 2 bricks
+White 1 x 3 x 1 - 1 brick
+
+Plan
+-------------------------------------------------------------------------
+0: [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+1: [ Medium Azur 1 x 4 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Blue 1 x 4 x 1 ] [ Medium Blue 1 x 2 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+2: [ Medium Azur 1 x 4 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Dark Green 1 x 6 x 1 ] [ Dark Green 1 x 4 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+3: [ Medium Azur 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Black 1 x 1 x 1 ] [ Dark Green 1 x 6 x 1 ] [ Dark Green 1 x 2 x 1 ] [ Dark Green 1 x 1 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+4: [ Medium Azur 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 6 x 1 ] [ Dark Green 1 x 2 x 1 ] [ Dark Green 1 x 1 x 1 ] [ Black 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+5: [ Medium Azur 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 8 x 1 ] [ Dark Green 1 x 1 x 1 ] [ Black 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Dark Green 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+6: [ Medium Azur 1 x 4 x 1 ] [ Medium Stone Grey 1 x 2 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Blue 1 x 2 x 1 ] [ Medium Azur 1 x 4 x 1 ] 
+
+7: [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 4 x 1 ] 
+
+8: [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Brick Yellow 1 x 6 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 4 x 1 ] 
+
+9: [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Blue 1 x 1 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Brick Yellow 1 x 3 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 4 x 1 ] 
+
+10: [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 8 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Bright Orange 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 4 x 1 ] 
+
+11: [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Stone Grey 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 6 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ White 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Bright Orange 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 4 x 1 ] 
+
+12: [ Medium Azur 1 x 4 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Medium Stone Grey 1 x 2 x 1 ] [ White 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+13: [ Medium Azur 1 x 4 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Medium Stone Grey 1 x 2 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+14: [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ White 1 x 2 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Medium Stone Grey 1 x 2 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+15: [ Medium Azur 1 x 4 x 1 ] [ Medium Stone Grey 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+16: [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ White 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ White 1 x 1 x 1 ] [ Light Purple 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+17: [ Medium Azur 1 x 4 x 1 ] [ White 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Light Purple 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Light Purple 1 x 2 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Medium Stone Grey 1 x 2 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+18: [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Dark Stone Grey 1 x 6 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Brick Yellow 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Medium Stone Grey 1 x 2 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+19: [ Medium Azur 1 x 4 x 1 ] [ White 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Dark Stone Grey 1 x 6 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 3 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] 
+
+20: [ Medium Azur 1 x 4 x 1 ] [ White 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+21: [ Medium Azur 1 x 4 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 3 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 4 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Light Purple 1 x 2 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+22: [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Light Purple 1 x 2 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+23: [ Medium Azur 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 3 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+24: [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+25: [ Medium Azur 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] 
+
+26: [ Medium Azur 1 x 2 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+27: [ Medium Azur 1 x 4 x 1 ] [ Medium Lavender 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 3 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+28: [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 2 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 4 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Brick Yellow 1 x 3 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] 
+
+29: [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] 
+
+30: [ Medium Azur 1 x 6 x 1 ] [ White 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Stone Grey 1 x 2 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] 
+
+31: [ Medium Azur 1 x 6 x 1 ] [ White 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 4 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] 
+
+32: [ Medium Azur 1 x 6 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] 
+
+33: [ Medium Azur 1 x 6 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Brick Yellow 1 x 1 x 1 ] [ Bright Orange 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] 
+
+34: [ Medium Azur 1 x 6 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] 
+
+35: [ Medium Azur 1 x 6 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] 
+
+36: [ Medium Azur 1 x 6 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Medium Stone Grey 1 x 2 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] 
+
+37: [ Medium Azur 1 x 6 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Bright Red 1 x 1 x 1 ] [ Bright Reddish Violet 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Bright Reddish Violet 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 6 x 1 ] 
+
+38: [ Medium Azur 1 x 6 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Bright Reddish Violet 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ White 1 x 1 x 1 ] [ Bright Reddish Violet 1 x 1 x 1 ] [ Bright Red 1 x 1 x 1 ] [ Bright Reddish Violet 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+39: [ Medium Azur 1 x 6 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Dark Stone Grey 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+40: [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ White 1 x 3 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+41: [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] [ Medium Lavender 1 x 1 x 1 ] [ Reddish Brown 1 x 3 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 2 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ White 1 x 2 x 1 ] [ Light Purple 1 x 1 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 
+
+42: [ Medium Azur 1 x 4 x 1 ] [ White 1 x 1 x 1 ] [ Medium Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 4 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 1 x 1 ] [ Reddish Brown 1 x 8 x 1 ] [ Reddish Brown 1 x 1 x 1 ] [ Dark Stone Grey 1 x 3 x 1 ] [ Medium Azur 1 x 6 x 1 ] [ Medium Azur 1 x 4 x 1 ] [ Medium Azur 1 x 1 x 1 ] 

@@ -5,6 +5,8 @@ use warnings;
 
 use parent qw(Lego::From::PNG::View);
 
+use Lego::From::PNG::Const qw(:all);
+
 use Data::Debug;
 
 sub print {
@@ -14,14 +16,18 @@ sub print {
     my @styles;
     my @brick_list;
 
-    push @styles, '.lego_instructions td { height: 1em; }';
+    push @styles, '.picture td { height: 1em; }';
 
+    push @styles, ".length_$_ { width: ${_}em; }" for LEGO_BRICK_LENGTHS;
+
+    my $brick_total = 0;
     for my $color (sort { $a->{'color'}.$a->{'length'} cmp $b->{'color'}.$b->{'length'} } values %{$args{'bricks'}}) {
         my $cid = $color->{'color'};
         my $lego_color = $self->png->lego_colors->{$cid};
 
         push @styles, '.'.lc($cid).' { background: #'.$lego_color->{'hex_color'}.'; }';
         push @brick_list, '<tr><td>'.$lego_color->{'official_name'}.' '.join('x',@{$color}{qw(depth length height)}).'</td><td>'.$color->{'quantity'}.'</td></tr>';
+        $brick_total += $color->{'quantity'};
     }
 
     my $html;
@@ -31,30 +37,32 @@ sub print {
     $html .= $_."\n" for @styles;
     $html .= qq{</style>\n\n};
 
-    # Heading
-    $html .= qq{<h1>Brick List and Instructions</h1>\n\n};
-
     # Brick List
+    $html .= qq{<section class="brick_list">\n};
     $html .= qq{<h2>Brick List</h2>\n};
-    $html .= qq{<table class="lego_list"><thead><tr><th>Brick</th><th>Quantity</th></thead><tbody>\n};
+    $html .= qq{<p>Total Bricks - $brick_total</p>\n};
+    $html .= qq{<table><thead><tr><th>Brick</th><th>Quantity</th></thead><tbody>\n};
     $html .= $_."\n" for @brick_list;
-    $html .= qq{</tbody></table>\n\n};
+    $html .= qq{</tbody></table>\n};
+    $html .= qq{</section>\n\n};
 
-    # Instructions
-    $html .= qq{<h2>Instructions</h2>\n};
-    $html .= qq{<table class="lego_instructions" border="1"><tbody>\n};
+    # Picture
+    $html .= qq{<section class="brick_display">\n};
+    $html .= qq{<h2>Picture</h2>\n};
+    $html .= qq{<table class="picture" border="1"><tbody>\n};
     $html .= qq{<tr>}; # first <tr>
     my $y = 0;
     for my $color (@{$args{'plan'}}) {
-        my ($class, $colspan) = (lc($color->{'color'}),$color->{'length'});
+        my ($class, $colspan, $name) = (lc($color->{'color'}), $color->{'length'}, $self->png->lego_colors->{$color->{'color'}}{'official_name'});
         if($y != $color->{'meta'}{'y'}) {
             $html .= qq{</tr>\n};
             $y = $color->{'meta'}{'y'};
         }
-        $html .= qq[<td colspan="$colspan" class="$class" style="width: ${colspan}em;"></td>];
+        $html .= qq[<td colspan="$colspan" title="$name $color->{'depth'}x$color->{'length'}x$color->{'height'}" class="$class length_${colspan}"></td>];
     }
     $html .= qq{</tr>\n}; # last </tr>
     $html .= qq{</tbody></table>\n};
+    $html .= qq{</section>\n};
 
     return $html;
 }

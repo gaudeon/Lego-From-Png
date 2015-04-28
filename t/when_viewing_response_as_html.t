@@ -52,23 +52,31 @@ sub should_return_properly_formatted_HTML {
 
     my $color_info = $object->lego_colors->{ $color };
 
+    my @length_classes;
+    push @length_classes, ".length_$_ { width: ${_}em; }" for LEGO_BRICK_LENGTHS;
+    my $length_classes = join("\n", @length_classes);
+
 my $expected = <<"HTML";
 <style>
-.lego_instructions td { height: 1em; }
+.picture td { height: 1em; }
+$length_classes
 .$class { background: #$color_info->{'hex_color'}; }
 </style>
 
-<h1>Brick List and Instructions</h1>
-
+<section class="brick_list">
 <h2>Brick List</h2>
-<table class="lego_list"><thead><tr><th>Brick</th><th>Quantity</th></thead><tbody>
+<p>Total Bricks - 1</p>
+<table><thead><tr><th>Brick</th><th>Quantity</th></thead><tbody>
 <tr><td>$color_info->{'official_name'} 1x1x1</td><td>1</td></tr>
 </tbody></table>
+</section>
 
-<h2>Instructions</h2>
-<table class="lego_instructions" border="1"><tbody>
-<tr><td class="$class" style="width: 1em;"></td></tr>
+<section class="brick_display">
+<h2>Picture</h2>
+<table class="picture" border="1"><tbody>
+<tr><td colspan="1" title="$color_info->{'official_name'} 1x1x1" class="$class length_1"></td></tr>
 </tbody></table>
+</section>
 HTML
 
     my $result = $object->process(view => 'HTML');

@@ -12,9 +12,9 @@ my $file = shift @ARGV || die "PNG required";
 my $png = Lego::From::PNG->new({ filename => $file, whitelist => [ whitelist() ] });
 
 # HTML
-#my $result = $png->process(view => HTML);
-#print $result;
-#exit;
+my $result = $png->process(view => HTML);
+print $result;
+exit;
 
 # Text
 my $result = $png->process;
