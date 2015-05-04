@@ -11,7 +11,7 @@ use warnings;
 use FindBin qw($Bin);
 use Filesys::Notify::Simple;
 use Getopt::Long;
-use Test::Harness;
+use TAP::Harness;
 use Data::Debug;
 
 use lib "$Bin/../lib";
@@ -28,8 +28,6 @@ sub new {
         'verbose|v+' => \$verbose,
         'test|t=s'   => \$test,
     ) or die "Error in command line arguments\n";
-
-    $Test::Harness::verbose = 1 if $verbose;
 
     $hash->{'verbose'} = $verbose;
 
@@ -56,6 +54,19 @@ sub run {
     }
 }
 
+sub harness {
+    my $self = shift;
+
+    return $self->{'harness'} ||= do {
+        my $h = TAP::Harness->new({
+            verbosity => $self->{'verbose'} || 0,
+            lib       => [ "$Bin/../lib", "$Bin/../t/lib" ],
+        });
+
+        $h;
+    };
+}
+
 sub test_all_the_things {
     my $self = shift;
 
@@ -63,7 +74,7 @@ sub test_all_the_things {
 
     $self->clear();
 
-    runtests( @test_files );
+    $self->harness->runtests( @test_files );
 }
 
 sub test_files {
