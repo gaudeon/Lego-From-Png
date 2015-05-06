@@ -1,6 +1,6 @@
 # -*- perl -*-
 
-# t/when_viewing_response_as_json.t - Test module's JSON view option
+# t/007_when_viewing_response_as_json.t - Test module's JSON view option
 
 use strict;
 use warnings;

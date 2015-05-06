@@ -1,6 +1,6 @@
 # -*- perl -*-
 
-# t/when_processing_pngs.t - Test aspects of module's process method
+# t/006_when_processing_pngs.t - Test aspects of module's process method
 
 use strict;
 use warnings;

@@ -1,0 +1,16 @@
+# Version control
+^\.git
+
+# Non-CPAN stuff
+^bin/
+^docs/
+^cover_db/
+^nytprof.out
+
+# Makemaker generated files and dirs.
+^MANIFEST\.
+^Makefile$
+^Makefile.old$
+^blib/
+^MakeMaker-\d
+^MYMETA\.

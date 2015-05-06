@@ -3,6 +3,10 @@ package Lego::From::PNG::View;
 use strict;
 use warnings;
 
+BEGIN {
+    $Lego::From::PNG::View::VERSION = '0.01';
+}
+
 use Data::Debug;
 
 sub new {

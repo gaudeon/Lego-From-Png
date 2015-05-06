@@ -1,6 +1,6 @@
 # -*- perl -*-
 
-# t/when_viewing_response_as_html.t - Test module's HTML view option
+# t/008_when_viewing_response_as_html.t - Test module's HTML view option
 
 use strict;
 use warnings;

@@ -1,6 +1,6 @@
 # -*- perl -*-
 
-# t/when_creating_bricks.t - test brick module
+# t/004_when_creating_bricks.t - test brick module
 
 use strict;
 use warnings;

@@ -3,6 +3,10 @@ package Lego::From::PNG::Brick;
 use strict;
 use warnings;
 
+BEGIN {
+    $Lego::From::PNG::Brick::VERSION = '0.01';
+}
+
 use Lego::From::PNG::Const qw(:all);
 
 use Data::Debug;

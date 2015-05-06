@@ -3,6 +3,10 @@ package Lego::From::PNG::View::JSON;
 use strict;
 use warnings;
 
+BEGIN {
+    $Lego::From::PNG::VERSION = '0.01';
+}
+
 use parent qw(Lego::From::PNG::View);
 
 use Data::Debug;

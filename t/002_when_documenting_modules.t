@@ -1,6 +1,6 @@
 # -*- perl -*-
 
-# t/when_documenting_modules.t - Test module's pod coverage
+# t/002_when_documenting_modules.t - Test module's pod coverage
 
 use strict;
 use warnings;

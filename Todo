@@ -1,5 +1,4 @@
 TODO list for Perl module Lego::From::PNG
 
-- Nothing yet
-
-
+- Optimize processing to interlace legos to improve structural integrity of the lego build.
+- Add feature to build legos with the knob facing the viewer leading to utilizing bricks with depth and length instead of just length.

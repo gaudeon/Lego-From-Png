@@ -1,4 +1,4 @@
-
+#!/usr/bin/env perl
 
 use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
@@ -10,7 +10,9 @@ WriteMakefile(
     ABSTRACT     => 'Convert PNGs into plans to build a two dimensional lego replica. ',
     PREREQ_PM    => {
                         'Test::Simple'       => 0.44,
-                        'File::Temp'         => 0.2304,
+                        'File::Temp'         => 0.23,
                         'Image::PNG::Libpng' => 0.39,
+                        'Data::Debug'        => 0.03,
+                        'JSON'               => 2.90,
                     },
 );

@@ -1,6 +1,6 @@
 # -*- perl -*-
 
-# t/when_getting_png_info.t - test getting various information about the png being converted 
+# t/005_when_getting_png_info.t - test getting various information about the png being converted 
 
 use strict;
 use warnings;

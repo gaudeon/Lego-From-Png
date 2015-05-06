@@ -3,6 +3,10 @@ package Lego::From::PNG;
 use strict;
 use warnings;
 
+BEGIN {
+    $Lego::From::PNG::VERSION = '0.01';
+}
+
 use Image::PNG::Libpng qw(:all);
 use Image::PNG::Const qw(:all);
 
@@ -436,7 +440,24 @@ Lego::From::PNG - Convert PNGs into plans to build a two dimensional lego replic
 
 =head1 DESCRIPTION
 
-Convert a PNG into a block list and plans to build a two dimensional replica of the PNG.
+Convert a PNG into a block list and plans to build a two dimensional replica of the PNG. The plans are built with brick
+ knobs pointed vertically so the picture will look like a flat surface to the viewer. Meaning the only dimension
+ of the brick being determined is the length. Depth and height are all the same for all bricks.
+
+$hash->{'filename'} = $args{'filename'};
+
+    $hash->{'unit_size'} = $args{'unit_size'} || 1;
+
+    # Brick depth and height defaults
+    $hash->{'brick_depth'} = 1;
+
+    $hash->{'brick_height'} = 1;
+
+    # White list default
+    $hash->{'whitelist'} = ($args{'whitelist'} && ref($args{'whitelist'}) eq 'ARRAY' && scalar(@{$args{'whitelist'}}) > 0) ? $args{'whitelist'} : undef;
+
+    # Black list default
+    $hash->{'blacklist'} = ($args{'blacklist'} && ref($args{'blacklist'}) eq 'ARRAY' && scalar(@{$args{'blacklist'}}) > 0) ? $args{'blacklist'} : undef;
 
 =head1 USAGE
 
@@ -447,6 +468,24 @@ Convert a PNG into a block list and plans to build a two dimensional replica of 
 
  Returns   : Lego::From::PNG object
  Argument  :
+    filename - Optional. The file name of the PNG to process. Optional but if not provided, can't process the png.
+        e.g. filename => '/location/of/the.png'
+
+    unit_size - Optional. The size of pixels squared to determine a single unit of a brick. Defaults to 1.
+        e.g. unit_size => 2 # pixelated colors are 2x2 in size
+
+    brick_depth - Optional. The depth of all generated bricks. Defaults to 1.
+        e.g. brick_depth => 2 # final depth of all bricks are 2. So 2 x length x height
+
+    brick_heigtht - Optional. The height of all generated bricks. Defaults to 1.
+        e.g. brick_height => 2 # final height of all bricks are 2. So depth x length x 2
+
+    whitelist - Optional. Array ref of colors, dimensions or color and dimensions that are allowed in the final plan output.
+        e.g. whitelist => [ 'BLACK', 'WHITE', '1x1x1', '1x2x1', '1x4x1', 'BLACK_1x6x1' ]
+
+    blacklist - Optional. Array ref of colors, dimensions or color and dimensions that are not allowed in the final plan output.
+        e.g. blacklist => [ 'RED', '1x10x1', '1x12x1', '1x16x1', 'BLUE_1x8x1' ]
+
  Throws    :
 
  Comment   :

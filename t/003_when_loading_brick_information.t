@@ -1,6 +1,6 @@
 # -*- perl -*-
 
-# t/when_loading_brick_information.t - test loading lego brick information
+# t/003_when_loading_brick_information.t - test loading lego brick information
 
 use strict;
 use warnings;

@@ -1,5 +1,9 @@
 package Lego::From::PNG::Const;
 
+BEGIN {
+    $Lego::From::PNG::Const::VERSION = '0.01';
+}
+
 require Exporter;
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(
