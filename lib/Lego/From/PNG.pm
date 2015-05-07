@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 BEGIN {
-    $Lego::From::PNG::VERSION = '0.01';
+    $Lego::From::PNG::VERSION = '0.02';
 }
 
 use Image::PNG::Libpng qw(:all);
