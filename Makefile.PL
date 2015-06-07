@@ -9,6 +9,7 @@ WriteMakefile(
     AUTHOR           => 'Travis Chase (gaudeon@cpan.org)',
     ABSTRACT         => 'Convert PNGs into plans to build a two dimensional lego replica. ',
     MIN_PERL_VERSION => '5.14.0',
+    LICENSE          => 'mit',
     PREREQ_PM        => {
                         'Test::Simple'       => 0.44,
                         'File::Temp'         => 0.23,
