@@ -17,4 +17,9 @@ WriteMakefile(
                         'Data::Debug'        => 0.03,
                         'JSON'               => 2.90,
                     },
+    META_MERGE       => {
+        resources => {
+            repository => 'https://github.com/gaudeon/Lego-From-Png',
+        },
+    },
 );
