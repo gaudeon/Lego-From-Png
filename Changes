@@ -1,6 +1,6 @@
 Revision history for Perl module Lego::From::PNG
 
-0.01 May 6, 2015
+0.02 May 6, 2015
     - Fixed 006_when_processing_pngs to have a .t extension
 
 0.01 May 6, 2015

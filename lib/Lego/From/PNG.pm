@@ -477,7 +477,7 @@ $hash->{'filename'} = $args{'filename'};
     brick_depth - Optional. The depth of all generated bricks. Defaults to 1.
         e.g. brick_depth => 2 # final depth of all bricks are 2. So 2 x length x height
 
-    brick_heigtht - Optional. The height of all generated bricks. Defaults to 1.
+    brick_height - Optional. The height of all generated bricks. Defaults to 1.
         e.g. brick_height => 2 # final height of all bricks are 2. So depth x length x 2
 
     whitelist - Optional. Array ref of colors, dimensions or color and dimensions that are allowed in the final plan output.
@@ -565,66 +565,6 @@ $hash->{'filename'} = $args{'filename'};
  Comment   :
  See Also  :
 
-=head2 _png_blocks_of_color
-
- Usage     : ->_png_blocks_of_color()
- Purpose   : Convert a provided PNG into a list of rgb values based on [row][color]. Size of blocks are determined by 'unit_size'
-
- Returns   : A list of hashes contain r, g and b values. e.g. ( { r => #, g => #, b => # }, { ... }, ... )
- Argument  :
- Throws    :
-
- Comment   :
- See Also  :
-
-=head2 _find_lego_color
-
- Usage     : ->_find_lego_color
- Purpose   : given an rgb hash, finds the optimal lego color
-
- Returns   : A lego color common name key that can then reference lego color information using L<Lego::From::PNG::lego_colors>
- Argument  :
- Throws    :
-
- Comment   :
- See Also  :
-
-=head2 _approximate_lego_colors
-
- Usage     : ->_approximate_lego_colors()
- Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
-
- Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
- Argument  :
- Throws    :
-
- Comment   :
- See Also  :
-
-=head2 _generate_brick_list
-
- Usage     : ->_approximate_lego_colors()
- Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
-
- Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
- Argument  :
- Throws    :
-
- Comment   :
- See Also  :
-
-=head2 _list_filters
-
- Usage     : ->_list_filters()
- Purpose   : return whitelist/blacklist filters
-
- Returns   : an hashref of filters
- Argument  : an optional filter restriction to limit set of filters returned to just one
- Throws    :
-
- Comment   :
- See Also  :
-
 =head2 whitelist
 
  Usage     : ->whitelist()
@@ -692,6 +632,66 @@ $hash->{'filename'} = $args{'filename'};
 
  Returns   : 1 or 0
  Argument  : $value - the value to test, $filter - optional scalar containing the filter to restrict test to
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 _png_blocks_of_color
+
+ Usage     : ->_png_blocks_of_color()
+ Purpose   : Convert a provided PNG into a list of rgb values based on [row][color]. Size of blocks are determined by 'unit_size'
+
+ Returns   : A list of hashes contain r, g and b values. e.g. ( { r => #, g => #, b => # }, { ... }, ... )
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 _find_lego_color
+
+ Usage     : ->_find_lego_color
+ Purpose   : given an rgb hash, finds the optimal lego color
+
+ Returns   : A lego color common name key that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 _approximate_lego_colors
+
+ Usage     : ->_approximate_lego_colors()
+ Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
+
+ Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 _generate_brick_list
+
+ Usage     : ->_approximate_lego_colors()
+ Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
+
+ Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 _list_filters
+
+ Usage     : ->_list_filters()
+ Purpose   : return whitelist/blacklist filters
+
+ Returns   : an hashref of filters
+ Argument  : an optional filter restriction to limit set of filters returned to just one
  Throws    :
 
  Comment   :
