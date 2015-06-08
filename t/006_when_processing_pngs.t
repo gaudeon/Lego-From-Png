@@ -35,6 +35,8 @@ should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimension();
 
 should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_brick_dimension();
 
+should_return_information_about_the_generated_plan();
+
 done_testing( $tests );
 
 exit;
@@ -304,4 +306,64 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_bric
     is_deeply($result->{'plan'}, $expected, "Bricks generated are of the whitelisted color and dimenstions we chose");
 
     $tests++;
+}
+
+sub should_return_information_about_the_generated_plan {
+    my ($width, $height, $unit_size) = (256, 256, 16);
+
+    my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size });
+
+    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, metric => 1 });
+
+    my $result = $object->process();
+
+    my $plan_depth = Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_DEPTH;
+
+    my $plan_length = ($width / $unit_size)
+                * (Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_LENGTH);
+
+    my $plan_height = ($height / $unit_size)
+                * (Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT);
+
+    my $expected_in_millimeters = {
+        metric => {
+            depth   => $plan_depth,
+            length  => $plan_length,
+            height  => $plan_height,
+        },
+    };
+
+    is_deeply($result->{'info'}, $expected_in_millimeters, "Information about plan (in millimeters) correct");
+
+    $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, imperial => 1 });
+
+    $result = $object->process();
+
+    $plan_depth = Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_DEPTH * Lego::From::PNG::Const->MILLIMETER_TO_INCH;
+
+    $plan_length = ($width / $unit_size)
+                * (Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_LENGTH * Lego::From::PNG::Const->MILLIMETER_TO_INCH);
+
+    $plan_height = ($height / $unit_size)
+                * (Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT * Lego::From::PNG::Const->MILLIMETER_TO_INCH);
+
+    my $expected_in_inches = {
+        imperial => {
+            depth   => $plan_depth,
+            length  => $plan_length,
+            height  => $plan_height,
+        }
+    };
+
+    is_deeply($result->{'info'}, $expected_in_inches, "Information about plan (in inches) is correct");
+
+    $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, metric => 1, imperial => 1 });
+
+    $result = $object->process();
+
+    my $expected_in_both = { %$expected_in_millimeters, %$expected_in_inches };
+
+    is_deeply($result->{'info'}, $expected_in_both, "Information about plan, in both imperial and metric, is correct");
+
+    $tests += 3;
 }

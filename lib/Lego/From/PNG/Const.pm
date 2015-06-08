@@ -10,6 +10,14 @@ require Exporter;
     LEGO_COLORS
     LEGO_BRICK_LENGTHS
     LEGO_UNIT
+    LEGO_UNIT_LENGTH
+    LEGO_UNIT_DEPTH
+    LEGO_UNIT_HEIGHT
+    LEGO_UNIT_STUD_DIAMETER
+    LEGO_UNIT_STUD_HEIGHT
+    LEGO_UNIT_STUD_SPACING
+    LEGO_UNIT_EDGE_TO_STUD
+    MILLIMETER_TO_INCH
     AQUA_OFFICIAL_NAME
     AQUA_COMMON_NAME
     AQUA_HEX_COLOR
@@ -330,7 +338,7 @@ use constant LEGO_BRICK_LENGTHS => qw(
 use constant {
     LEGO_UNIT               => 1.6, # in millimeters
     # the rest of these values are in lego units
-    LEGO_UNIT_WIDTH         => 5,
+    LEGO_UNIT_LENGTH        => 5,
     LEGO_UNIT_DEPTH         => 5,
     LEGO_UNIT_HEIGHT        => 6,
     LEGO_UNIT_STUD_DIAMETER => 3,

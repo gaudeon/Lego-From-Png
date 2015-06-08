@@ -59,7 +59,7 @@ sub should_load_lego_dimensions {
    my $object = Lego::From::PNG->new();
 
    my $expected_dim_in_millimeters = {
-      lego_unit_width         => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_WIDTH,
+      lego_unit_length        => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_LENGTH,
       lego_unit_depth         => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_DEPTH,
       lego_unit_height        => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT,
       lego_unit_stud_diameter => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_STUD_DIAMETER,
@@ -69,7 +69,7 @@ sub should_load_lego_dimensions {
    };
 
    my $expected_dim_in_inches = {
-      lego_unit_width         => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_WIDTH * Lego::From::PNG::Const->MILLIMETER_TO_INCH,
+      lego_unit_length        => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_LENGTH * Lego::From::PNG::Const->MILLIMETER_TO_INCH,
       lego_unit_depth         => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_DEPTH * Lego::From::PNG::Const->MILLIMETER_TO_INCH,
       lego_unit_height        => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT * Lego::From::PNG::Const->MILLIMETER_TO_INCH,
       lego_unit_stud_diameter => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_STUD_DIAMETER * Lego::From::PNG::Const->MILLIMETER_TO_INCH,
@@ -78,9 +78,9 @@ sub should_load_lego_dimensions {
       lego_unit_edge_to_stud  => Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_EDGE_TO_STUD * Lego::From::PNG::Const->MILLIMETER_TO_INCH,
    };
 
-   is_deeply($object->lego_dimensions, $expected_dim_in_millimeters, 'should load lego brick dimensions in millimeters by default');
+   is_deeply($object->lego_dimensions->{'metric'}, $expected_dim_in_millimeters, 'should load lego brick dimensions in millimeters by default');
 
-   is_deeply($object->lego_dimensions('imperial'), $expected_dim_in_inches, 'should load lego brick dimensions in inches when requested');
+   is_deeply($object->lego_dimensions->{'imperial'}, $expected_dim_in_inches, 'should load lego brick dimensions in inches when requested');
 
    $tests += 2;
 }

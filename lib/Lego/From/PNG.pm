@@ -40,6 +40,13 @@ sub new {
     # Black list default
     $hash->{'blacklist'} = ($args{'blacklist'} && ref($args{'blacklist'}) eq 'ARRAY' && scalar(@{$args{'blacklist'}}) > 0) ? $args{'blacklist'} : undef;
 
+    # Dimension measurement formats
+    $hash->{'metric'} = $args{'metric'} || 0;
+
+    $hash->{'imperial'} = $args{'imperial'} || 0;
+
+    $hash->{'metric'} = 1 if ! $hash->{'metric'} && ! $hash->{'imperial'};
+
     my $self = bless ($hash, ref ($class) || $class);
 
     return $self;
@@ -47,54 +54,56 @@ sub new {
 
 sub lego_dimensions {
     my $self = shift;
-    my $type = (shift || '') =~ /^imperial$/i ? 'imperial' : 'metric';
 
-    return $self->{'lego_dimensions'}{$type} ||= do {
+    return $self->{'lego_dimensions'} ||= do {
+        my $hash = {};
 
-        my $lego_unit_width         =
-            Lego::From::PNG::Const->LEGO_UNIT
-            * Lego::From::PNG::Const->LEGO_UNIT_WIDTH
-            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+        for my $type (qw/imperial metric/) {
+            my $lego_unit_length =
+                Lego::From::PNG::Const->LEGO_UNIT
+                * Lego::From::PNG::Const->LEGO_UNIT_LENGTH
+                * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
-        my $lego_unit_depth         =
-            Lego::From::PNG::Const->LEGO_UNIT
-            * Lego::From::PNG::Const->LEGO_UNIT_DEPTH
-            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            my $lego_unit_depth =
+                Lego::From::PNG::Const->LEGO_UNIT
+                * Lego::From::PNG::Const->LEGO_UNIT_DEPTH
+                * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
-        my $lego_unit_height        =
-            Lego::From::PNG::Const->LEGO_UNIT
-            * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT
-            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            my $lego_unit_height =
+                Lego::From::PNG::Const->LEGO_UNIT
+                * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT
+                * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
-        my $lego_unit_stud_diameter =
-            Lego::From::PNG::Const->LEGO_UNIT
-            * Lego::From::PNG::Const->LEGO_UNIT_STUD_DIAMETER
-            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            my $lego_unit_stud_diameter =
+                Lego::From::PNG::Const->LEGO_UNIT
+                * Lego::From::PNG::Const->LEGO_UNIT_STUD_DIAMETER
+                * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
-        my $lego_unit_stud_height   =
-            Lego::From::PNG::Const->LEGO_UNIT
-            * Lego::From::PNG::Const->LEGO_UNIT_STUD_HEIGHT
-            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            my $lego_unit_stud_height =
+                Lego::From::PNG::Const->LEGO_UNIT
+                * Lego::From::PNG::Const->LEGO_UNIT_STUD_HEIGHT
+                * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
-        my $lego_unit_stud_spacing  =
-            Lego::From::PNG::Const->LEGO_UNIT
-            * Lego::From::PNG::Const->LEGO_UNIT_STUD_SPACING
-            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            my $lego_unit_stud_spacing =
+                Lego::From::PNG::Const->LEGO_UNIT
+                * Lego::From::PNG::Const->LEGO_UNIT_STUD_SPACING
+                * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
-        my $lego_unit_edge_to_stud  =
-            Lego::From::PNG::Const->LEGO_UNIT
-            * Lego::From::PNG::Const->LEGO_UNIT_EDGE_TO_STUD
-            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            my $lego_unit_edge_to_stud =
+                Lego::From::PNG::Const->LEGO_UNIT
+                * Lego::From::PNG::Const->LEGO_UNIT_EDGE_TO_STUD
+                * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
-        my $hash = {
-            lego_unit_width         => $lego_unit_width,
-            lego_unit_depth         => $lego_unit_depth,
-            lego_unit_height        => $lego_unit_height,
-            lego_unit_stud_diameter => $lego_unit_stud_diameter,
-            lego_unit_stud_height   => $lego_unit_stud_height,
-            lego_unit_stud_spacing  => $lego_unit_stud_spacing,
-            lego_unit_edge_to_stud  => $lego_unit_edge_to_stud,
-        };
+            $hash->{$type} = {
+                lego_unit_length        => $lego_unit_length,
+                lego_unit_depth         => $lego_unit_depth,
+                lego_unit_height        => $lego_unit_height,
+                lego_unit_stud_diameter => $lego_unit_stud_diameter,
+                lego_unit_stud_height   => $lego_unit_stud_height,
+                lego_unit_stud_spacing  => $lego_unit_stud_spacing,
+                lego_unit_edge_to_stud  => $lego_unit_edge_to_stud,
+            };
+        }
 
         $hash;
     };
@@ -169,10 +178,16 @@ sub png_info {
     return $self->{'png_info'} ||= $self->png->get_IHDR;
 }
 
-sub block_row_width {
+sub block_row_length {
     my $self = shift;
 
-    return $self->{'block_row_width'} ||= $self->png_info->{'width'} / $self->{'unit_size'};
+    return $self->{'block_row_length'} ||= $self->png_info->{'width'} / $self->{'unit_size'};
+}
+
+sub block_row_height {
+    my $self = shift;
+
+    return $self->{'block_row_height'} ||= $self->png_info->{'height'} / $self->{'unit_size'};
 }
 
 sub process {
@@ -208,6 +223,8 @@ sub process {
         }
 
         $tally->{'bricks'} = \%list;
+
+        $tally->{'info'} = $self->_plan_info();
     }
 
     if($args{'view'}) {
@@ -384,7 +401,7 @@ sub _generate_brick_list {
 
     my $unit_count   = scalar(@{ $args{'units'} });
     my @units        = @{ $args{'units'} };
-    my $row_width    = $self->block_row_width;
+    my $row_width    = $self->block_row_length;
     my $brick_height = 1; # bricks are only one unit high
     my @brick_list;
 
@@ -473,6 +490,24 @@ sub _list_filters {
     $filters = +{ map { $_ => $filters->{$_} } @$allowed } if scalar @$allowed;
 
     return $filters;
+}
+
+sub _plan_info {
+    my $self = shift;
+
+    my %info;
+
+    for my $type (qw/metric imperial/) {
+        if ($self->{$type}) {
+            $info{$type} = {
+                depth  => $self->{'brick_depth'} * $self->lego_dimensions->{$type}->{'lego_unit_depth'},
+                length => $self->block_row_length * $self->lego_dimensions->{$type}->{'lego_unit_length'},
+                height => $self->block_row_height * $self->lego_dimensions->{$type}->{'lego_unit_height'},
+            };
+        }
+    }
+
+    return \%info;
 }
 
 =pod
@@ -603,12 +638,24 @@ $hash->{'filename'} = $args{'filename'};
  Comment   :
  See Also  :
 
-=head2 block_row_width
+=head2 block_row_length
 
- Usage     : ->block_row_width()
+ Usage     : ->block_row_length()
  Purpose   : Return the width of one row of blocks. Since a block list is a single dimension array this is useful to figure out whict row a block is on.
 
  Returns   : The length of a row of blocks (image width / unit size)
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 block_row_height
+
+ Usage     : ->block_row_height()
+ Purpose   : Return the height in blocks.
+
+ Returns   : The height of a row of blocks (image height / unit size)
  Argument  :
  Throws    :
 
