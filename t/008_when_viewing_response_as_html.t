@@ -56,12 +56,25 @@ sub should_return_properly_formatted_HTML {
     push @length_classes, ".length_$_ { width: ${_}em; }" for LEGO_BRICK_LENGTHS;
     my $length_classes = join("\n", @length_classes);
 
+    my $plan_depth  = Lego::From::PNG::Const->LEGO_UNIT_DEPTH * Lego::From::PNG::Const->LEGO_UNIT;
+    my $plan_length = $width / $unit_size * Lego::From::PNG::Const->LEGO_UNIT_LENGTH * Lego::From::PNG::Const->LEGO_UNIT;
+    my $plan_height = $height / $unit_size * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT * Lego::From::PNG::Const->LEGO_UNIT;
+
 my $expected = <<"HTML";
 <style>
 .picture td { height: 1em; }
 $length_classes
 .$class { background: #$color_info->{'hex_color'}; }
 </style>
+
+<section class="info">
+<h2>Info</h2>
+<table><tbody>
+<tr><td>Depth:</td><td>$plan_depth mm</td></tr>
+<tr><td>Length:</td><td>$plan_length mm</td></tr>
+<tr><td>Height:</td><td>$plan_height mm</td></tr>
+</tbody></table>
+</section>
 
 <section class="brick_list">
 <h2>Brick List</h2>

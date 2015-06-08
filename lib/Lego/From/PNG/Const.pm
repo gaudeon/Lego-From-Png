@@ -18,6 +18,8 @@ require Exporter;
     LEGO_UNIT_STUD_SPACING
     LEGO_UNIT_EDGE_TO_STUD
     MILLIMETER_TO_INCH
+    METRIC_SUFFIX
+    IMPERIAL_SUFFIX
     AQUA_OFFICIAL_NAME
     AQUA_COMMON_NAME
     AQUA_HEX_COLOR
@@ -346,6 +348,8 @@ use constant {
     LEGO_UNIT_STUD_SPACING  => 2, # space between the edge of two lego studs on a brick
     LEGO_UNIT_EDGE_TO_STUD  => 1, # distance from the edge of a brick to the edge of a stud (this is why stud spacing is double that)
     MILLIMETER_TO_INCH      => 0.0393701, # just so we can provide a conversion option
+    METRIC_SUFFIX           => "mm",
+    IMPERIAL_SUFFIX         => "in.",
 };
 
 # Color Info

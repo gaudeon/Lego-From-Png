@@ -41,6 +41,24 @@ sub print {
     $html .= $_."\n" for @styles;
     $html .= qq{</style>\n\n};
 
+    # Info
+    $html .= qq{<section class="info">\n};
+    $html .= qq{<h2>Info</h2>\n};
+    for my $type(qw/metric imperial/) {
+        if (exists $args{'info'}{$type}) {
+            my $suffix_key = uc($type) . '_SUFFIX';
+            my $suffix     = Lego::From::PNG::Const->$suffix_key;
+
+            my ($depth, $length, $height) = @{$args{'info'}{$type}}{qw/depth length height/};
+            $html .= qq{<table><tbody>\n};
+            $html .= qq{<tr><td>Depth:</td><td>$depth $suffix</td></tr>\n};
+            $html .= qq{<tr><td>Length:</td><td>$length $suffix</td></tr>\n};
+            $html .= qq{<tr><td>Height:</td><td>$height $suffix</td></tr>\n};
+            $html .= qq{</tbody></table>\n};
+        }
+    }
+    $html .= qq{</section>\n\n};
+
     # Brick List
     $html .= qq{<section class="brick_list">\n};
     $html .= qq{<h2>Brick List</h2>\n};
@@ -142,4 +160,3 @@ perl(1).
 =cut
 
 1;
-
