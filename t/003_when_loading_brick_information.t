@@ -80,7 +80,7 @@ sub should_load_lego_dimensions {
 
    is_deeply($object->lego_dimensions, $expected_dim_in_millimeters, 'should load lego brick dimensions in millimeters by default');
 
-   is_deeply($object->lego_dimensions('inches'), $expected_dim_in_inches, 'should load lego brick dimensions in inches when requested');
+   is_deeply($object->lego_dimensions('imperial'), $expected_dim_in_inches, 'should load lego brick dimensions in inches when requested');
 
    $tests += 2;
 }

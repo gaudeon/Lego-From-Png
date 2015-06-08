@@ -47,44 +47,44 @@ sub new {
 
 sub lego_dimensions {
     my $self = shift;
-    my $type = (shift || '') =~ /^inch/ ? 'inch' : 'millimeter';
+    my $type = (shift || '') =~ /^imperial$/i ? 'imperial' : 'metric';
 
     return $self->{'lego_dimensions'}{$type} ||= do {
 
         my $lego_unit_width         =
             Lego::From::PNG::Const->LEGO_UNIT
             * Lego::From::PNG::Const->LEGO_UNIT_WIDTH
-            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
         my $lego_unit_depth         =
             Lego::From::PNG::Const->LEGO_UNIT
             * Lego::From::PNG::Const->LEGO_UNIT_DEPTH
-            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
         my $lego_unit_height        =
             Lego::From::PNG::Const->LEGO_UNIT
             * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT
-            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
         my $lego_unit_stud_diameter =
             Lego::From::PNG::Const->LEGO_UNIT
             * Lego::From::PNG::Const->LEGO_UNIT_STUD_DIAMETER
-            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
         my $lego_unit_stud_height   =
             Lego::From::PNG::Const->LEGO_UNIT
             * Lego::From::PNG::Const->LEGO_UNIT_STUD_HEIGHT
-            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
         my $lego_unit_stud_spacing  =
             Lego::From::PNG::Const->LEGO_UNIT
             * Lego::From::PNG::Const->LEGO_UNIT_STUD_SPACING
-            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
         my $lego_unit_edge_to_stud  =
             Lego::From::PNG::Const->LEGO_UNIT
             * Lego::From::PNG::Const->LEGO_UNIT_EDGE_TO_STUD
-            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+            * ($type eq 'imperial' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
 
         my $hash = {
             lego_unit_width         => $lego_unit_width,
@@ -545,10 +545,10 @@ $hash->{'filename'} = $args{'filename'};
 =head2 lego_dimensions
 
  Usage     : ->lego_dimensions()
- Purpose   : returns a hashref with lego dimension information in millimeters or inches
+ Purpose   : returns a hashref with lego dimension information in millimeters (metric) or inches (imperial)
 
  Returns   : hashref with lego dimension information, millimeters is default
- Argument  : $type - if set to /^inch/ then dimension information is returned in inches
+ Argument  : $type - if set to imperial then dimension information is returned in inches
  Throws    :
 
  Comment   :
