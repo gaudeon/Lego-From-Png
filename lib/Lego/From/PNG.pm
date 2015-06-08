@@ -16,6 +16,9 @@ use Lego::From::PNG::Brick;
 
 use Data::Debug;
 
+use Memoize;
+memoize('_find_lego_color', INSTALL => '_find_lego_color_fast');
+
 sub new {
     my $class = shift;
     my %args = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
@@ -169,6 +172,76 @@ sub process {
     return $tally;
 }
 
+sub whitelist { shift->{'whitelist'} }
+
+sub has_whitelist {
+    my $self    = shift;
+    my $allowed = shift; # arrayref listing filters we can use
+
+    my $found = 0;
+    for my $filter(values $self->_list_filters($allowed)) {
+        $found += scalar( grep { /$filter/ } @{ $self->whitelist || [] } );
+    }
+
+    return $found;
+}
+
+sub is_whitelisted {
+    my $self    = shift;
+    my $val     = shift;
+    my $allowed = shift; # arrayref listing filters we can use
+
+    return 1 if ! $self->has_whitelist($allowed); # return true if there is no whitelist
+
+    for my $entry( @{ $self->whitelist || [] } ) {
+        for my $filter( values %{ $self->_list_filters($allowed) } ) {
+            next unless $entry =~ /$filter/; # if there is at least a letter at the beginning then this entry has a color we can check
+
+            my $capture = $entry;
+            $capture =~ s/$filter/$1/;
+
+            return 1 if $val eq $capture;
+        }
+    }
+
+    return 0; # value is not in whitelist
+}
+
+sub blacklist { shift->{'blacklist'} }
+
+sub has_blacklist {
+    my $self    = shift;
+    my $allowed = shift; # optional filter restriction
+
+    my $found = 0;
+
+    for my $filter(values $self->_list_filters($allowed)) {
+        $found += scalar( grep { /$filter/ } @{ $self->blacklist || [] } );
+    }
+
+    return $found;
+}
+
+sub is_blacklisted {
+    my $self    = shift;
+    my $val     = shift;
+    my $allowed = shift; # optional filter restriction
+
+    return 0 if ! $self->has_blacklist($allowed); # return false if there is no blacklist
+
+    for my $entry( @{ $self->blacklist || [] } ) {
+        for my $filter( values %{ $self->_list_filters($allowed) } ) {
+            next unless $entry =~ /$filter/; # if there is at least a letter at the beginning then this entry has a color we can check
+
+            my $capture = $1 || $entry;
+
+            return 1 if $val eq $capture;
+        }
+    }
+
+    return 0; # value is not in blacklist
+}
+
 sub _png_blocks_of_color {
     my $self = shift;
     my %args = ref $_[0] eq 'HASH' ? %{$_[0]} : @_;
@@ -210,34 +283,27 @@ sub _png_blocks_of_color {
     return @blocks;
 }
 
+sub _color_score {
+    my $self      = shift;
+    my ($c1, $c2) = @_;
+
+    return abs( $c1->[0] - $c2->[0] ) + abs( $c1->[1] - $c2->[1] ) + abs( $c1->[2] - $c2->[2] );
+}
+
 sub _find_lego_color {
-    my $self  = shift;
-    my $block = shift;
+    my $self        = shift;
+    my ($r, $g, $b) = @_;
 
-    my @optimal_color =
-            map  { $_->{'cid'} }
-            sort { $a->{'score'} <=> $b->{'score'} }
-            map  {
-                +{
-                    cid => $_->{'cid'},
-                    score => abs( $block->{'r'} - $_->{'rgb_color'}[0] )
-                           + abs( $block->{'g'} - $_->{'rgb_color'}[1] )
-                           + abs( $block->{'b'} - $_->{'rgb_color'}[2] ),
-                };
-            }
-            values %{ $self->lego_colors };
+    my %scores = map  {
+            $_->{'cid'} => $self->_color_score( [$r, $g, $b], $_->{'rgb_color'} ),
+        }
+        grep { ! $self->is_blacklisted( $_->{'cid'}, 'color' ) }
+        grep { $self->is_whitelisted( $_->{'cid'}, 'color' ) }
+        values %{ $self->lego_colors };
 
-    my ($optimal_color) = grep {
-         my $choose_this_color = 1;
+    my @optimal_color = sort { ($scores{$a} || 0) <=> ($scores{$b} || 0) } keys %scores;
 
-         $choose_this_color = 0 if ! $self->is_whitelisted( $_, 'color' );
-
-         $choose_this_color = 0 if $self->is_blacklisted( $_, 'color' );
-
-         $choose_this_color; # return result
-    } @optimal_color; # first color in list that passes whitelist and blacklist should be the optimal color for tested block
-
-    return $optimal_color;
+    return shift @optimal_color;
 }
 
 sub _approximate_lego_colors {
@@ -249,7 +315,7 @@ sub _approximate_lego_colors {
     my @colors;
 
     for my $block(@{ $args{'blocks'} }) {
-        push @colors, $self->_find_lego_color( $block );
+        push @colors, $self->_find_lego_color_fast( $block->{'r'}, $block->{'g'}, $block->{'b'} );
     }
 
     return @colors;
@@ -352,76 +418,6 @@ sub _list_filters {
     $filters = +{ map { $_ => $filters->{$_} } @$allowed } if scalar @$allowed;
 
     return $filters;
-}
-
-sub whitelist { shift->{'whitelist'} }
-
-sub has_whitelist {
-    my $self    = shift;
-    my $allowed = shift; # arrayref listing filters we can use
-
-    my $found = 0;
-    for my $filter(values $self->_list_filters($allowed)) {
-        $found += scalar( grep { /$filter/ } @{ $self->whitelist || [] } );
-    }
-
-    return $found;
-}
-
-sub is_whitelisted {
-    my $self    = shift;
-    my $val     = shift;
-    my $allowed = shift; # arrayref listing filters we can use
-
-    return 1 if ! $self->has_whitelist($allowed); # return true if there is no whitelist
-
-    for my $entry( @{ $self->whitelist || [] } ) {
-        for my $filter( values %{ $self->_list_filters($allowed) } ) {
-            next unless $entry =~ /$filter/; # if there is at least a letter at the beginning then this entry has a color we can check
-
-            my $capture = $entry;
-            $capture =~ s/$filter/$1/;
-
-            return 1 if $val eq $capture;
-        }
-    }
-
-    return 0; # value is not in whitelist
-}
-
-sub blacklist { shift->{'blacklist'} }
-
-sub has_blacklist {
-    my $self    = shift;
-    my $allowed = shift; # optional filter restriction
-
-    my $found = 0;
-
-    for my $filter(values $self->_list_filters($allowed)) {
-        $found += scalar( grep { /$filter/ } @{ $self->blacklist || [] } );
-    }
-
-    return $found;
-}
-
-sub is_blacklisted {
-    my $self    = shift;
-    my $val     = shift;
-    my $allowed = shift; # optional filter restriction
-
-    return 0 if ! $self->has_blacklist($allowed); # return false if there is no blacklist
-
-    for my $entry( @{ $self->blacklist || [] } ) {
-        for my $filter( values %{ $self->_list_filters($allowed) } ) {
-            next unless $entry =~ /$filter/; # if there is at least a letter at the beginning then this entry has a color we can check
-
-            my $capture = $1 || $entry;
-
-            return 1 if $val eq $capture;
-        }
-    }
-
-    return 0; # value is not in blacklist
 }
 
 =pod
@@ -649,16 +645,31 @@ $hash->{'filename'} = $args{'filename'};
  Comment   :
  See Also  :
 
-=head2 _find_lego_color
+ =head2  _color_score
 
- Usage     : ->_find_lego_color
- Purpose   : given an rgb hash, finds the optimal lego color
+ Usage     : ->_color_score()
+ Purpose   : returns a score indicating the likeness of one color to another. The lower the number the closer the colors are to each other.
 
- Returns   : A lego color common name key that can then reference lego color information using L<Lego::From::PNG::lego_colors>
- Argument  :
+ Returns   : returns a positive integer score
+ Argument  : $c1 - array ref with rgb color values in that order
+             $c2 - array ref with rgb color values in that order
  Throws    :
 
  Comment   :
+ See Also  :
+
+=head2 _find_lego_color
+
+ Usage     : ->_find_lego_color
+ Purpose   : given an rgb params, finds the optimal lego color
+
+ Returns   : A lego color common name key that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+ Argument  : $r - the red value of a color
+             $g - the green value of a color
+             $b - the blue value of a color
+ Throws    :
+
+ Comment   : this subroutine is memoized as the name _find_lego_color_fast
  See Also  :
 
 =head2 _approximate_lego_colors
@@ -724,4 +735,3 @@ perl(1).
 =cut
 
 1;
-
