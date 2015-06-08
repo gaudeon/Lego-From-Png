@@ -45,6 +45,61 @@ sub new {
     return $self;
 }
 
+sub lego_dimensions {
+    my $self = shift;
+    my $type = (shift || '') =~ /^inch/ ? 'inch' : 'millimeter';
+
+    return $self->{'lego_dimensions'}{$type} ||= do {
+
+        my $lego_unit_width         =
+            Lego::From::PNG::Const->LEGO_UNIT
+            * Lego::From::PNG::Const->LEGO_UNIT_WIDTH
+            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+
+        my $lego_unit_depth         =
+            Lego::From::PNG::Const->LEGO_UNIT
+            * Lego::From::PNG::Const->LEGO_UNIT_DEPTH
+            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+
+        my $lego_unit_height        =
+            Lego::From::PNG::Const->LEGO_UNIT
+            * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT
+            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+
+        my $lego_unit_stud_diameter =
+            Lego::From::PNG::Const->LEGO_UNIT
+            * Lego::From::PNG::Const->LEGO_UNIT_STUD_DIAMETER
+            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+
+        my $lego_unit_stud_height   =
+            Lego::From::PNG::Const->LEGO_UNIT
+            * Lego::From::PNG::Const->LEGO_UNIT_STUD_HEIGHT
+            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+
+        my $lego_unit_stud_spacing  =
+            Lego::From::PNG::Const->LEGO_UNIT
+            * Lego::From::PNG::Const->LEGO_UNIT_STUD_SPACING
+            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+
+        my $lego_unit_edge_to_stud  =
+            Lego::From::PNG::Const->LEGO_UNIT
+            * Lego::From::PNG::Const->LEGO_UNIT_EDGE_TO_STUD
+            * ($type eq 'inch' ? Lego::From::PNG::Const->MILLIMETER_TO_INCH : 1);
+
+        my $hash = {
+            lego_unit_width         => $lego_unit_width,
+            lego_unit_depth         => $lego_unit_depth,
+            lego_unit_height        => $lego_unit_height,
+            lego_unit_stud_diameter => $lego_unit_stud_diameter,
+            lego_unit_stud_height   => $lego_unit_stud_height,
+            lego_unit_stud_spacing  => $lego_unit_stud_spacing,
+            lego_unit_edge_to_stud  => $lego_unit_edge_to_stud,
+        };
+
+        $hash;
+    };
+}
+
 sub lego_colors {
     my $self = shift;
 
@@ -487,12 +542,24 @@ $hash->{'filename'} = $args{'filename'};
  Comment   :
  See Also  :
 
+=head2 lego_dimensions
+
+ Usage     : ->lego_dimensions()
+ Purpose   : returns a hashref with lego dimension information in millimeters or inches
+
+ Returns   : hashref with lego dimension information, millimeters is default
+ Argument  : $type - if set to /^inch/ then dimension information is returned in inches
+ Throws    :
+
+ Comment   :
+ See Also  :
+
 =head2 lego_colors
 
  Usage     : ->lego_colors()
- Purpose   : Returns lego color constants consolidated as a hash.
+ Purpose   : returns lego color constants consolidated as a hash.
 
- Returns   : Hash ref with color constants keyed by the official color name in key form.
+ Returns   : hashref with color constants keyed by the official color name in key form.
  Argument  :
  Throws    :
 

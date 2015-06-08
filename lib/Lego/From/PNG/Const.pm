@@ -9,6 +9,7 @@ require Exporter;
 @EXPORT_OK = qw(
     LEGO_COLORS
     LEGO_BRICK_LENGTHS
+    LEGO_UNIT
     AQUA_OFFICIAL_NAME
     AQUA_COMMON_NAME
     AQUA_HEX_COLOR
@@ -265,6 +266,7 @@ require Exporter;
 
 %EXPORT_TAGS = ('all' => \@EXPORT_OK);
 
+# List of basic lego colors
 use constant LEGO_COLORS => qw(
     AQUA
     BLACK
@@ -310,6 +312,7 @@ use constant LEGO_COLORS => qw(
     WHITE_GLOW
 );
 
+# Common Brick Dimensions (by stud count)
 use constant LEGO_BRICK_LENGTHS => qw(
     1
     2
@@ -323,6 +326,21 @@ use constant LEGO_BRICK_LENGTHS => qw(
     16
 );
 
+# Lego Dimensions Info
+use constant {
+    LEGO_UNIT               => 1.6, # in millimeters
+    # the rest of these values are in lego units
+    LEGO_UNIT_WIDTH         => 5,
+    LEGO_UNIT_DEPTH         => 5,
+    LEGO_UNIT_HEIGHT        => 6,
+    LEGO_UNIT_STUD_DIAMETER => 3,
+    LEGO_UNIT_STUD_HEIGHT   => 1,
+    LEGO_UNIT_STUD_SPACING  => 2, # space between the edge of two lego studs on a brick
+    LEGO_UNIT_EDGE_TO_STUD  => 1, # distance from the edge of a brick to the edge of a stud (this is why stud spacing is double that)
+    MILLIMETER_TO_INCH      => 0.0393701, # just so we can provide a conversion option
+};
+
+# Color Info
 use constant {
     AQUA_OFFICIAL_NAME => 'Aqua',
     AQUA_COMMON_NAME => 'Unikitty Blue',
