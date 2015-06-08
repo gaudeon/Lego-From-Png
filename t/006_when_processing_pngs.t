@@ -322,8 +322,8 @@ sub should_return_information_about_the_generated_plan {
     my $plan_length = ($width / $unit_size)
                 * (Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_LENGTH);
 
-    my $plan_height = ($height / $unit_size)
-                * (Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT);
+    my $plan_height = (($height / $unit_size)
+                * (Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT)) + Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_STUD_HEIGHT;
 
     my $expected_in_millimeters = {
         metric => {
@@ -344,8 +344,8 @@ sub should_return_information_about_the_generated_plan {
     $plan_length = ($width / $unit_size)
                 * (Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_LENGTH * Lego::From::PNG::Const->MILLIMETER_TO_INCH);
 
-    $plan_height = ($height / $unit_size)
-                * (Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT * Lego::From::PNG::Const->MILLIMETER_TO_INCH);
+    $plan_height = ((($height / $unit_size)
+                * (Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT)) + Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_STUD_HEIGHT) * Lego::From::PNG::Const->MILLIMETER_TO_INCH;
 
     my $expected_in_inches = {
         imperial => {

@@ -502,7 +502,7 @@ sub _plan_info {
             $info{$type} = {
                 depth  => $self->{'brick_depth'} * $self->lego_dimensions->{$type}->{'lego_unit_depth'},
                 length => $self->block_row_length * $self->lego_dimensions->{$type}->{'lego_unit_length'},
-                height => $self->block_row_height * $self->lego_dimensions->{$type}->{'lego_unit_height'},
+                height => ($self->block_row_height * $self->lego_dimensions->{$type}->{'lego_unit_height'}) + $self->lego_dimensions->{$type}->{'lego_unit_stud_height'},
             };
         }
     }

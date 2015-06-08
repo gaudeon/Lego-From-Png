@@ -74,7 +74,7 @@ sub should_return_properly_formatted_JSON {
             metric => {
                 depth  => Lego::From::PNG::Const->LEGO_UNIT_DEPTH * Lego::From::PNG::Const->LEGO_UNIT,
                 length => $width / $unit_size * Lego::From::PNG::Const->LEGO_UNIT_LENGTH * Lego::From::PNG::Const->LEGO_UNIT,
-                height => $height / $unit_size * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT * Lego::From::PNG::Const->LEGO_UNIT,
+                height => ($height / $unit_size * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT * Lego::From::PNG::Const->LEGO_UNIT) + Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_STUD_HEIGHT,
             }
         }
     };

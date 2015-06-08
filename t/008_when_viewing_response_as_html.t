@@ -58,7 +58,7 @@ sub should_return_properly_formatted_HTML {
 
     my $plan_depth  = Lego::From::PNG::Const->LEGO_UNIT_DEPTH * Lego::From::PNG::Const->LEGO_UNIT;
     my $plan_length = $width / $unit_size * Lego::From::PNG::Const->LEGO_UNIT_LENGTH * Lego::From::PNG::Const->LEGO_UNIT;
-    my $plan_height = $height / $unit_size * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT * Lego::From::PNG::Const->LEGO_UNIT;
+    my $plan_height = ($height / $unit_size * Lego::From::PNG::Const->LEGO_UNIT_HEIGHT * Lego::From::PNG::Const->LEGO_UNIT) + Lego::From::PNG::Const->LEGO_UNIT * Lego::From::PNG::Const->LEGO_UNIT_STUD_HEIGHT;
 
 my $expected = <<"HTML";
 <style>

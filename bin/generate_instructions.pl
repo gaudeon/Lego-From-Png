@@ -9,7 +9,7 @@ use Data::Debug;
 
 my $file = shift @ARGV || die "PNG required";
 
-my $png = Lego::From::PNG->new({ filename => $file, whitelist => [ whitelist() ] });
+my $png = Lego::From::PNG->new({ filename => $file, whitelist => [ whitelist() ], imperial => 1 });
 
 # HTML
 my $result = $png->process(view => HTML);
