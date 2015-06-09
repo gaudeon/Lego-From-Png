@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 BEGIN {
-    $Lego::From::PNG::VERSION = '0.03';
+    $Lego::From::PNG::VERSION = '0.04';
 }
 
 use Image::PNG::Libpng qw(:all);
@@ -363,19 +363,26 @@ sub _color_score {
 }
 
 sub _find_lego_color {
-    my $self        = shift;
-    my ($r, $g, $b) = @_;
+    my $self  = shift;
+    my $rgb   = [ @_ ];
 
-    my %scores = map  {
-            $_->{'cid'} => $self->_color_score( [$r, $g, $b], $_->{'rgb_color'} ),
+    my @optimal_color =
+        map  { $_->{'cid'} }
+        sort { $a->{'score'} <=> $b->{'score'} }
+        map  {
+            +{
+                cid => $_->{'cid'},
+                score => $self->_color_score($rgb, $_->{'rgb_color'}),
+            };
         }
-        grep { ! $self->is_blacklisted( $_->{'cid'}, 'color' ) }
-        grep { $self->is_whitelisted( $_->{'cid'}, 'color' ) }
         values %{ $self->lego_colors };
 
-    my @optimal_color = sort { ($scores{$a} || 0) <=> ($scores{$b} || 0) } keys %scores;
+    my ($optimal_color) = grep {
+        $self->is_whitelisted( $_, 'color' )
+        && ! $self->is_blacklisted( $_, 'color' )
+    } @optimal_color; # first color in list that passes whitelist and blacklist should be the optimal color for tested block
 
-    return shift @optimal_color;
+    return $optimal_color;
 }
 
 sub _approximate_lego_colors {

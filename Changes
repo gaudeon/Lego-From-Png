@@ -1,5 +1,8 @@
 Revision history for Perl module Lego::From::PNG
 
+0.04 Jun 10, 2015
+    - Fixed bug in lego color discovery process that broke things
+
 0.03 Jun 9, 2015
     - Optimized color processing to better utilize memory by memoizing the lego color discovery process
     - Added information about the size of the resultant lego model when processing a png
