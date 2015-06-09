@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 BEGIN {
-    $Lego::From::PNG::Brick::VERSION = '0.01';
+    $Lego::From::PNG::Brick::VERSION = '0.03';
 }
 
 use Lego::From::PNG::Const qw(:all);
@@ -316,4 +316,3 @@ perl(1).
 =cut
 
 1;
-

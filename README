@@ -47,7 +47,7 @@ USAGE
         brick_depth - Optional. The depth of all generated bricks. Defaults to 1.
             e.g. brick_depth => 2 # final depth of all bricks are 2. So 2 x length x height
 
-        brick_heigtht - Optional. The height of all generated bricks. Defaults to 1.
+        brick_height - Optional. The height of all generated bricks. Defaults to 1.
             e.g. brick_height => 2 # final height of all bricks are 2. So depth x length x 2
 
         whitelist - Optional. Array ref of colors, dimensions or color and dimensions that are allowed in the final plan output.
@@ -61,11 +61,22 @@ USAGE
      Comment   :
      See Also  :
 
+  lego_dimensions
+     Usage     : ->lego_dimensions()
+     Purpose   : returns a hashref with lego dimension information in millimeters (metric) or inches (imperial)
+
+     Returns   : hashref with lego dimension information, millimeters is default
+     Argument  : $type - if set to imperial then dimension information is returned in inches
+     Throws    :
+
+     Comment   :
+     See Also  :
+
   lego_colors
      Usage     : ->lego_colors()
-     Purpose   : Returns lego color constants consolidated as a hash.
+     Purpose   : returns lego color constants consolidated as a hash.
 
-     Returns   : Hash ref with color constants keyed by the official color name in key form.
+     Returns   : hashref with color constants keyed by the official color name in key form.
      Argument  :
      Throws    :
 
@@ -106,11 +117,22 @@ USAGE
      Comment   :
      See Also  :
 
-  block_row_width
-     Usage     : ->block_row_width()
+  block_row_length
+     Usage     : ->block_row_length()
      Purpose   : Return the width of one row of blocks. Since a block list is a single dimension array this is useful to figure out whict row a block is on.
 
      Returns   : The length of a row of blocks (image width / unit size)
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  block_row_height
+     Usage     : ->block_row_height()
+     Purpose   : Return the height in blocks.
+
+     Returns   : The height of a row of blocks (image height / unit size)
      Argument  :
      Throws    :
 
@@ -124,61 +146,6 @@ USAGE
      Returns   : Hashref containing information about particular lego bricks found to be needed based on the provided PNG.
                  Also included is the build order for those bricks.
      Argument  : view => 'a view' - optionally format the return data. options include: JSON and HTML
-     Throws    :
-
-     Comment   :
-     See Also  :
-
-  _png_blocks_of_color
-     Usage     : ->_png_blocks_of_color()
-     Purpose   : Convert a provided PNG into a list of rgb values based on [row][color]. Size of blocks are determined by 'unit_size'
-
-     Returns   : A list of hashes contain r, g and b values. e.g. ( { r => #, g => #, b => # }, { ... }, ... )
-     Argument  :
-     Throws    :
-
-     Comment   :
-     See Also  :
-
-  _find_lego_color
-     Usage     : ->_find_lego_color
-     Purpose   : given an rgb hash, finds the optimal lego color
-
-     Returns   : A lego color common name key that can then reference lego color information using L<Lego::From::PNG::lego_colors>
-     Argument  :
-     Throws    :
-
-     Comment   :
-     See Also  :
-
-  _approximate_lego_colors
-     Usage     : ->_approximate_lego_colors()
-     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
-
-     Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
-     Argument  :
-     Throws    :
-
-     Comment   :
-     See Also  :
-
-  _generate_brick_list
-     Usage     : ->_approximate_lego_colors()
-     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
-
-     Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
-     Argument  :
-     Throws    :
-
-     Comment   :
-     See Also  :
-
-  _list_filters
-     Usage     : ->_list_filters()
-     Purpose   : return whitelist/blacklist filters
-
-     Returns   : an hashref of filters
-     Argument  : an optional filter restriction to limit set of filters returned to just one
      Throws    :
 
      Comment   :
@@ -245,6 +212,76 @@ USAGE
 
      Returns   : 1 or 0
      Argument  : $value - the value to test, $filter - optional scalar containing the filter to restrict test to
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  _png_blocks_of_color
+     Usage     : ->_png_blocks_of_color()
+     Purpose   : Convert a provided PNG into a list of rgb values based on [row][color]. Size of blocks are determined by 'unit_size'
+
+     Returns   : A list of hashes contain r, g and b values. e.g. ( { r => #, g => #, b => # }, { ... }, ... )
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+     =head2  _color_score
+
+     Usage     : ->_color_score()
+     Purpose   : returns a score indicating the likeness of one color to another. The lower the number the closer the colors are to each other.
+
+     Returns   : returns a positive integer score
+     Argument  : $c1 - array ref with rgb color values in that order
+                 $c2 - array ref with rgb color values in that order
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  _find_lego_color
+     Usage     : ->_find_lego_color
+     Purpose   : given an rgb params, finds the optimal lego color
+
+     Returns   : A lego color common name key that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+     Argument  : $r - the red value of a color
+                 $g - the green value of a color
+                 $b - the blue value of a color
+     Throws    :
+
+     Comment   : this subroutine is memoized as the name _find_lego_color_fast
+     See Also  :
+
+  _approximate_lego_colors
+     Usage     : ->_approximate_lego_colors()
+     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
+
+     Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  _generate_brick_list
+     Usage     : ->_approximate_lego_colors()
+     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
+
+     Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  _list_filters
+     Usage     : ->_list_filters()
+     Purpose   : return whitelist/blacklist filters
+
+     Returns   : an hashref of filters
+     Argument  : an optional filter restriction to limit set of filters returned to just one
      Throws    :
 
      Comment   :

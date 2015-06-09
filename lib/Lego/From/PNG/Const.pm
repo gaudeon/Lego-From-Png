@@ -1,7 +1,7 @@
 package Lego::From::PNG::Const;
 
 BEGIN {
-    $Lego::From::PNG::Const::VERSION = '0.01';
+    $Lego::From::PNG::Const::VERSION = '0.03';
 }
 
 require Exporter;

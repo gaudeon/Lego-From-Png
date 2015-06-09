@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 BEGIN {
-    $Lego::From::PNG::View::VERSION = '0.01';
+    $Lego::From::PNG::View::VERSION = '0.03';
 }
 
 use Data::Debug;
@@ -113,4 +113,3 @@ perl(1).
 =cut
 
 1;
-
