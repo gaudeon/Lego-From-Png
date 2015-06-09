@@ -8,6 +8,7 @@
 ^nytprof.out
 \.tar\.gz$
 ^benchmark/
+^ts/
 
 # Makemaker generated files and dirs.
 ^MANIFEST\.
