@@ -21,6 +21,12 @@ use Data::Debug;
 
 my $tests = 0;
 
+should_default_to_knob_orientation_of_forward();
+
+should_track_desired_knob_orientation();
+
+should_not_allow_invalid_knob_orientations();
+
 should_return_empty_list_with_no_params();
 
 should_return_the_right_count_of_blocks_of_colors();
@@ -42,6 +48,40 @@ done_testing( $tests );
 exit;
 
 # ----------------------------------------------------------------------
+
+sub should_default_to_knob_orientation_of_forward() {
+    my $object = Lego::From::PNG->new();
+
+    my $result = $object->knob_orientation();
+
+    cmp_ok($result, 'eq', Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD, 'should default to knob orientation of forward');
+
+    $tests++;
+}
+
+sub should_track_desired_knob_orientation {
+    my $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP });
+
+    my $result = $object->knob_orientation();
+
+    cmp_ok($result, 'eq', Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP, 'should be set to knob orientation of up');
+
+    $result = $object->knob_orientation(Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD);
+
+    cmp_ok($result, 'eq', Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD, 'should be set to knob orientation of forward');
+
+    $tests += 2;
+}
+
+sub should_not_allow_invalid_knob_orientations {
+    my $object = Lego::From::PNG->new({ knob_orientation => 'This does not work' });
+
+    my $result = $object->knob_orientation();
+
+    cmp_ok($result, 'eq', Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD, 'should be set to default knob orientation of forward when provided an invalid value');
+
+    $tests++;
+}
 
 sub should_return_empty_list_with_no_params {
     my $object = Lego::From::PNG->new();

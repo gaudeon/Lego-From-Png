@@ -49,6 +49,8 @@ sub new {
 
     my $self = bless ($hash, ref ($class) || $class);
 
+    $self->knob_orientation( $args{'knob_orientation'} ) if $args{'knob_orientation'};
+
     return $self;
 }
 
@@ -160,6 +162,42 @@ sub lego_bricks {
 
         $hash;
     };
+}
+
+sub lego_knob_orientations {
+    my $self = shift;
+
+    return $self->{'lego_knob_orientations'} ||= do {
+        my $hash = {};
+
+        for my $orientation ( LEGO_KNOB_ORIENTATIONS ) {
+            $hash->{ $orientation } = Lego::From::PNG::Const->$orientation;
+        }
+
+        $hash;
+    };
+}
+
+sub knob_orientation {
+    my $self = shift;
+    my $set_value = $_[0] ? lc(shift) : undef;
+
+    $self->{'knob_orientation'} = $set_value if $set_value && $self->validate_knob_orientation($set_value);
+
+    return $self->{'knob_orientation'} ||= Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD;
+}
+
+sub validate_knob_orientation {
+    my $self  = shift;
+    my $value = shift;
+
+    return 0 unless $value;
+
+    for my $orientation ( Lego::From::PNG::Const->LEGO_KNOB_ORIENTATIONS ) {
+        return 1 if $value eq Lego::From::PNG::Const->$orientation;
+    }
+
+    return 0;
 }
 
 sub png {
@@ -579,6 +617,9 @@ $hash->{'filename'} = $args{'filename'};
     blacklist - Optional. Array ref of colors, dimensions or color and dimensions that are not allowed in the final plan output.
         e.g. blacklist => [ 'RED', '1x10x1', '1x12x1', '1x16x1', 'BLUE_1x8x1' ]
 
+    knob_orientation - Optional. The facing direction of lego knobs, Either 'up' or 'forward'. This controls whether bricks are determined by depth and length ('forward') or lenght only ('up'). Defaults to 'forward'.
+        e.g. knob_orientation => 'up'
+
  Throws    :
 
  Comment   :
@@ -614,6 +655,42 @@ $hash->{'filename'} = $args{'filename'};
  Purpose   : Returns a list of all possible lego bricks
 
  Returns   : Hash ref with L<Lego::From::PNG::Brick> objects keyed by their identifier
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 lego_knob_orientations
+
+ Usage     : ->lego_knob_orientations()
+ Purpose   : Returns a list of all possible lego knob orientations
+
+ Returns   : Hash ref with L<Lego::From::PNG::Const> knob orientation values keyed by their identifier
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 knob_orientation
+
+ Usage     : ->knob_orientation()
+ Purpose   : Returns current knob orientation, defaults to LEGO_KNOB_ORIENTATION_FORWARD.
+
+ Returns   : value of the current knob orientation (either 'up' or 'forward')
+ Argument  :
+ Throws    :
+
+ Comment   : 'up' means knobs are pointed vertically. 'forward' means knobs are pointed towards the viewer.
+ See Also  :
+
+=head2 validate_knob_orientation
+
+ Usage     : ->validate_knob_orientation()
+ Purpose   : Make sure a potential knob orientation value is valid
+
+ Returns   : Returns 1 if passed value is a valid knob orientation, 0 otherwis
  Argument  :
  Throws    :
 

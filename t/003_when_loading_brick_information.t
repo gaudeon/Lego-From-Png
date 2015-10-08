@@ -29,6 +29,8 @@ should_load_lego_dimensions();
 
 should_load_all_brick_dimensions();
 
+should_load_possible_knob_orientations();
+
 done_testing( $tests );
 
 exit;
@@ -96,6 +98,18 @@ sub should_load_all_brick_dimensions {
     my $lengths = [ sort keys %seen ];
 
     is_deeply($lengths, $expected_lengths, 'should load all brick lengths');
+
+    $tests++;
+}
+
+sub should_load_possible_knob_orientations {
+    my $object = Lego::From::PNG->new();
+
+    my $expected_values = [ sort ( Lego::From::PNG::Const->LEGO_KNOB_ORIENTATIONS ) ];
+
+    my $values = [ sort keys %{ $object->lego_knob_orientations } ];
+
+    is_deeply($values, $expected_values, 'should load possible know orientations');
 
     $tests++;
 }

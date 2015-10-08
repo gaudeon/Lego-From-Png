@@ -1,12 +1,15 @@
 package Lego::From::PNG::Const;
 
+use strict;
+use warnings;
+
 BEGIN {
     $Lego::From::PNG::Const::VERSION = '0.04';
 }
 
 require Exporter;
-@ISA = qw(Exporter);
-@EXPORT_OK = qw(
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw(
     LEGO_COLORS
     LEGO_BRICK_LENGTHS
     LEGO_UNIT
@@ -272,9 +275,12 @@ require Exporter;
     WHITE_GLOW_RGB_COLOR_RED
     WHITE_GLOW_RGB_COLOR_GREEN
     WHITE_GLOW_RGB_COLOR_BLUE
+    LEGO_KNOB_ORIENTATIONS
+    LEGO_KNOB_ORIENTATION_UP
+    LEGO_KNOB_ORIENTATION_FORWARD
 );
 
-%EXPORT_TAGS = ('all' => \@EXPORT_OK);
+our %EXPORT_TAGS = ('all' => \@EXPORT_OK);
 
 # List of basic lego colors
 use constant LEGO_COLORS => qw(
@@ -649,8 +655,17 @@ use constant {
     WHITE_GLOW_RGB_COLOR_BLUE => 215,
 };
 
-use strict;
-use warnings;
+
+# List of basic lego colors
+use constant LEGO_KNOB_ORIENTATIONS => qw(
+    LEGO_KNOB_ORIENTATION_UP
+    LEGO_KNOB_ORIENTATION_FORWARD
+);
+
+use constant {
+    LEGO_KNOB_ORIENTATION_UP      => 'up',
+    LEGO_KNOB_ORIENTATION_FORWARD => 'forward',
+};
 
 =pod
 
