@@ -41,6 +41,8 @@ should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimension();
 
 should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_brick_dimension();
 
+should_return_a_list_of_lego_bricks_with_sequentual_meta_refs();
+
 should_return_information_about_the_generated_plan();
 
 done_testing( $tests );
@@ -49,7 +51,7 @@ exit;
 
 # ----------------------------------------------------------------------
 
-sub should_default_to_knob_orientation_of_forward() {
+sub should_default_to_knob_orientation_of_forward {
     my $object = Lego::From::PNG->new();
 
     my $result = $object->knob_orientation();
@@ -197,7 +199,8 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
             color  => $color,
             id     => $id,
             meta   => {
-                y => 0,
+                y   => 0,
+                ref => 0,
             },
         }, "Brick returned is the correct dimensions and color for brick of length $brick_length");
         $tests++;
@@ -233,7 +236,8 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color {
         id => "${whitelisted_color}_1x${brick_length}x1",
         length => $brick_length,
         meta => {
-            y => 0
+            y   => 0,
+            ref => 0,
         },
     };
 
@@ -274,7 +278,8 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimensio
             id => "${color}_1x3x1",
             length => 3,
             meta => {
-                y => 0
+                y   => 0,
+                ref => 0,
             },
         },
         {
@@ -284,7 +289,8 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimensio
             id => "${color}_1x1x1",
             length => 1,
             meta => {
-                y => 0
+                y   => 0,
+                ref => 1,
             },
         },
     ];
@@ -328,7 +334,8 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_bric
             id => "${whitelisted_color}_1x3x1",
             length => 3,
             meta => {
-                y => 0
+                y   => 0,
+                ref => 0,
             },
         },
         {
@@ -338,7 +345,8 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_bric
             id => "${whitelisted_color}_1x1x1",
             length => 1,
             meta => {
-                y => 0
+                y   => 0,
+                ref => 1,
             },
         },
     ];
@@ -346,6 +354,58 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_bric
     is_deeply($result->{'plan'}, $expected, "Bricks generated are of the whitelisted color and dimenstions we chose");
 
     $tests++;
+}
+
+sub should_return_a_list_of_lego_bricks_with_sequentual_meta_refs {
+    my $unit_size    = 16;
+    my $brick_length = 2;
+    my $brick_height = 2;
+
+    my ($width, $height) = ($brick_length * $unit_size, $brick_height * $unit_size);
+
+    # Pick a random lego color to test this part
+    my $color = do {
+        my @color_list = LEGO_COLORS;
+        my $num_lego_colors = scalar( @color_list );
+        $color_list[ int(rand() * $num_lego_colors) ];
+    };
+    my $color_rgb = do {
+        my ($r, $g, $b) = ($color . '_RGB_COLOR_RED', $color . '_RGB_COLOR_GREEN', $color . '_RGB_COLOR_BLUE');
+        [ Lego::From::PNG::Const->$r, Lego::From::PNG::Const->$g, Lego::From::PNG::Const->$b ];
+    };
+
+    my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
+
+    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size });
+
+    my @blocks = $object->_png_blocks_of_color();
+
+    my $num_block_colors = do {
+        my %colors;
+        $colors{ join('_', $_->{'r'}, $_->{'g'}, $_->{'b'}) } = 1 for @blocks;
+        scalar(keys %colors);
+    };
+
+    my @units = $object->_approximate_lego_colors(blocks => \@blocks);
+
+    my @bricks = $object->_generate_brick_list(units => \@units);
+
+    my $id = $color.'_1x'.$brick_length.'x1';
+
+    for(my $i = 0; $i < @bricks; $i++) {
+        is_deeply($bricks[$i]->flatten, {
+            length => $brick_length,
+            height => 1,
+            depth  => 1,
+            color  => $color,
+            id     => $id,
+            meta   => {
+                y   => $i,
+                ref => $i,
+            },
+        }, "Brick $i returned has the correct meta ref");
+        $tests++;
+    }
 }
 
 sub should_return_information_about_the_generated_plan {

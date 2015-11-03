@@ -448,6 +448,7 @@ sub _generate_brick_list {
     my @units        = @{ $args{'units'} };
     my $row_width    = $self->block_row_length;
     my $brick_height = 1; # bricks are only one unit high
+    my $brick_ref    = -1; # artificial auto-incremented id
     my @brick_list;
 
     for(my $y = 0; $y < ($unit_count / $row_width); $y++) {
@@ -463,7 +464,8 @@ sub _generate_brick_list {
                     length => $length,
                     height => $self->{'brick_height'},
                     meta   => {
-                        y => $y,
+                        y   => $y,
+                        ref => ++$brick_ref,
                     },
                 );
             }
