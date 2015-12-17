@@ -92,14 +92,23 @@ sub should_load_all_brick_dimensions {
 
     my $expected_lengths = [ sort ( Lego::From::PNG::Const->LEGO_BRICK_LENGTHS ) ];
 
-    my %seen;
-    $seen{ $_->length } = 1 for values %{ $object->lego_bricks };
+    my %seen_length;
+    $seen_length{ $_->length } = 1 for values %{ $object->lego_bricks };
 
-    my $lengths = [ sort keys %seen ];
+    my $lengths = [ sort keys %seen_length ];
 
     is_deeply($lengths, $expected_lengths, 'should load all brick lengths');
 
-    $tests++;
+    my $expected_depths = [ sort ( Lego::From::PNG::Const->LEGO_BRICK_DEPTHS ) ];
+
+    my %seen_depth;
+    $seen_depth{ $_->depth } = 1 for values %{ $object->lego_bricks };
+
+    my $depths = [ sort keys %seen_depth ];
+
+    is_deeply($depths, $expected_depths, 'should load all brick depths');
+
+    $tests += 2;
 }
 
 sub should_load_possible_knob_orientations {

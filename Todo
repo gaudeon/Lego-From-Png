@@ -5,3 +5,4 @@ TODO list for Perl module Lego::From::PNG
 - Auto detect unit size based on the supplied png. Check the first row and find the max number of color units found for each unique color in the row. The max number of color units is the unit size. (only if unit_size is set to discover, which is default)
 - Add resolution could allow a larger picture by using a larger brick size (e.g. 2x2) as a single unit. More useful for a horizontal orientation.
 - Add a modible option to HTML view that allows the interface to change the size of the bricks on the fly (using javascript of course)
+- Convert blacklist and whitelist to take a list of Brick objects instead of strings

@@ -12,6 +12,7 @@ our @ISA = qw(Exporter);
 our @EXPORT_OK = qw(
     LEGO_COLORS
     LEGO_BRICK_LENGTHS
+    LEGO_BRICK_DEPTHS
     LEGO_UNIT
     LEGO_UNIT_LENGTH
     LEGO_UNIT_DEPTH
@@ -340,6 +341,11 @@ use constant LEGO_BRICK_LENGTHS => qw(
     10
     12
     16
+);
+
+use constant LEGO_BRICK_DEPTHS => qw(
+    1
+    2
 );
 
 # Lego Dimensions Info

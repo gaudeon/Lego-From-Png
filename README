@@ -97,6 +97,28 @@ USAGE
      Comment   :
      See Also  :
 
+  max_lego_brick_length
+     Usage     : ->max_lego_brick_length()
+     Purpose   : Returns a the max brick length we could build a brick with
+
+     Returns   : highest brick length value
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  max_lego_brick_depth
+     Usage     : ->max_lego_brick_depth()
+     Purpose   : Returns a the max brick depth we could build a brick with
+
+     Returns   : highest brick depth value
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
   lego_knob_orientations
      Usage     : ->lego_knob_orientations()
      Purpose   : Returns a list of all possible lego knob orientations
@@ -303,7 +325,30 @@ USAGE
 
   _generate_brick_list
      Usage     : ->_approximate_lego_colors()
-     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
+     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values ) for either knob orientation (calls _knob_forward_brick_list or _knob_up_brick_list)
+
+     Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  _knob_forward_brick_list
+     Usage     : ->_knob_forward_brick_list()
+     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values ) for knob forward orientation
+
+     Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+     =head2 _knob_up_brick_list
+
+     Usage     : ->_knob_up_brick_list()
+     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values ) for knob up orientation
 
      Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
      Argument  :
