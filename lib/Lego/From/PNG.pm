@@ -49,6 +49,8 @@ sub new {
 
     my $self = bless ($hash, ref ($class) || $class);
 
+    $self->knob_orientation( $args{'knob_orientation'} ) if $args{'knob_orientation'};
+
     return $self;
 }
 
@@ -151,15 +153,65 @@ sub lego_bricks {
         my $hash = {};
 
         for my $color ( LEGO_COLORS ) {
-            for my $length ( LEGO_BRICK_LENGTHS ) {
-                my $brick = Lego::From::PNG::Brick->new( color => $color, length => $length );
+            for my $depth ( LEGO_BRICK_DEPTHS ) {
+                for my $length ( LEGO_BRICK_LENGTHS ) {
+                    my $brick = Lego::From::PNG::Brick->new( color => $color, depth => $depth, length => $length );
 
-                $hash->{ $brick->identifier } = $brick;
+                    $hash->{ $brick->identifier } = $brick;
+                }
             }
         }
 
         $hash;
     };
+}
+
+sub max_lego_brick_length {
+    my $self = shift;
+
+    return $self->{'max_lego_brick_length'} ||= shift @{ [ reverse sort { $a <=> $b } LEGO_BRICK_LENGTHS ] };
+}
+
+sub max_lego_brick_depth {
+    my $self = shift;
+
+    return $self->{'max_lego_brick_depth'} ||= shift @{ [ reverse sort { $a <=> $b } LEGO_BRICK_DEPTHS ] };
+}
+
+sub lego_knob_orientations {
+    my $self = shift;
+
+    return $self->{'lego_knob_orientations'} ||= do {
+        my $hash = {};
+
+        for my $orientation ( LEGO_KNOB_ORIENTATIONS ) {
+            $hash->{ $orientation } = Lego::From::PNG::Const->$orientation;
+        }
+
+        $hash;
+    };
+}
+
+sub knob_orientation {
+    my $self = shift;
+    my $set_value = $_[0] ? lc(shift) : undef;
+
+    $self->{'knob_orientation'} = $set_value if $set_value && $self->validate_knob_orientation($set_value);
+
+    return $self->{'knob_orientation'} ||= Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD;
+}
+
+sub validate_knob_orientation {
+    my $self  = shift;
+    my $value = shift;
+
+    return 0 unless $value;
+
+    for my $orientation ( Lego::From::PNG::Const->LEGO_KNOB_ORIENTATIONS ) {
+        return 1 if $value eq Lego::From::PNG::Const->$orientation;
+    }
+
+    return 0;
 }
 
 sub png {
@@ -406,30 +458,129 @@ sub _generate_brick_list {
 
     die 'units not valid' unless $args{'units'} && ref( $args{'units'} ) eq 'ARRAY';
 
-    my $unit_count   = scalar(@{ $args{'units'} });
-    my @units        = @{ $args{'units'} };
+    my $knob_orientation = $self->knob_orientation;
+
+    my @bricks;
+
+    KNOB_ORIENTATION: {
+        $knob_orientation eq LEGO_KNOB_ORIENTATION_UP && do {
+            @bricks = $self->_knob_up_brick_list($args{'units'});
+            last KNOB_ORIENTATION;
+        };
+        $knob_orientation eq LEGO_KNOB_ORIENTATION_FORWARD && do {
+            @bricks = $self->_knob_forward_brick_list($args{'units'});
+            last KNOB_ORIENTATION;
+        };
+    }
+
+    return @bricks;
+}
+
+sub _knob_forward_brick_list {
+    my $self  = shift;
+    my @units = ref($_[0]) eq 'ARRAY' ? @{ $_[0] } : @_;
+
+    my $unit_count   = scalar(@units);
     my $row_width    = $self->block_row_length;
-    my $brick_height = 1; # bricks are only one unit high
-    my @brick_list;
+    my $brick_ref    = -1; # artificial auto-incremented id
+    my @bricks;
+
+    my @units_slice; # slice of units that is max brick depth high
+    my %unit_used; # track as cells in the unit slice of the picture are used
+    for(my $d = 0; $d < $self->max_lego_brick_depth; $d++) {
+        next unless scalar @units;
+        push @units_slice, [ splice @units, 0, $row_width ];
+    }
+
+    my $is_brick_in_slice = sub {
+        my ($start_x, $start_y, $max_depth, $max_width) = @_;
+
+        my $color;
+        for(my $y = $start_y; $y < $max_depth; $y++) {
+            for(my $x = $start_x; $x < $max_width; $x++) {
+                return 0 if defined $unit_used{$y}{$x} && $unit_used{$y}{$x} == 1; # this cell is already used in a different brick
+
+                $color = $units_slice[$y][$x] and next if ! defined $color;
+
+                return 0 if $color ne $units_slice[$y][$x];
+            }
+        }
+
+        return 1;
+    };
+
+
+    my $max_depth  = $self->max_lego_brick_depth > scalar @units_slice ? scalar @units_slice : $self->max_lego_brick_depth;
+    my $max_length = $self->max_lego_brick_length > $row_width ? $row_width : $self->max_lego_brick_length;
+
+    for(my $depth = $max_depth; $depth > 0; $depth--) {
+        for(my $length = $max_length; $length > 0; $length--) {
+            # Looking for bricks in slice with dimentions of $depth X $width
+            my $start_x = 0;
+            my $start_y = 0;
+
+            FIND_BRICKS: {
+                for( 1 .. scalar(@units_slice) * $row_width ) { # All bricks should be determined by at least the number of blocks of color in the slice for each row pulled
+                    if($row_width - $start_x <= $length && scalar @units_slice - $start_y <= $depth) { # No reason for further checking unless
+                        next unless $is_brick_in_slice->($start_x, $start_y, $depth, $length);
+                        my $color = $units_slice[$start_y][$start_x];
+
+                        my $dim = join('x',$depth,$length,$self->{'brick_height'});
+                        my $brk = join('_', $color, $dim);
+
+                        if(
+                            ! $self->is_blacklisted( $dim, 'dimension' ) &&
+                            ! $self->is_blacklisted( $brk, 'brick' ) &&
+                            $self->is_whitelisted( $dim, 'dimension' ) &&
+                            $self->is_whitelisted( $brk, 'brick' )
+                        ) {
+                            push @bricks, Lego::From::PNG::Brick->new(
+                                color  => $color,
+                                depth  => $depth,
+                                length => $length,
+                                height => $self->{'brick_height'},
+                                meta   => {
+                                    x   => $start_x,
+                                    y   => $start_y,
+                                    ref => ++$brick_ref,
+                                },
+                            );
+
+                            # use up cells that we made a brick for
+                            for(my $x = $start_x; $x < $length; $x++) {
+                                for(my $y = $start_y; $y < $length; $y++) {
+                                    $unit_used{$y}{$x} = 1;
+                                }
+                            }
+                        }
+                    }
+
+                    # Increment starting units coords
+                    $start_x++;
+                    if ($start_x >= $row_width) {
+                        $start_y++;
+                        $start_x = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    return @bricks;
+}
+
+sub _knob_up_brick_list {
+    my $self  = shift;
+    my @units = ref($_[0]) eq 'ARRAY' ? @{ $_[0] } : @_;
+
+    my $unit_count   = scalar(@units);
+    my $row_width    = $self->block_row_length;
+    my $brick_ref    = -1; # artificial auto-incremented id
+    my @bricks;
 
     for(my $y = 0; $y < ($unit_count / $row_width); $y++) {
         my @row = splice @units, 0, $row_width;
-
-        my $push_color = sub {
-           my ($color, $length) = @_;
-
-           if($color) {
-                push @brick_list, Lego::From::PNG::Brick->new(
-                    color  => $color,
-                    depth  => $self->{'brick_depth'},
-                    length => $length,
-                    height => $self->{'brick_height'},
-                    meta   => {
-                        y => $y,
-                    },
-                );
-            }
-        };
+        my $x   = 0;
 
         my $process_color_sample = sub {
             my ($color, $length) = @_;
@@ -438,7 +589,7 @@ sub _generate_brick_list {
 
             # Now make sure we find bricks we are allowed to use
             FIND_BRICKS: {
-                for( 1 .. $length) { # Only need to loop at least the number of times equal to the length of color found
+                for( 1 .. $length ) { # Only need to loop at least the number of times equal to the length of color found
                     my $valid_length = $length;
                     FIND_VALID_LENGTH: {
                         for(;$valid_length > 0;$valid_length--) {
@@ -451,8 +602,22 @@ sub _generate_brick_list {
                         }
                     }
 
-                    $push_color->($color, $valid_length);
+                    if( $color ) {
+                        push @bricks, Lego::From::PNG::Brick->new(
+                            color  => $color,
+                            depth  => $self->{'brick_depth'},
+                            length => $valid_length,
+                            height => $self->{'brick_height'},
+                            meta   => {
+                                x   => $x,
+                                y   => $y,
+                                ref => ++$brick_ref,
+                            },
+                        );
+                    }
+
                     $length -= $valid_length;
+                    $x      += $valid_length; # x on the 'grid' for next brick is at current x plus length of current brick
 
                     last FIND_BRICKS if $length <= 0; # No need to push more bricks, we found them all
                 }
@@ -465,7 +630,7 @@ sub _generate_brick_list {
         my $next_brick_color = '';
         my $next_brick_length = 0;
 
-        for my $color(@row) {
+        for my $color( @row ) {
             if( $color ne $next_brick_color ) {
                 $process_color_sample->($next_brick_color, $next_brick_length);
 
@@ -479,7 +644,7 @@ sub _generate_brick_list {
         $process_color_sample->($next_brick_color, $next_brick_length); # Process last color found
     }
 
-    return @brick_list;
+    return @bricks;
 }
 
 sub _list_filters {
@@ -579,6 +744,9 @@ $hash->{'filename'} = $args{'filename'};
     blacklist - Optional. Array ref of colors, dimensions or color and dimensions that are not allowed in the final plan output.
         e.g. blacklist => [ 'RED', '1x10x1', '1x12x1', '1x16x1', 'BLUE_1x8x1' ]
 
+    knob_orientation - Optional. The facing direction of lego knobs, Either 'up' or 'forward'. This controls whether bricks are determined by depth and length ('forward') or lenght only ('up'). Defaults to 'forward'.
+        e.g. knob_orientation => 'up'
+
  Throws    :
 
  Comment   :
@@ -614,6 +782,66 @@ $hash->{'filename'} = $args{'filename'};
  Purpose   : Returns a list of all possible lego bricks
 
  Returns   : Hash ref with L<Lego::From::PNG::Brick> objects keyed by their identifier
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 max_lego_brick_length
+
+ Usage     : ->max_lego_brick_length()
+ Purpose   : Returns a the max brick length we could build a brick with
+
+ Returns   : highest brick length value
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 max_lego_brick_depth
+
+ Usage     : ->max_lego_brick_depth()
+ Purpose   : Returns a the max brick depth we could build a brick with
+
+ Returns   : highest brick depth value
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 lego_knob_orientations
+
+ Usage     : ->lego_knob_orientations()
+ Purpose   : Returns a list of all possible lego knob orientations
+
+ Returns   : Hash ref with L<Lego::From::PNG::Const> knob orientation values keyed by their identifier
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 knob_orientation
+
+ Usage     : ->knob_orientation()
+ Purpose   : Returns current knob orientation, defaults to LEGO_KNOB_ORIENTATION_FORWARD.
+
+ Returns   : value of the current knob orientation (either 'up' or 'forward')
+ Argument  :
+ Throws    :
+
+ Comment   : 'up' means knobs are pointed vertically. 'forward' means knobs are pointed towards the viewer.
+ See Also  :
+
+=head2 validate_knob_orientation
+
+ Usage     : ->validate_knob_orientation()
+ Purpose   : Make sure a potential knob orientation value is valid
+
+ Returns   : Returns 1 if passed value is a valid knob orientation, 0 otherwis
  Argument  :
  Throws    :
 
@@ -808,7 +1036,31 @@ $hash->{'filename'} = $args{'filename'};
 =head2 _generate_brick_list
 
  Usage     : ->_approximate_lego_colors()
- Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
+ Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values ) for either knob orientation (calls _knob_forward_brick_list or _knob_up_brick_list)
+
+ Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+=head2 _knob_forward_brick_list
+
+ Usage     : ->_knob_forward_brick_list()
+ Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values ) for knob forward orientation
+
+ Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+ Argument  :
+ Throws    :
+
+ Comment   :
+ See Also  :
+
+ =head2 _knob_up_brick_list
+
+ Usage     : ->_knob_up_brick_list()
+ Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values ) for knob up orientation
 
  Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
  Argument  :

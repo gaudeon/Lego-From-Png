@@ -56,6 +56,9 @@ USAGE
         blacklist - Optional. Array ref of colors, dimensions or color and dimensions that are not allowed in the final plan output.
             e.g. blacklist => [ 'RED', '1x10x1', '1x12x1', '1x16x1', 'BLUE_1x8x1' ]
 
+        knob_orientation - Optional. The facing direction of lego knobs, Either 'up' or 'forward'. This controls whether bricks are determined by depth and length ('forward') or lenght only ('up'). Defaults to 'forward'.
+            e.g. knob_orientation => 'up'
+
      Throws    :
 
      Comment   :
@@ -88,6 +91,61 @@ USAGE
      Purpose   : Returns a list of all possible lego bricks
 
      Returns   : Hash ref with L<Lego::From::PNG::Brick> objects keyed by their identifier
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  max_lego_brick_length
+     Usage     : ->max_lego_brick_length()
+     Purpose   : Returns a the max brick length we could build a brick with
+
+     Returns   : highest brick length value
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  max_lego_brick_depth
+     Usage     : ->max_lego_brick_depth()
+     Purpose   : Returns a the max brick depth we could build a brick with
+
+     Returns   : highest brick depth value
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  lego_knob_orientations
+     Usage     : ->lego_knob_orientations()
+     Purpose   : Returns a list of all possible lego knob orientations
+
+     Returns   : Hash ref with L<Lego::From::PNG::Const> knob orientation values keyed by their identifier
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  knob_orientation
+     Usage     : ->knob_orientation()
+     Purpose   : Returns current knob orientation, defaults to LEGO_KNOB_ORIENTATION_FORWARD.
+
+     Returns   : value of the current knob orientation (either 'up' or 'forward')
+     Argument  :
+     Throws    :
+
+     Comment   : 'up' means knobs are pointed vertically. 'forward' means knobs are pointed towards the viewer.
+     See Also  :
+
+  validate_knob_orientation
+     Usage     : ->validate_knob_orientation()
+     Purpose   : Make sure a potential knob orientation value is valid
+
+     Returns   : Returns 1 if passed value is a valid knob orientation, 0 otherwis
      Argument  :
      Throws    :
 
@@ -267,7 +325,30 @@ USAGE
 
   _generate_brick_list
      Usage     : ->_approximate_lego_colors()
-     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values )
+     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values ) for either knob orientation (calls _knob_forward_brick_list or _knob_up_brick_list)
+
+     Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+  _knob_forward_brick_list
+     Usage     : ->_knob_forward_brick_list()
+     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values ) for knob forward orientation
+
+     Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
+     Argument  :
+     Throws    :
+
+     Comment   :
+     See Also  :
+
+     =head2 _knob_up_brick_list
+
+     Usage     : ->_knob_up_brick_list()
+     Purpose   : Generate a list of lego colors based on a list of blocks ( array of hashes containing rgb values ) for knob up orientation
 
      Returns   : A list of lego color common name keys that can then reference lego color information using L<Lego::From::PNG::lego_colors>
      Argument  :

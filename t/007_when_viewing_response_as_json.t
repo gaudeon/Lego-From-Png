@@ -66,7 +66,9 @@ sub should_return_properly_formatted_JSON {
                 id     => $id,
                 length => 1,
                 meta   => {
-                    y => 0,
+                    x   => 0,
+                    y   => 0,
+                    ref => 0,
                 },
             }
         ],

@@ -21,19 +21,29 @@ use Data::Debug;
 
 my $tests = 0;
 
+should_default_to_knob_orientation_of_forward();
+
+should_track_desired_knob_orientation();
+
+should_not_allow_invalid_knob_orientations();
+
 should_return_empty_list_with_no_params();
 
 should_return_the_right_count_of_blocks_of_colors();
 
 should_return_lego_colors_approximated_from_a_list_containing_blocks_of_colors();
 
-should_return_a_list_of_lego_bricks_per_row_of_png();
+should_return_a_correct_list_of_lego_bricks_for_forward_knob_orientaion();
+
+should_return_a_correct_list_of_lego_bricks_for_up_knob_orientaion();
 
 should_only_return_bricks_in_the_list_that_are_whitelisted_by_color();
 
 should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimension();
 
 should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_brick_dimension();
+
+should_return_a_list_of_lego_bricks_with_sequentual_meta_refs();
 
 should_return_information_about_the_generated_plan();
 
@@ -43,8 +53,50 @@ exit;
 
 # ----------------------------------------------------------------------
 
-sub should_return_empty_list_with_no_params {
+sub should_default_to_knob_orientation_of_forward {
+    note("---- ". current_sub(). " ----\n");
+
     my $object = Lego::From::PNG->new();
+
+    my $result = $object->knob_orientation();
+
+    cmp_ok($result, 'eq', Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD, 'should default to knob orientation of forward');
+
+    $tests++;
+}
+
+sub should_track_desired_knob_orientation {
+    note("---- ". current_sub(). " ----\n");
+
+    my $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP });
+
+    my $result = $object->knob_orientation();
+
+    cmp_ok($result, 'eq', Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP, 'should be set to knob orientation of up');
+
+    $result = $object->knob_orientation(Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD);
+
+    cmp_ok($result, 'eq', Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD, 'should be set to knob orientation of forward');
+
+    $tests += 2;
+}
+
+sub should_not_allow_invalid_knob_orientations {
+    note("---- ". current_sub(). " ----\n");
+
+    my $object = Lego::From::PNG->new({ knob_orientation => 'This does not work' });
+
+    my $result = $object->knob_orientation();
+
+    cmp_ok($result, 'eq', Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD, 'should be set to default knob orientation of forward when provided an invalid value');
+
+    $tests++;
+}
+
+sub should_return_empty_list_with_no_params {
+    note("---- ". current_sub(). " ----\n");
+
+    my $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP });
 
     my $result = $object->process();
 
@@ -54,12 +106,14 @@ sub should_return_empty_list_with_no_params {
 }
 
 sub should_return_the_right_count_of_blocks_of_colors {
+    note("---- ". current_sub(). " ----\n");
+
     my ($width, $height, $unit_size) = (1024, 768, 16);
     my $num_blocks = ($width / $unit_size) * ($height / $unit_size);
 
     my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size });
 
-    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size });
+    my $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP, filename => $png->filename, unit_size => $unit_size });
 
     my @result = $object->_png_blocks_of_color();
 
@@ -69,11 +123,13 @@ sub should_return_the_right_count_of_blocks_of_colors {
 }
 
 sub should_return_lego_colors_approximated_from_a_list_containing_blocks_of_colors {
+    note("---- ". current_sub(). " ----\n");
+
     my ($width, $height, $unit_size) = (32, 32, 16);
 
     my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size });
 
-    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size });
+    my $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP, filename => $png->filename, unit_size => $unit_size });
 
     my @blocks = $object->_png_blocks_of_color();
 
@@ -105,7 +161,74 @@ sub should_return_lego_colors_approximated_from_a_list_containing_blocks_of_colo
     }
 }
 
-sub should_return_a_list_of_lego_bricks_per_row_of_png {
+sub should_return_a_correct_list_of_lego_bricks_for_forward_knob_orientaion {
+    note("---- ". current_sub(). " ----\n");
+
+    my $unit_size = 16;
+
+    for my $brick_length ( LEGO_BRICK_LENGTHS ) {
+        for my $brick_depth ( LEGO_BRICK_DEPTHS ) {
+            my ($width, $height) = ($brick_length * $unit_size, $brick_depth * $unit_size);
+
+            # Pick a random lego color to test this part
+            my $color = do {
+                my @color_list = LEGO_COLORS;
+                my $num_lego_colors = scalar( @color_list );
+                $color_list[ int(rand() * $num_lego_colors) ];
+            };
+            my $color_rgb = do {
+                my ($r, $g, $b) = ($color . '_RGB_COLOR_RED', $color . '_RGB_COLOR_GREEN', $color . '_RGB_COLOR_BLUE');
+                [ Lego::From::PNG::Const->$r, Lego::From::PNG::Const->$g, Lego::From::PNG::Const->$b ];
+            };
+
+            my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
+
+            my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_FORWARD }); # Even though forward is default we are going be explicit
+
+            my @blocks = $object->_png_blocks_of_color();
+
+            my $num_block_colors = do {
+                my %colors;
+                $colors{ join('_', $_->{'r'}, $_->{'g'}, $_->{'b'}) } = 1 for @blocks;
+                scalar(keys %colors);
+            };
+
+            cmp_ok($num_block_colors, '==', 1, "Only one color was used to generate blocks of depth $brick_depth and length $brick_length");
+            $tests++;
+
+            is_deeply($blocks[0], {
+                r => $object->lego_colors->{ $color }->{'rgb_color'}->[0],
+                g => $object->lego_colors->{ $color }->{'rgb_color'}->[1],
+                b => $object->lego_colors->{ $color }->{'rgb_color'}->[2],
+            }, "The color we randomly chose is being used for a $brick_depth X $brick_length brick");
+            $tests++;
+
+            my @units = $object->_approximate_lego_colors(blocks => \@blocks);
+
+            my @bricks = $object->_generate_brick_list(units => \@units);
+
+            my $id = $color.'_' . $brick_depth . 'x' . $brick_length . 'x1';
+
+            is_deeply($bricks[0]->flatten, {
+                length => $brick_length,
+                height => 1,
+                depth  => $brick_depth,
+                color  => $color,
+                id     => $id,
+                meta   => {
+                    x   => 0,
+                    y   => 0,
+                    ref => 0,
+                },
+            }, "Brick returned is the correct dimensions and color for brick of length $brick_length");
+            $tests++;
+        }
+    }
+}
+
+sub should_return_a_correct_list_of_lego_bricks_for_up_knob_orientaion {
+    note("---- ". current_sub(). " ----\n");
+
     my $unit_size = 16;
 
     for my $brick_length ( LEGO_BRICK_LENGTHS ) {
@@ -124,7 +247,7 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
 
         my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
 
-        my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size });
+        my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP });
 
         my @blocks = $object->_png_blocks_of_color();
 
@@ -157,7 +280,9 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
             color  => $color,
             id     => $id,
             meta   => {
-                y => 0,
+                x   => 0,
+                y   => 0,
+                ref => 0,
             },
         }, "Brick returned is the correct dimensions and color for brick of length $brick_length");
         $tests++;
@@ -166,6 +291,8 @@ sub should_return_a_list_of_lego_bricks_per_row_of_png {
 
 
 sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color {
+    note("---- ". current_sub(). " ----\n");
+
     my $unit_size = 16;
 
     my $brick_length = 4;
@@ -182,7 +309,7 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color {
 
     my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
 
-    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, whitelist => [ $whitelisted_color ] });
+    my $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP ,filename => $png->filename, unit_size => $unit_size, whitelist => [ $whitelisted_color ] });
 
     my $result = $object->process();
 
@@ -193,7 +320,9 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color {
         id => "${whitelisted_color}_1x${brick_length}x1",
         length => $brick_length,
         meta => {
-            y => 0
+            x   => 0,
+            y   => 0,
+            ref => 0,
         },
     };
 
@@ -203,6 +332,8 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color {
 }
 
 sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimension {
+    note("---- ". current_sub(). " ----\n");
+
     my $unit_size = 16;
 
     my $brick_length = 4;
@@ -222,7 +353,7 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimensio
 
     my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
 
-    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, whitelist => [ '1x3x1', '1x2x1', '1x1x1' ] });
+    my $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP, filename => $png->filename, unit_size => $unit_size, whitelist => [ '1x3x1', '1x2x1', '1x1x1' ] });
 
     my $result = $object->process();
 
@@ -234,7 +365,9 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimensio
             id => "${color}_1x3x1",
             length => 3,
             meta => {
-                y => 0
+                x   => 0,
+                y   => 0,
+                ref => 0,
             },
         },
         {
@@ -244,7 +377,9 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimensio
             id => "${color}_1x1x1",
             length => 1,
             meta => {
-                y => 0
+                x   => 3,
+                y   => 0,
+                ref => 1,
             },
         },
     ];
@@ -255,6 +390,8 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_brick_dimensio
 }
 
 sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_brick_dimension {
+    note("---- ". current_sub(). " ----\n");
+
     my $unit_size = 16;
 
     my $brick_length = 4;
@@ -276,7 +413,7 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_bric
         push @whitelisted_bricks, join('_', $whitelisted_color, $_);
     }
 
-    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, whitelist => \@whitelisted_bricks });
+    my $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP, filename => $png->filename, unit_size => $unit_size, whitelist => \@whitelisted_bricks });
 
     my $result = $object->process();
 
@@ -288,7 +425,9 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_bric
             id => "${whitelisted_color}_1x3x1",
             length => 3,
             meta => {
-                y => 0
+                x   => 0,
+                y   => 0,
+                ref => 0,
             },
         },
         {
@@ -298,7 +437,9 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_bric
             id => "${whitelisted_color}_1x1x1",
             length => 1,
             meta => {
-                y => 0
+                x   => 3,
+                y   => 0,
+                ref => 1,
             },
         },
     ];
@@ -308,12 +449,69 @@ sub should_only_return_bricks_in_the_list_that_are_whitelisted_by_color_and_bric
     $tests++;
 }
 
+sub should_return_a_list_of_lego_bricks_with_sequentual_meta_refs {
+    note("---- ". current_sub(). " ----\n");
+
+    my $unit_size    = 16;
+    my $brick_length = 2;
+    my $brick_height = 2;
+
+    my ($width, $height) = ($brick_length * $unit_size, $brick_height * $unit_size);
+
+    # Pick a random lego color to test this part
+    my $color = do {
+        my @color_list = LEGO_COLORS;
+        my $num_lego_colors = scalar( @color_list );
+        $color_list[ int(rand() * $num_lego_colors) ];
+    };
+    my $color_rgb = do {
+        my ($r, $g, $b) = ($color . '_RGB_COLOR_RED', $color . '_RGB_COLOR_GREEN', $color . '_RGB_COLOR_BLUE');
+        [ Lego::From::PNG::Const->$r, Lego::From::PNG::Const->$g, Lego::From::PNG::Const->$b ];
+    };
+
+    my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size, color => $color_rgb });
+
+    my $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP, filename => $png->filename, unit_size => $unit_size });
+
+    my @blocks = $object->_png_blocks_of_color();
+
+    my $num_block_colors = do {
+        my %colors;
+        $colors{ join('_', $_->{'r'}, $_->{'g'}, $_->{'b'}) } = 1 for @blocks;
+        scalar(keys %colors);
+    };
+
+    my @units = $object->_approximate_lego_colors(blocks => \@blocks);
+
+    my @bricks = $object->_generate_brick_list(units => \@units);
+
+    my $id = $color.'_1x'.$brick_length.'x1';
+
+    for(my $i = 0; $i < @bricks; $i++) {
+        is_deeply($bricks[$i]->flatten, {
+            length => $brick_length,
+            height => 1,
+            depth  => 1,
+            color  => $color,
+            id     => $id,
+            meta   => {
+                x   => 0,
+                y   => $i,
+                ref => $i,
+            },
+        }, "Brick $i returned has the correct meta ref");
+        $tests++;
+    }
+}
+
 sub should_return_information_about_the_generated_plan {
+    note("---- ". current_sub(). " ----\n");
+
     my ($width, $height, $unit_size) = (256, 256, 16);
 
     my $png = Test::PNG->new({ width => $width, height => $height, unit_size => $unit_size });
 
-    my $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, metric => 1 });
+    my $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP, filename => $png->filename, unit_size => $unit_size, metric => 1 });
 
     my $result = $object->process();
 
@@ -335,7 +533,7 @@ sub should_return_information_about_the_generated_plan {
 
     is_deeply($result->{'info'}, $expected_in_millimeters, "Information about plan (in millimeters) correct");
 
-    $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, imperial => 1 });
+    $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP, filename => $png->filename, unit_size => $unit_size, imperial => 1 });
 
     $result = $object->process();
 
@@ -357,7 +555,7 @@ sub should_return_information_about_the_generated_plan {
 
     is_deeply($result->{'info'}, $expected_in_inches, "Information about plan (in inches) is correct");
 
-    $object = Lego::From::PNG->new({ filename => $png->filename, unit_size => $unit_size, metric => 1, imperial => 1 });
+    $object = Lego::From::PNG->new({ knob_orientation => Lego::From::PNG::Const->LEGO_KNOB_ORIENTATION_UP, filename => $png->filename, unit_size => $unit_size, metric => 1, imperial => 1 });
 
     $result = $object->process();
 
@@ -366,4 +564,16 @@ sub should_return_information_about_the_generated_plan {
     is_deeply($result->{'info'}, $expected_in_both, "Information about plan, in both imperial and metric, is correct");
 
     $tests += 3;
+}
+
+# --- Utility subs ---
+
+# Return description based on current subroutine
+sub current_sub {
+    my $sub = ((caller(1))[3]);
+
+    $sub =~ s/^.*::([^:]+)$/$1/;
+    $sub =~ s/_/ /g;
+
+    return $sub;
 }
