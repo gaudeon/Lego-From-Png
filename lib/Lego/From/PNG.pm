@@ -303,7 +303,7 @@ sub has_whitelist {
     my $allowed = shift; # arrayref listing filters we can use
 
     my $found = 0;
-    for my $filter(values $self->_list_filters($allowed)) {
+    for my $filter(values %{ $self->_list_filters($allowed) }) {
         $found += scalar( grep { /$filter/ } @{ $self->whitelist || [] } );
     }
 
@@ -339,7 +339,7 @@ sub has_blacklist {
 
     my $found = 0;
 
-    for my $filter(values $self->_list_filters($allowed)) {
+    for my $filter(values %{ $self->_list_filters($allowed) }) {
         $found += scalar( grep { /$filter/ } @{ $self->blacklist || [] } );
     }
 
