@@ -1,5 +1,9 @@
 Revision history for Perl module Lego::From::PNG
 
+0.05 ?
+    - Added knob forward orientation support
+    - Fixed compatibility with perl 5.23, thanks chorny!
+
 0.04 Jun 10, 2015
     - Fixed bug in lego color discovery process that broke things
 
